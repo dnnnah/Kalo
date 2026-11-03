@@ -1,7 +1,7 @@
 # Kalo — Suite Clínica de Valoración y Diagnóstico Nutricional
 
-> **Kalo** (*Kilo* + *Caloría* = *Kilocaloría*)  
-> Software libre (FOSS) y offline-first de valoración y diagnóstico clínico-nutricional para estudiantes y profesionales de la nutrición en América Latina. Basado en el modelo de evaluación **ABCD** (Antropometría, Bioquímica, Clínica y Dietética).
+> **Kalo** (*Kilo* + *Caloría* = *Kilocaloría* • *Kalós* [armonía y salud])  
+> Software clínico de valoración y diagnóstico nutricional para estudiantes y profesionales de la nutrición en América Latina. Basado en el modelo de evaluación **ABCD** (Antropometría, Bioquímica, Clínica y Dietética).
 
 ---
 
@@ -104,15 +104,26 @@ npm run dev
 
 ## Roadmap
 
-- [x] **Fase 1 (MVP)**:
+- [x] **Fase 1 (MVP — Completado)**:
   - [x] Arquitectura base, sistema de diseño Apple HIG y almacenamiento offline con Dexie.js (`KaloDB`).
-  - [x] Módulo core de Requerimiento Energético (GET/TMB): Valencia México, Mifflin-St Jeor, Harris-Benedict, Schofield y Katch-McArdle.
-  - [x] Corrección por obesidad con Peso Ideal (Hamwi 1964) y Peso Ajustado (ASPEN 2016).
-  - [x] Factor de estrés por fiebre (DuBois +13%/°C sobre 37°C) y factores clínicos.
-  - [x] Pipeline de CI con GitHub Actions y pruebas E2E con Playwright.
-  - [ ] Módulos de Antropometría, Bioquímica, Cardiovascular y Renal.
-- [ ] **Fase 2**: Planeador Dietético con distribución SMAE (5ª Edición) y cuadro dieto-sintético interactivo.
-- [ ] **Fase 3**: Sincronización en la nube opcional y catálogo comunitario de alimentos latinoamericanos.
+  - [x] Módulo de Requerimiento Energético (GET/TMB): Valencia México, Mifflin-St Jeor, Harris-Benedict, Schofield y Katch-McArdle con ajuste por obesidad (ASPEN 2016 / Hamwi).
+  - [x] Módulo de Antropometría y Composición Corporal (IMC, ICC, ICE, Pliegues JP3/Faulkner y AMB/CMB Frisancho).
+  - [x] Módulo de Bioquímica Clínica y Laboratorios (HOMA-IR Matthews, QUICKI Katz y semáforo analítico ADA/NOM/Harrison).
+  - [x] Módulo de Riesgo Cardiovascular (Framingham 10 años Wilson 1998, Castelli I, No-HDL, TyG y Conicidad).
+  - [x] Módulo de Nutrición Renal (CKD-EPI 2021 sin coeficiente racial, estadios KDIGO, ajuste proteico KDOQI, balance de fósforo, líquidos y PRAL).
+  - [x] Módulo de Diabetes y Síndrome Metabólico (Carga glucémica Brand-Miller, ratio Insulina:CH Walsh, ATP-III / IDF y FINDRISC).
+  - [x] Módulo de Nutrición Materno-Fetal (Adición calórica IOM 2002/2005, ganancia gestacional IOM 2009, micronutrientes y manejo NVE ACOG 2021).
+  - [x] Biblioteca de Referencias Clínicas y Compendio Bibliográfico oficial en APA 7.ª edición (`REFERENCIAS.md`).
+  - [x] Directorio de Pacientes y Expediente Clínico Digital con persistencia local en Dexie.js y vinculación opcional en toda la suite.
+  - [x] Reportes e impresión médica profesional (`@media print` con retención cromática de selecciones y márgenes limpios).
+  - [x] Pipeline de CI con GitHub Actions (130 pruebas unitarias en Vitest y 3 pruebas E2E consolidadas en Playwright).
+
+- [ ] **Fase 2 (Planificación Dietética y Macronutrientes — Fuera del MVP)**:
+  - [ ] **Módulo 1: Distribución de Macronutrientes (`features/macronutrients`)**: Reparto calórico y en g/kg de Proteínas, Lípidos e Hidratos de Carbono (rangos AMDR OMS/IOM), con guardado en expediente.
+  - [ ] **Módulo 2: Tabla de Adecuación Nutricional (`features/adequacy`)**: Comparativa Prescrito vs. Real/Planeado con cálculo de porcentaje y semáforo clínico de déficit/exceso.
+  - [ ] **Módulo 3: Planeador Dietético / Menú SMAE (`features/meal-planner`)**: Normalización tipada de bases de datos JSON de alimentos equivalentes (SMAE 5ª Edición) estructurada para migración futura a base de datos y distribución por tiempos de comida.
+
+- [ ] **Fase 3 (Ecosistema Clínico & Sincronización)**: Sincronización cifrada de punto a punto opcional y catálogo comunitario de alimentos latinoamericanos.
 
 ---
 
