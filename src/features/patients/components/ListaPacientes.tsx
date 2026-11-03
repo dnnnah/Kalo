@@ -29,14 +29,14 @@ export function ListaPacientes({
     <div className="flex flex-col h-full space-y-3">
       {/* Barra superior de acciones */}
       <div className="flex items-center justify-between gap-2">
-        <div className="relative flex-1">
+        <div className="relative flex-1 min-w-0">
           <Search className="w-4 h-4 text-text-tertiary absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             value={busqueda}
             onChange={(e) => onCambioBusqueda(e.target.value)}
-            placeholder="Buscar por nombre, teléfono o email..."
-            className="w-full pl-9 pr-3 py-2 bg-background-elevated border border-border rounded-input text-[14px] text-text-primary placeholder:text-text-tertiary outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+            placeholder="Buscar paciente..."
+            className="w-full pl-9 pr-3 py-2 sm:py-2.5 bg-background-elevated border border-border rounded-input text-[13px] sm:text-[14px] text-text-primary placeholder:text-text-tertiary outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all min-h-[42px]"
           />
         </div>
         <Button
@@ -44,14 +44,14 @@ export function ListaPacientes({
           variant="primary"
           size="sm"
           icono={<UserPlus className="w-4 h-4" />}
-          className="flex-shrink-0"
+          className="flex-shrink-0 min-h-[42px] px-3 font-semibold"
         >
           Nuevo
         </Button>
       </div>
 
       {/* Selector de ordenamiento segmentado */}
-      <div className="flex items-center justify-between text-[12px] text-text-secondary px-1">
+      <div className="flex items-center justify-between text-[11px] sm:text-[12px] text-text-secondary px-1">
         <span>{pacientes.length} {pacientes.length === 1 ? 'paciente' : 'pacientes'}</span>
         <div className="flex items-center gap-1">
           <span>Ordenar:</span>
@@ -68,7 +68,7 @@ export function ListaPacientes({
       </div>
 
       {/* Lista scrolleable de tarjetas de paciente */}
-      <div className="space-y-1.5 overflow-y-auto flex-1 max-h-[600px] pr-1">
+      <div className="space-y-1.5 overflow-y-auto flex-1 max-h-[600px] pr-0.5">
         {pacientes.map((p) => {
           const esActivo = p.id === pacienteSeleccionadoId;
           const edad = calcularEdadExacta(p.fecha_nacimiento);
@@ -80,15 +80,15 @@ export function ListaPacientes({
               key={p.id}
               type="button"
               onClick={() => p.id && onSeleccionar(p.id)}
-              className={`w-full text-left p-3 rounded-card transition-all flex items-center justify-between gap-3 border ${
+              className={`w-full text-left p-2.5 sm:p-3 rounded-card transition-all flex items-center justify-between gap-3 border min-h-[48px] touch-target ${
                 esActivo
-                  ? 'bg-primary text-white border-primary shadow-sm'
+                  ? 'bg-primary text-white border-primary shadow-xs'
                   : 'bg-background-surface hover:bg-background-elevated border-border text-text-primary'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-[13px] flex-shrink-0 ${
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-[12px] sm:text-[13px] flex-shrink-0 shadow-xs ${
                     esActivo
                       ? 'bg-white/20 text-white'
                       : p.sexo === 'femenino'
@@ -98,12 +98,12 @@ export function ListaPacientes({
                 >
                   {iniciales}
                 </div>
-                <div className="min-w-0">
-                  <div className="text-[14px] font-semibold truncate leading-tight">
+                <div className="min-w-0 flex-1">
+                  <div className="text-[13px] sm:text-[14px] font-semibold truncate leading-tight">
                     {nombreCompleto}
                   </div>
                   <div
-                    className={`text-[12px] truncate mt-0.5 ${
+                    className={`text-[11px] sm:text-[12px] truncate mt-0.5 ${
                       esActivo ? 'text-white/80' : 'text-text-tertiary'
                     }`}
                   >

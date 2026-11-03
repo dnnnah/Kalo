@@ -11,7 +11,7 @@ import {
   Edit2,
   Trash2,
   Printer,
-  ChevronRight,
+  ArrowRight,
 } from 'lucide-react';
 import type { Paciente, ConsultaMedica } from '../../../shared/types';
 import type { PacienteConMetricas } from '../types';
@@ -48,13 +48,13 @@ export function ExpedienteDetalle({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5 sm:space-y-6">
       {/* ─── Cabecera del Expediente (Apple Health Card) ─── */}
-      <Card className="border-border">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-start sm:items-center gap-4">
+      <Card className="border-border p-4 sm:p-5">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-3.5">
             <div
-              className={`w-16 h-16 rounded-full flex items-center justify-center font-bold text-[20px] flex-shrink-0 shadow-sm ${
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center font-bold text-[18px] sm:text-[20px] flex-shrink-0 shadow-sm ${
                 paciente.sexo === 'femenino'
                   ? 'bg-rose-500/10 text-rose-600'
                   : 'bg-blue-500/10 text-blue-600'
@@ -62,13 +62,13 @@ export function ExpedienteDetalle({
             >
               {iniciales}
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-[20px] sm:text-[24px] font-bold text-text-primary tracking-tight leading-tight">
+                <h2 className="text-[18px] sm:text-[22px] font-bold text-text-primary tracking-tight leading-tight truncate">
                   {nombreCompleto}
                 </h2>
                 <span
-                  className={`text-[11px] font-semibold px-2 py-0.5 rounded-pill ${
+                  className={`text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-pill flex-shrink-0 ${
                     paciente.sexo === 'femenino'
                       ? 'bg-rose-500/10 text-rose-600'
                       : 'bg-blue-500/10 text-blue-600'
@@ -77,43 +77,56 @@ export function ExpedienteDetalle({
                   {paciente.sexo === 'femenino' ? 'Mujer' : 'Hombre'}
                 </span>
               </div>
-              <p className="text-[13px] text-text-secondary mt-0.5">
+              <p className="text-[12px] sm:text-[13px] text-text-secondary mt-0.5 truncate">
                 {paciente.edad.etiqueta} • Nacimiento: {paciente.fecha_nacimiento}
               </p>
             </div>
           </div>
 
-          {/* Acciones principales */}
-          <div className="flex items-center gap-2 flex-wrap no-print">
+          {/* Acciones principales optimizadas para mobile (grid 2x2 en móvil, flex en desktop) */}
+          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border/60 no-print">
+            <Link to="/calculadora" className="col-span-2 sm:col-auto">
+              <Button
+                variant="primary"
+                size="sm"
+                className="w-full justify-center min-h-[40px] bg-primary text-white shadow-xs"
+                icono={<Flame className="w-4 h-4 text-amber-300" />}
+              >
+                Iniciar Valoración GET
+              </Button>
+            </Link>
             <Button
               variant="outline"
               size="sm"
-              onClick={handlePrint}
-              icono={<Printer className="w-4 h-4" />}
+              onClick={onNuevaConsulta}
+              icono={<Plus className="w-4 h-4" />}
+              className="justify-center min-h-[40px]"
             >
-              Imprimir
+              Consulta
             </Button>
             <Button
               variant="secondary"
               size="sm"
               onClick={() => onEditar(paciente)}
               icono={<Edit2 className="w-4 h-4" />}
+              className="justify-center min-h-[40px]"
             >
               Editar
             </Button>
             <Button
-              variant="primary"
+              variant="outline"
               size="sm"
-              onClick={onNuevaConsulta}
-              icono={<Plus className="w-4 h-4" />}
+              onClick={handlePrint}
+              icono={<Printer className="w-4 h-4" />}
+              className="justify-center min-h-[40px]"
             >
-              Consulta
+              Imprimir
             </Button>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setConfirmarEliminar(true)}
-              className="text-semaforo-rojo hover:bg-semaforo-rojo-bg"
+              className="justify-center min-h-[40px] text-semaforo-rojo hover:bg-semaforo-rojo-bg"
               icono={<Trash2 className="w-4 h-4" />}
             >
               Eliminar
@@ -122,24 +135,24 @@ export function ExpedienteDetalle({
         </div>
 
         {/* Datos de contacto y antecedentes */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 mt-4 border-t border-border text-[13px]">
-          <div className="flex items-center gap-2 text-text-secondary">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 pt-3.5 mt-3.5 border-t border-border text-[12px] sm:text-[13px]">
+          <div className="flex items-center gap-2 text-text-secondary min-w-0">
             <Phone className="w-4 h-4 text-text-tertiary flex-shrink-0" />
             <span className="truncate">{paciente.telefono || 'Sin teléfono'}</span>
           </div>
-          <div className="flex items-center gap-2 text-text-secondary">
+          <div className="flex items-center gap-2 text-text-secondary min-w-0">
             <Mail className="w-4 h-4 text-text-tertiary flex-shrink-0" />
             <span className="truncate">{paciente.email || 'Sin correo'}</span>
           </div>
-          <div className="flex items-center gap-2 text-text-secondary">
+          <div className="flex items-center gap-2 text-text-secondary min-w-0">
             <Calendar className="w-4 h-4 text-text-tertiary flex-shrink-0" />
-            <span>Expediente: {new Date(paciente.creado_en).toLocaleDateString('es-MX')}</span>
+            <span className="truncate">Alta: {new Date(paciente.creado_en).toLocaleDateString('es-MX')}</span>
           </div>
         </div>
 
         {paciente.notas_clinicas && (
-          <div className="mt-3 p-3 rounded-card bg-background-elevated border border-border text-[13px] text-text-secondary">
-            <div className="font-semibold text-text-primary text-[12px] mb-1 flex items-center gap-1.5">
+          <div className="mt-3 p-3 rounded-card bg-background-elevated border border-border text-[12px] sm:text-[13px] text-text-secondary">
+            <div className="font-semibold text-text-primary text-[11px] sm:text-[12px] mb-1 flex items-center gap-1.5">
               <FileText className="w-3.5 h-3.5 text-primary" />
               <span>Notas clínicas y antecedentes</span>
             </div>
@@ -148,15 +161,16 @@ export function ExpedienteDetalle({
         )}
 
         {confirmarEliminar && (
-          <div className="mt-4 p-4 rounded-card bg-semaforo-rojo-bg border border-semaforo-rojo-border text-semaforo-rojo-text space-y-3">
-            <p className="text-[13px] font-medium">
+          <div className="mt-4 p-3.5 sm:p-4 rounded-card bg-semaforo-rojo-bg border border-semaforo-rojo-border text-semaforo-rojo-text space-y-3">
+            <p className="text-[12px] sm:text-[13px] font-medium leading-snug">
               ¿Confirmas la eliminación permanente del paciente y todo su historial de consultas?
             </p>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <Button
                 variant="destructive"
                 size="sm"
                 onClick={() => paciente.id && onEliminarPaciente(paciente.id)}
+                className="min-h-[38px]"
               >
                 Sí, eliminar definitivamente
               </Button>
@@ -164,6 +178,7 @@ export function ExpedienteDetalle({
                 variant="outline"
                 size="sm"
                 onClick={() => setConfirmarEliminar(false)}
+                className="min-h-[38px]"
               >
                 Cancelar
               </Button>
@@ -173,71 +188,76 @@ export function ExpedienteDetalle({
       </Card>
 
       {/* ─── Grid de Métricas Clínicas Actuales ─── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
         {/* Peso */}
-        <Card className="p-4 bg-background-surface">
-          <div className="text-[12px] font-medium text-text-secondary mb-1">Último Peso</div>
-          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum">
+        <Card className="p-3 sm:p-4 bg-background-surface">
+          <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">Último Peso</div>
+          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum truncate">
             {paciente.ultimoPeso ? `${paciente.ultimoPeso} kg` : '—'}
           </div>
-          <div className="text-[11px] text-text-tertiary mt-1">
+          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-0.5 truncate">
             {paciente.ultimaConsulta ? paciente.ultimaConsulta.fecha : 'Sin registros'}
           </div>
         </Card>
 
         {/* Talla */}
-        <Card className="p-4 bg-background-surface">
-          <div className="text-[12px] font-medium text-text-secondary mb-1">Estatura</div>
-          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum">
+        <Card className="p-3 sm:p-4 bg-background-surface">
+          <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">Estatura</div>
+          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum truncate">
             {paciente.ultimaTalla ? `${paciente.ultimaTalla} cm` : '—'}
           </div>
-          <div className="text-[11px] text-text-tertiary mt-1">Talla clínica</div>
+          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-0.5">Talla clínica</div>
         </Card>
 
         {/* IMC */}
-        <Card className="p-4 bg-background-surface">
-          <div className="text-[12px] font-medium text-text-secondary mb-1">IMC</div>
-          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum">
+        <Card className="p-3 sm:p-4 bg-background-surface">
+          <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">IMC</div>
+          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum truncate">
             {paciente.ultimoImc ? `${paciente.ultimoImc}` : '—'}
           </div>
-          <div className="mt-1">
+          <div className="mt-0.5 truncate">
             {paciente.clasificacionImc ? (
-              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
+              <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
                 {paciente.clasificacionImc}
               </span>
             ) : (
-              <span className="text-[11px] text-text-tertiary">Pendiente</span>
+              <span className="text-[10px] text-text-tertiary">Pendiente</span>
             )}
           </div>
         </Card>
 
         {/* Total Consultas */}
-        <Card className="p-4 bg-background-surface">
-          <div className="text-[12px] font-medium text-text-secondary mb-1">Consultas</div>
-          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum">
+        <Card className="p-3 sm:p-4 bg-background-surface">
+          <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">Consultas</div>
+          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum">
             {paciente.totalConsultas}
           </div>
-          <div className="text-[11px] text-text-tertiary mt-1">Historial acumulado</div>
+          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-0.5">Historial</div>
         </Card>
       </div>
 
       {/* ─── Acceso Rápido a Calculadora Clínica ─── */}
-      <Card className="p-4 bg-gradient-to-r from-primary/10 via-background-surface to-background-surface border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <Card className="p-3.5 sm:p-4 bg-gradient-to-r from-primary/10 via-background-surface to-background-surface border-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-card bg-primary text-white flex-shrink-0">
-            <Flame className="w-5 h-5" />
+          <div className="p-2 sm:p-2.5 rounded-card bg-primary text-white flex-shrink-0 shadow-xs">
+            <Flame className="w-5 h-5 text-amber-300" />
           </div>
           <div>
-            <div className="text-[14px] font-semibold text-text-primary">
+            <div className="text-[13px] sm:text-[14px] font-semibold text-text-primary">
               Cálculo Energético en Vivo (GET / TMB)
             </div>
-            <p className="text-[12px] text-text-secondary">
-              Abre la calculadora con los datos antropométricos precargados de este paciente.
+            <p className="text-[11px] sm:text-[12px] text-text-secondary">
+              Abre la calculadora con el peso ({paciente.ultimoPeso ?? '—'} kg), talla ({paciente.ultimaTalla ?? '—'} cm) y edad de este paciente.
             </p>
           </div>
         </div>
-        <Link to="/calculadora">
-          <Button variant="outline" size="sm" icono={<ChevronRight className="w-4 h-4" />}>
+        <Link to="/calculadora" className="w-full sm:w-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            icono={<ArrowRight className="w-4 h-4" />}
+            className="w-full sm:w-auto justify-center min-h-[40px] font-semibold text-primary"
+          >
             Abrir Calculadora
           </Button>
         </Link>
@@ -245,8 +265,8 @@ export function ExpedienteDetalle({
 
       {/* ─── Historial Cronológico de Consultas ─── */}
       <div>
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-[16px] font-bold text-text-primary tracking-tight flex items-center gap-2">
+        <div className="flex items-center justify-between mb-3 px-1">
+          <h3 className="text-[15px] sm:text-[16px] font-bold text-text-primary tracking-tight flex items-center gap-2">
             <Activity className="w-4 h-4 text-primary" />
             <span>Historial de Consultas de Evolución</span>
           </h3>
@@ -269,70 +289,72 @@ export function ExpedienteDetalle({
               size="sm"
               onClick={onNuevaConsulta}
               icono={<Plus className="w-4 h-4" />}
+              className="min-h-[40px]"
             >
               Registrar primera consulta
             </Button>
           </Card>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2.5 sm:space-y-3">
             {consultas.map((c) => (
-              <Card key={c.id} className="p-4 hover:border-primary/40 transition-colors">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[14px] font-bold text-text-primary font-mono">
+              <Card key={c.id} className="p-3.5 sm:p-4 hover:border-primary/40 transition-colors">
+                <div className="flex flex-col gap-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 flex-wrap min-w-0">
+                      <span className="text-[13px] sm:text-[14px] font-bold text-text-primary font-mono">
                         {c.fecha}
                       </span>
                       {c.motivo && (
-                        <span className="text-[12px] px-2 py-0.5 rounded-pill bg-background-elevated border border-border text-text-secondary font-medium">
+                        <span className="text-[11px] sm:text-[12px] px-2 py-0.5 rounded-pill bg-background-elevated border border-border text-text-secondary font-medium truncate max-w-[200px]">
                           {c.motivo}
                         </span>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-4 text-[13px] text-text-secondary pt-1 flex-wrap font-mono">
-                      <span>
-                        <strong className="text-text-primary font-semibold">Peso:</strong>{' '}
-                        {c.peso_kg} kg
-                      </span>
-                      <span>
-                        <strong className="text-text-primary font-semibold">Talla:</strong>{' '}
-                        {c.talla_cm} cm
-                      </span>
-                      {c.imc && (
-                        <span>
-                          <strong className="text-text-primary font-semibold">IMC:</strong> {c.imc}{' '}
-                          <span className="text-[11px] text-text-tertiary font-sans">
-                            ({c.clasificacion_imc ?? 'OMS'})
-                          </span>
-                        </span>
-                      )}
-                      {c.get_kcal && (
-                        <span>
-                          <strong className="text-text-primary font-semibold">GET:</strong>{' '}
-                          {c.get_kcal} kcal
-                        </span>
-                      )}
+                    <div className="flex items-center gap-1 no-print flex-shrink-0">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => c.id && onEliminarConsulta(c.id)}
+                        className="text-text-tertiary hover:text-semaforo-rojo hover:bg-semaforo-rojo-bg p-1.5 h-auto"
+                        icono={<Trash2 className="w-3.5 h-3.5" />}
+                      >
+                        Borrar
+                      </Button>
                     </div>
+                  </div>
 
-                    {c.notas && (
-                      <p className="text-[12px] text-text-tertiary pt-1 italic font-sans leading-relaxed">
-                        «{c.notas}»
-                      </p>
+                  <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-4 text-[12px] sm:text-[13px] text-text-secondary pt-1 font-mono bg-background-elevated/40 p-2 rounded-card">
+                    <div>
+                      <span className="text-text-tertiary text-[11px] block sm:inline">Peso: </span>
+                      <strong className="text-text-primary font-semibold">{c.peso_kg} kg</strong>
+                    </div>
+                    <div>
+                      <span className="text-text-tertiary text-[11px] block sm:inline">Talla: </span>
+                      <strong className="text-text-primary font-semibold">{c.talla_cm} cm</strong>
+                    </div>
+                    {c.imc && (
+                      <div>
+                        <span className="text-text-tertiary text-[11px] block sm:inline">IMC: </span>
+                        <strong className="text-text-primary font-semibold">{c.imc}</strong>
+                        <span className="text-[10px] text-text-tertiary font-sans ml-1">
+                          ({c.clasificacion_imc ?? 'OMS'})
+                        </span>
+                      </div>
+                    )}
+                    {c.get_kcal && (
+                      <div>
+                        <span className="text-text-tertiary text-[11px] block sm:inline">GET: </span>
+                        <strong className="text-text-primary font-semibold">{c.get_kcal} kcal</strong>
+                      </div>
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1 self-end sm:self-center no-print">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => c.id && onEliminarConsulta(c.id)}
-                      className="text-text-tertiary hover:text-semaforo-rojo hover:bg-semaforo-rojo-bg"
-                      icono={<Trash2 className="w-3.5 h-3.5" />}
-                    >
-                      Borrar
-                    </Button>
-                  </div>
+                  {c.notas && (
+                    <p className="text-[12px] text-text-tertiary italic font-sans leading-relaxed pt-0.5">
+                      «{c.notas}»
+                    </p>
+                  )}
                 </div>
               </Card>
             ))}

@@ -49,19 +49,19 @@ export function PatientsView() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+    <div className="space-y-5 sm:space-y-6 max-w-6xl mx-auto">
       {/* ─── Encabezado Principal ─── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-[24px] sm:text-[28px] font-bold text-text-primary tracking-tight">
+            <h1 className="text-[22px] sm:text-[28px] font-bold text-text-primary tracking-tight">
               Directorio de Pacientes
             </h1>
-            <span className="text-[11px] font-semibold px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
+            <span className="text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
               Expediente Local
             </span>
           </div>
-          <p className="text-[14px] text-text-secondary mt-0.5">
+          <p className="text-[13px] sm:text-[14px] text-text-secondary mt-0.5">
             Expediente clínico nutricional, evolución antropométrica e historial privado en IndexedDB.
           </p>
         </div>
@@ -69,14 +69,14 @@ export function PatientsView() {
 
       {/* ─── Feedback visual (Toasts / Banners) ─── */}
       {mensajeExito && (
-        <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px] animate-in fade-in duration-150">
+        <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[13px] sm:text-[14px] animate-in fade-in duration-150">
           <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
           <span>{mensajeExito}</span>
         </div>
       )}
 
       {errorGlobal && (
-        <div className="p-3 rounded-card bg-semaforo-rojo-bg border border-semaforo-rojo-border text-semaforo-rojo-text flex items-center gap-2 text-[14px] animate-in fade-in duration-150">
+        <div className="p-3 rounded-card bg-semaforo-rojo-bg border border-semaforo-rojo-border text-semaforo-rojo-text flex items-center gap-2 text-[13px] sm:text-[14px] animate-in fade-in duration-150">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
           <span>{errorGlobal}</span>
         </div>
@@ -90,10 +90,10 @@ export function PatientsView() {
       ) : pacientes.length === 0 ? (
         <EmptyStatePacientes onNuevoPaciente={abrirModalCrear} />
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 items-start">
           {/* Columna Izquierda: Lista de Pacientes */}
           <div
-            className={`lg:col-span-5 xl:col-span-4 bg-background-surface border border-border rounded-panel p-4 shadow-xs ${
+            className={`lg:col-span-5 xl:col-span-4 bg-background-surface border border-border rounded-panel p-3.5 sm:p-4 shadow-xs ${
               viendoDetalleMovil ? 'hidden lg:block' : 'block'
             }`}
           >
@@ -118,16 +118,20 @@ export function PatientsView() {
               !viendoDetalleMovil ? 'hidden lg:block' : 'block'
             }`}
           >
-            {/* Botón de regreso exclusivo para vista móvil */}
-            <div className="lg:hidden mb-4">
+            {/* Barra superior de navegación en móvil */}
+            <div className="lg:hidden mb-3.5 flex items-center justify-between gap-2 p-2 rounded-card bg-background-elevated border border-border">
               <Button
-                variant="outline"
+                variant="ghost"
                 size="sm"
                 onClick={handleVolverAListaMovil}
                 icono={<ArrowLeft className="w-4 h-4" />}
+                className="text-text-primary font-medium min-h-[38px]"
               >
-                Volver a la lista de pacientes
+                Directorio
               </Button>
+              <span className="text-[12px] font-semibold text-text-secondary truncate pr-2">
+                {pacienteActivo?.nombre} {pacienteActivo?.apellidos ?? ''}
+              </span>
             </div>
 
             {pacienteActivo ? (
