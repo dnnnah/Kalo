@@ -19,6 +19,8 @@ import {
   PieChart,
   ClipboardCheck,
   UtensilsCrossed,
+  PanelLeftClose,
+  PanelLeftOpen,
 } from 'lucide-react';
 
 interface NavItem {
@@ -52,6 +54,43 @@ export function AppLayout() {
   const [drawerAbierto, setDrawerAbierto] = useState(false);
   const location = useLocation();
 
+  // Estado de la barra lateral en escritorio (persistido en localStorage)
+  const [sidebarOculto, setSidebarOculto] = useState<boolean>(() => {
+    try {
+      return localStorage.getItem('kalo_sidebar_oculto') === 'true';
+    } catch {
+      return false;
+    }
+  });
+
+  const toggleSidebar = (ocultar?: boolean) => {
+    setSidebarOculto((prev) => {
+      const nuevo = ocultar !== undefined ? ocultar : !prev;
+      try {
+        localStorage.setItem('kalo_sidebar_oculto', String(nuevo));
+      } catch {
+        // Ignorar si hay restricción de storage
+      }
+      return nuevo;
+    });
+  };
+
+  // Atajo de teclado: Cmd+B (Mac) o Ctrl+B (Windows/Linux) para ocultar/mostrar barra lateral
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'b') {
+        const activeTag = document.activeElement?.tagName?.toLowerCase();
+        if (activeTag === 'input' || activeTag === 'textarea' || activeTag === 'select') return;
+
+        e.preventDefault();
+        toggleSidebar();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const cerrarDrawer = () => setDrawerAbierto(false);
   const abrirDrawer = () => setDrawerAbierto(true);
 
@@ -74,7 +113,7 @@ export function AppLayout() {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
-  // Determinar título de la pantalla activa para el header móvil
+  // Determinar título de la pantalla activa para el header móvil y desktop colapsado
   const tituloActual =
     ITEMS_PRINCIPALES.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
       ?.label ??
@@ -101,19 +140,34 @@ export function AppLayout() {
   return (
     <div className="min-h-screen bg-background text-text-primary antialiased flex flex-col md:flex-row">
       <ScrollRestoration getKey={() => 'top'} />
-      {/* ─── SIDEBAR DESKTOP (≥ 768px) (Oculto en impresión) ─── */}
-      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-background-surface z-20 shadow-sm no-print">
-        {/* Cabecera con logo */}
-        <div className="px-6 py-6 border-b border-border/70 flex items-center justify-between">
-          <div className="space-y-1">
+
+      {/* ─── SIDEBAR DESKTOP (≥ 768px) (Colapsable y oculto en impresión) ─── */}
+      <aside
+        className={`hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-background-surface z-20 shadow-sm no-print transition-transform duration-200 ease-in-out ${
+          sidebarOculto ? 'md:-translate-x-full' : 'md:translate-x-0'
+        }`}
+      >
+        {/* Cabecera con logo y botón para ocultar barra */}
+        <div className="px-5 py-5 border-b border-border/70 flex items-center justify-between">
+          <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <span className="text-[22px] font-bold tracking-tight text-primary">Kalo</span>
+              <span className="text-[20px] font-bold tracking-tight text-primary">Kalo</span>
               <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
                 CLÍNICO
               </span>
             </div>
-            <p className="text-[12px] text-text-tertiary">Diagnóstico Clínico Nutricional</p>
+            <p className="text-[11px] text-text-tertiary">Diagnóstico Clínico Nutricional</p>
           </div>
+
+          <button
+            type="button"
+            onClick={() => toggleSidebar(true)}
+            className="p-1.5 rounded-card text-text-tertiary hover:text-text-primary hover:bg-background-elevated transition-colors"
+            title="Ocultar barra lateral (⌘B)"
+            aria-label="Ocultar barra lateral"
+          >
+            <PanelLeftClose className="w-4 h-4" />
+          </button>
         </div>
 
         {/* Lista de navegación con espaciado amplio */}
@@ -181,13 +235,13 @@ export function AppLayout() {
         </nav>
 
         {/* Footer del sidebar */}
-        <div className="p-5 border-t border-border/70 text-[12px] text-text-tertiary flex items-center gap-2.5 bg-background-elevated/40">
+        <div className="p-4 border-t border-border/70 text-[12px] text-text-tertiary flex items-center gap-2.5 bg-background-elevated/40">
           <ShieldCheck className="w-4 h-4 text-semaforo-verde flex-shrink-0" />
-          <span className="leading-tight">Privacidad total y datos locales</span>
+          <span className="leading-tight text-[11px]">Privacidad total y datos locales</span>
         </div>
       </aside>
 
-      {/* ─── HEADER MOBILE (< 768px) (Oculto en impresión para evitar menú hamburguesa y offline) ─── */}
+      {/* ─── HEADER MOBILE (< 768px) ─── */}
       <header className="md:hidden sticky top-0 z-30 bg-background-surface/95 backdrop-blur-xl border-b border-border/80 px-4 py-3.5 flex items-center justify-between shadow-xs no-print">
         <div className="flex items-center gap-3">
           <button
@@ -317,9 +371,48 @@ export function AppLayout() {
         </div>
       </aside>
 
-      {/* ─── CONTENIDO PRINCIPAL CON ESPACIADO RESPONSIVE ─── */}
-      <div className="flex-1 md:ml-64 flex flex-col min-w-0">
-        <main className="flex-1 px-4 sm:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 pb-20 sm:pb-20 md:pb-12 max-w-6xl w-full mx-auto">
+      {/* ─── CONTENIDO PRINCIPAL CON ESPACIADO RESPONSIVE Y MÁXIMO ESPACIO CUANDO ESTÁ COLAPSADO ─── */}
+      <div
+        className={`flex-1 flex flex-col min-w-0 transition-all duration-200 ease-in-out ${
+          sidebarOculto ? 'md:ml-0' : 'md:ml-64'
+        }`}
+      >
+        {/* Barra superior en desktop cuando la barra lateral está oculta */}
+        {sidebarOculto && (
+          <div className="hidden md:flex items-center justify-between px-6 py-3 border-b border-border/60 bg-background-surface/80 backdrop-blur-xs sticky top-0 z-20 transition-all no-print">
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => toggleSidebar(false)}
+                className="p-1.5 rounded-card text-text-secondary hover:text-text-primary hover:bg-background-elevated border border-border flex items-center gap-2 text-[12px] font-medium transition-colors shadow-2xs"
+                title="Mostrar barra lateral (⌘B)"
+                aria-label="Mostrar barra lateral"
+              >
+                <PanelLeftOpen className="w-4 h-4 text-primary" />
+                <span>Mostrar barra lateral</span>
+                <kbd className="text-[10px] font-mono px-1 py-0.5 rounded bg-background border border-border text-text-tertiary">
+                  ⌘B
+                </kbd>
+              </button>
+              <div className="h-4 w-px bg-border" />
+              <span className="text-[13px] font-semibold text-text-primary">
+                {tituloActual}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text text-[11px] font-semibold">
+                <span className="w-2 h-2 rounded-full bg-semaforo-verde animate-pulse" />
+                <span>Privado</span>
+              </span>
+            </div>
+          </div>
+        )}
+
+        <main
+          className={`flex-1 px-4 sm:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 pb-20 sm:pb-20 md:pb-12 w-full mx-auto transition-all duration-200 ${
+            sidebarOculto ? 'max-w-7xl' : 'max-w-6xl'
+          }`}
+        >
           <Outlet />
         </main>
       </div>
