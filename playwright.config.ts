@@ -13,19 +13,25 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'chromium-desktop',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'desktop-chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
     {
-      name: 'mobile-iphone',
+      name: 'mobile-chrome',
       use: {
-        ...devices['iPhone 14'],
-        defaultBrowserType: 'chromium',
+        viewport: { width: 390, height: 664 },
+        deviceScaleFactor: 2,
+        isMobile: true,
+        hasTouch: true,
       },
     },
   ],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1 --port 5173',
+    command: process.env.CI
+      ? 'npm run preview -- --host 0.0.0.0 --port 5173'
+      : 'npm run dev -- --host 127.0.0.1 --port 5173',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
     timeout: 60000,

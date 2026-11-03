@@ -94,6 +94,7 @@ export function AnthropometryView() {
 
               <div className="grid grid-cols-3 gap-3">
                 <Campo
+                  id="campo-peso"
                   label="Peso"
                   unidad="kg"
                   type="number"
@@ -102,6 +103,7 @@ export function AnthropometryView() {
                   onChange={(e) => actualizarCampo('peso', e.target.value)}
                 />
                 <Campo
+                  id="campo-talla"
                   label="Talla"
                   unidad="cm"
                   type="number"
@@ -110,6 +112,7 @@ export function AnthropometryView() {
                   onChange={(e) => actualizarCampo('talla', e.target.value)}
                 />
                 <Campo
+                  id="campo-edad"
                   label="Edad"
                   unidad="años"
                   type="number"
@@ -128,6 +131,7 @@ export function AnthropometryView() {
             </CardHeader>
             <div className="grid grid-cols-2 gap-3">
               <Campo
+                id="campo-circunferencia-cintura"
                 label="Circunferencia Cintura"
                 unidad="cm"
                 type="number"
@@ -137,6 +141,7 @@ export function AnthropometryView() {
                 ayuda="Punto medio entre última costilla y cresta ilíaca"
               />
               <Campo
+                id="campo-circunferencia-cadera"
                 label="Circunferencia Cadera"
                 unidad="cm"
                 type="number"
@@ -155,6 +160,7 @@ export function AnthropometryView() {
             </CardHeader>
             <div className="grid grid-cols-2 gap-3">
               <Campo
+                id="campo-circunferencia-brazo"
                 label="Circunferencia Brazo (CB)"
                 unidad="cm"
                 type="number"
@@ -164,6 +170,7 @@ export function AnthropometryView() {
                 ayuda="Brazo relajado punto medio acromio-radial"
               />
               <Campo
+                id="campo-pliegue-triceps"
                 label="Pliegue Tricipital (PT)"
                 unidad="mm"
                 type="number"

@@ -21,7 +21,7 @@ test.describe('Flujo Clínico de Antropometría y Composición Corporal (Kalo)',
     await expect(page.getByText('22.9')).toBeVisible();
     await expect(page.getByText('Peso Normal')).toBeVisible();
 
-    // Llenar circunferencias
+    // Llenar circunferencias con IDs normalizados
     await page.locator('#campo-circunferencia-cintura').fill('80');
     await page.locator('#campo-circunferencia-cadera').fill('95');
 
@@ -38,10 +38,10 @@ test.describe('Flujo Clínico de Antropometría y Composición Corporal (Kalo)',
     // Cambiar a método Faulkner
     await page.getByRole('button', { name: /Faulkner 4P/i }).click();
 
-    // Llenar datos de Faulkner
-    await page.locator('#campo-tríceps').fill('10');
+    // Llenar datos de Faulkner con IDs limpios
+    await page.locator('#campo-triceps').fill('10');
     await page.locator('#campo-subescapular').fill('12');
-    await page.locator('#campo-suprailíaco').fill('14');
+    await page.locator('#campo-suprailiaco').fill('14');
     await page.locator('#campo-abdomen').fill('16');
 
     // Verificar cálculo de composición corporal

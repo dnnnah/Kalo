@@ -68,6 +68,7 @@ export function PanelPliegues({
                 {estado.sexo === 'masculino' ? (
                   <>
                     <Campo
+                      id="campo-pecho"
                       label="Pecho"
                       unidad="mm"
                       type="number"
@@ -76,6 +77,7 @@ export function PanelPliegues({
                       onChange={(e) => actualizarCampo('plieguePecho', e.target.value)}
                     />
                     <Campo
+                      id="campo-abdomen"
                       label="Abdomen"
                       unidad="mm"
                       type="number"
@@ -84,6 +86,7 @@ export function PanelPliegues({
                       onChange={(e) => actualizarCampo('pliegueAbdominal', e.target.value)}
                     />
                     <Campo
+                      id="campo-muslo"
                       label="Muslo Ant."
                       unidad="mm"
                       type="number"
@@ -95,6 +98,7 @@ export function PanelPliegues({
                 ) : (
                   <>
                     <Campo
+                      id="campo-triceps"
                       label="Tríceps"
                       unidad="mm"
                       type="number"
@@ -103,6 +107,7 @@ export function PanelPliegues({
                       onChange={(e) => actualizarCampo('pliegueTriceps', e.target.value)}
                     />
                     <Campo
+                      id="campo-suprailiaco"
                       label="Suprailíaco"
                       unidad="mm"
                       type="number"
@@ -111,6 +116,7 @@ export function PanelPliegues({
                       onChange={(e) => actualizarCampo('pliegueSuprailiaco', e.target.value)}
                     />
                     <Campo
+                      id="campo-muslo"
                       label="Muslo Ant."
                       unidad="mm"
                       type="number"
@@ -132,6 +138,7 @@ export function PanelPliegues({
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
                 <Campo
+                  id="campo-triceps"
                   label="Tríceps"
                   unidad="mm"
                   type="number"
@@ -140,6 +147,7 @@ export function PanelPliegues({
                   onChange={(e) => actualizarCampo('pliegueTriceps', e.target.value)}
                 />
                 <Campo
+                  id="campo-subescapular"
                   label="Subescapular"
                   unidad="mm"
                   type="number"
@@ -148,6 +156,7 @@ export function PanelPliegues({
                   onChange={(e) => actualizarCampo('pliegueSubescapular', e.target.value)}
                 />
                 <Campo
+                  id="campo-suprailiaco"
                   label="Suprailíaco"
                   unidad="mm"
                   type="number"
@@ -156,6 +165,7 @@ export function PanelPliegues({
                   onChange={(e) => actualizarCampo('pliegueSuprailiaco', e.target.value)}
                 />
                 <Campo
+                  id="campo-abdomen"
                   label="Abdomen"
                   unidad="mm"
                   type="number"
