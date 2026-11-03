@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, Outlet, useLocation, ScrollRestoration } from 'react-router-dom';
 import {
   Flame,
   Home,
@@ -43,6 +43,25 @@ export function AppLayout() {
   const cerrarDrawer = () => setDrawerAbierto(false);
   const abrirDrawer = () => setDrawerAbierto(true);
 
+  // Restablecer el scroll al inicio en cada cambio de ruta o navegación de regreso
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const mainEl = document.querySelector('main');
+    if (mainEl) {
+      mainEl.scrollTop = 0;
+    }
+
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 10);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   // Determinar título de la pantalla activa para el header móvil
   const tituloActual =
     ITEMS_PRINCIPALES.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
@@ -59,6 +78,7 @@ export function AppLayout() {
 
   return (
     <div className="min-h-screen bg-background text-text-primary antialiased flex flex-col md:flex-row">
+      <ScrollRestoration getKey={() => 'top'} />
       {/* ─── SIDEBAR DESKTOP (≥ 768px) ─── */}
       <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-background-surface z-20 shadow-sm">
         {/* Cabecera con logo */}
