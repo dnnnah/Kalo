@@ -22,11 +22,11 @@ Una **PWA offline-first, moderna y de código abierto** que unifica la evaluaci�
 ## 2. Stack Tecnológico y Arquitectura
 
 ### Stack
-* **Entorno & Build**: Vite 6+ con React 19 y TypeScript 5.8+ (Strict Mode sin `any`).
-* **Estilos & UI**: Tailwind CSS v4, Lucide React (iconografía) y componentes accesibles inspirados en Apple HIG / Radix.
+* **Entorno & Build**: Vite 8+ con React 19.3+ y TypeScript 7.0+ (Strict Mode sin `any`).
+* **Estilos & UI**: Tailwind CSS, Lucide React (iconografía) y componentes accesibles inspirados en Apple HIG / Radix.
 * **Estado Global Reactivo**: Zustand (para el estado de la sesión activa y cálculos efímeros entre pantallas).
 * **Almacenamiento Local (Offline-First)**: IndexedDB gestionado con **Dexie.js** (sin límite de 5 MB, consultas indexadas y soporte reactivo con `useLiveQuery`).
-* **Testing**: Vitest (pruebas unitarias de fórmulas puras con tiempo de ejecución < 500 ms) + Playwright (pruebas E2E de flujos clínicos).
+* **Testing**: Vitest 5+ (pruebas unitarias de fórmulas puras con tiempo de ejecución < 500 ms) + Playwright (pruebas E2E de flujos clínicos).
 * **CI/CD**: GitHub Actions para validación automática de tipos, linter, pruebas y compilación en cada commit.
 
 ### Arquitectura de Software: Vertical Feature Slicing
