@@ -15,6 +15,7 @@ import {
   UserX,
   ArrowRight,
   PieChart,
+  ClipboardCheck,
 } from 'lucide-react';
 import type { Paciente, ConsultaMedica } from '../../../shared/types';
 import type { PacienteConMetricas } from '../types';
@@ -390,6 +391,86 @@ export function ExpedienteDetalle({
                       {prescripcion.lp_g} g <span className="text-[10px] font-normal text-text-tertiary">({prescripcion.lp_pct}%)</span>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+          </Card>
+        );
+      })()}
+
+      {/* ─── Evaluación de Adecuación Nutricional ─── */}
+      {(() => {
+        const adecuacion =
+          paciente.ultima_adecuacion || consultas[0]?.evaluacion_adecuacion;
+
+        return (
+          <Card className="p-3.5 sm:p-4 bg-background-surface border-border space-y-3 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-card bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex-shrink-0">
+                  <ClipboardCheck className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[13px] sm:text-[14px] font-bold text-text-primary">
+                      Tabla de Adecuación Nutricional
+                    </span>
+                    {adecuacion && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-pill bg-background-elevated text-text-secondary border border-border">
+                        {adecuacion.fecha}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] sm:text-[12px] text-text-secondary">
+                    {adecuacion
+                      ? `${adecuacion.nutrientes_optimos} de ${adecuacion.total_nutrientes} nutrientes en rango óptimo (${adecuacion.porcentaje_optimo}% balanceado)`
+                      : 'Aún no se ha registrado una evaluación de adecuación (24h) para este paciente.'}
+                  </p>
+                </div>
+              </div>
+
+              <Link to="/adecuacion" className="w-full sm:w-auto">
+                <Button
+                  variant={adecuacion ? 'outline' : 'primary'}
+                  size="sm"
+                  onClick={() => vincular(paciente, consultas[0])}
+                  icono={<ArrowRight className="w-4 h-4" />}
+                  className="w-full sm:w-auto justify-center min-h-[38px] text-[12px] font-semibold"
+                >
+                  {adecuacion ? 'Revisar Adecuación' : 'Evaluar Adecuación'}
+                </Button>
+              </Link>
+            </div>
+
+            {adecuacion && adecuacion.items.length > 0 && (
+              <div className="pt-2 border-t border-border/70 space-y-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[12px]">
+                  {adecuacion.items.slice(0, 4).map((item) => (
+                    <div
+                      key={item.nutriente_id}
+                      className="p-2 rounded bg-background-elevated/60 border border-border/50"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] uppercase font-bold text-text-tertiary truncate">
+                          {item.nombre}
+                        </span>
+                        <span
+                          className={`text-[10px] font-bold px-1.5 py-0.2 rounded-pill ${
+                            item.semaforo === 'verde'
+                              ? 'bg-semaforo-verde-bg text-semaforo-verde-text'
+                              : item.semaforo === 'ambar'
+                              ? 'bg-semaforo-ambar-bg text-semaforo-ambar-text'
+                              : 'bg-semaforo-rojo-bg text-semaforo-rojo-text'
+                          }`}
+                        >
+                          {item.porcentaje}%
+                        </span>
+                      </div>
+                      <div className="font-mono text-text-primary text-[12px] mt-0.5">
+                        {item.consumido} / {item.prescrito} {item.unidad}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

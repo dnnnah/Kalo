@@ -5,7 +5,12 @@
  */
 
 import Dexie, { type Table } from 'dexie';
-import type { Paciente, ConsultaMedica, PrescripcionMacronutrientes } from '../types';
+import type {
+  Paciente,
+  ConsultaMedica,
+  PrescripcionMacronutrientes,
+  EvaluacionAdecuacion,
+} from '../types';
 
 export class KaloDB extends Dexie {
   pacientes!: Table<Paciente, number>;
@@ -132,6 +137,34 @@ export async function guardarPrescripcionMacronutrientes(
         prescripcion_macros: prescripcion,
         get_kcal: prescripcion.get_objetivo_kcal,
         peso_kg: prescripcion.peso_referencia_kg,
+        actualizado_en: ahoraIso(),
+      });
+    }
+  });
+}
+
+export async function guardarEvaluacionAdecuacion(
+  pacienteId: number,
+  evaluacion: EvaluacionAdecuacion
+): Promise<void> {
+  await db.transaction('rw', db.pacientes, db.consultas, async () => {
+    // 1. Actualizar última evaluación de adecuación directamente en el paciente
+    await db.pacientes.update(pacienteId, {
+      ultima_adecuacion: evaluacion,
+      actualizado_en: ahoraIso(),
+    });
+
+    // 2. Si tiene consultas, asociarla a la más reciente
+    const consultas = await db.consultas
+      .where('paciente_id')
+      .equals(pacienteId)
+      .reverse()
+      .sortBy('fecha');
+
+    const primeraConsulta = consultas[0];
+    if (primeraConsulta && primeraConsulta.id) {
+      await db.consultas.update(primeraConsulta.id, {
+        evaluacion_adecuacion: evaluacion,
         actualizado_en: ahoraIso(),
       });
     }
