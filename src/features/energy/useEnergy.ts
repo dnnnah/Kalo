@@ -1,13 +1,16 @@
 /**
  * @file src/features/energy/useEnergy.ts
  * @description Hook reactivo para el módulo de cálculo energético (GET / TMB).
+ * Conectado con el store global de paciente activo para precarga automática de somatometría.
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { SexoBiologico } from '../../shared/types';
 import type { CategoriaNAF, FactorEstres, FormulaTMB, ResultadoGET } from './types';
 import { calcularGET } from './formulas';
 import { db, ahoraIso } from '../../shared/db/kalo.db';
+import { useActivePatientStore } from '../../shared/stores/useActivePatientStore';
+import { calcularEdadExacta } from '../patients/formulas';
 
 export interface UseEnergyState {
   peso: string;
@@ -22,6 +25,8 @@ export interface UseEnergyState {
 }
 
 export function useEnergy() {
+  const { pacienteActivo, ultimaConsulta, limpiarPacienteActivo } = useActivePatientStore();
+
   const [estado, setEstado] = useState<UseEnergyState>({
     peso: '70',
     talla: '170',
@@ -36,6 +41,20 @@ export function useEnergy() {
 
   const [guardando, setGuardando] = useState(false);
   const [guardadoExitoso, setGuardadoExitoso] = useState(false);
+
+  // Sincronización automática de datos del paciente activo
+  useEffect(() => {
+    if (pacienteActivo) {
+      const edadCalc = calcularEdadExacta(pacienteActivo.fecha_nacimiento);
+      setEstado((prev) => ({
+        ...prev,
+        sexo: pacienteActivo.sexo,
+        edad: edadCalc.anios > 0 ? String(edadCalc.anios) : prev.edad,
+        peso: ultimaConsulta?.peso_kg ? String(ultimaConsulta.peso_kg) : prev.peso,
+        talla: ultimaConsulta?.talla_cm ? String(ultimaConsulta.talla_cm) : prev.talla,
+      }));
+    }
+  }, [pacienteActivo, ultimaConsulta]);
 
   const actualizarCampo = <K extends keyof UseEnergyState>(campo: K, valor: UseEnergyState[K]) => {
     setEstado((prev) => ({ ...prev, [campo]: valor }));
@@ -109,5 +128,8 @@ export function useEnergy() {
     guardando,
     guardadoExitoso,
     guardarConsultaParaPaciente,
+    pacienteActivo,
+    ultimaConsulta,
+    limpiarPacienteActivo,
   };
 }

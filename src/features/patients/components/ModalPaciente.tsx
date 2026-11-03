@@ -23,6 +23,8 @@ export function ModalPaciente({
   const [apellidos, setApellidos] = useState('');
   const [sexo, setSexo] = useState<SexoBiologico>('femenino');
   const [fechaNacimiento, setFechaNacimiento] = useState('');
+  const [pesoInicial, setPesoInicial] = useState('');
+  const [tallaInicial, setTallaInicial] = useState('');
   const [telefono, setTelefono] = useState('');
   const [email, setEmail] = useState('');
   const [notasClinicas, setNotasClinicas] = useState('');
@@ -38,11 +40,15 @@ export function ModalPaciente({
       setTelefono(paciente.telefono ?? '');
       setEmail(paciente.email ?? '');
       setNotasClinicas(paciente.notas_clinicas ?? '');
+      setPesoInicial('');
+      setTallaInicial('');
     } else {
       setNombre('');
       setApellidos('');
       setSexo('femenino');
       setFechaNacimiento('');
+      setPesoInicial('');
+      setTallaInicial('');
       setTelefono('');
       setEmail('');
       setNotasClinicas('');
@@ -54,6 +60,9 @@ export function ModalPaciente({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const pesoNum = pesoInicial ? parseFloat(pesoInicial) : undefined;
+    const tallaNum = tallaInicial ? parseFloat(tallaInicial) : undefined;
+
     const data: FormularioPacienteData = {
       nombre,
       apellidos,
@@ -62,6 +71,8 @@ export function ModalPaciente({
       telefono: telefono || undefined,
       email: email || undefined,
       notas_clinicas: notasClinicas || undefined,
+      peso_inicial_kg: pesoNum,
+      talla_inicial_cm: tallaNum,
     };
 
     const validacion = validarDatosPaciente(data);
@@ -82,8 +93,8 @@ export function ModalPaciente({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
-      <div className="bg-background-surface border border-border rounded-panel shadow-float max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+      <div className="bg-background-surface border border-border rounded-panel shadow-float max-w-lg w-full overflow-hidden flex flex-col max-h-[92vh]">
         {/* Cabecera */}
         <div className="p-4 sm:p-5 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-2.5">
@@ -100,7 +111,8 @@ export function ModalPaciente({
           <button
             type="button"
             onClick={onCerrar}
-            className="p-1.5 rounded-card text-text-tertiary hover:text-text-primary hover:bg-background-elevated transition-colors"
+            className="p-2 rounded-card text-text-tertiary hover:text-text-primary hover:bg-background-elevated transition-colors touch-target"
+            aria-label="Cerrar diálogo"
           >
             <X className="w-5 h-5" />
           </button>
@@ -133,7 +145,7 @@ export function ModalPaciente({
               <button
                 type="button"
                 onClick={() => setSexo('femenino')}
-                className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all ${
+                className={`min-h-[40px] rounded-[8px] text-[14px] font-medium transition-all ${
                   sexo === 'femenino'
                     ? 'bg-primary text-white shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
@@ -144,7 +156,7 @@ export function ModalPaciente({
               <button
                 type="button"
                 onClick={() => setSexo('masculino')}
-                className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all ${
+                className={`min-h-[40px] rounded-[8px] text-[14px] font-medium transition-all ${
                   sexo === 'masculino'
                     ? 'bg-primary text-white shadow-sm'
                     : 'text-text-secondary hover:text-text-primary'
@@ -165,6 +177,40 @@ export function ModalPaciente({
             onChange={(e) => setFechaNacimiento(e.target.value)}
             error={errores.fecha_nacimiento}
           />
+
+          {/* Somatometría inicial en alta nueva */}
+          {!paciente && (
+            <div className="p-3.5 rounded-card bg-primary-subtle/40 border border-primary/20 space-y-2.5">
+              <div className="text-[12px] font-semibold text-primary flex items-center gap-1.5">
+                <span>Somatometría Inicial (Precarga automática)</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <Campo
+                  label="Peso Inicial"
+                  unidad="kg"
+                  type="number"
+                  step="0.1"
+                  value={pesoInicial}
+                  onChange={(e) => setPesoInicial(e.target.value)}
+                  placeholder="70.0"
+                  error={errores.peso_inicial_kg}
+                />
+                <Campo
+                  label="Talla Inicial"
+                  unidad="cm"
+                  type="number"
+                  step="1"
+                  value={tallaInicial}
+                  onChange={(e) => setTallaInicial(e.target.value)}
+                  placeholder="170"
+                  error={errores.talla_inicial_cm}
+                />
+              </div>
+              <p className="text-[11px] text-text-tertiary leading-relaxed">
+                Registra su peso y talla para crear su primera consulta clínica y precargar automáticamente la calculadora.
+              </p>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Campo
@@ -198,7 +244,7 @@ export function ModalPaciente({
           </div>
 
           {/* Botones de acción del footer */}
-          <div className="pt-2 flex items-center justify-end gap-3 border-t border-border">
+          <div className="pt-3 flex items-center justify-end gap-3 border-t border-border">
             <Button type="button" variant="outline" size="md" onClick={onCerrar}>
               Cancelar
             </Button>

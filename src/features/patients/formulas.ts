@@ -138,6 +138,14 @@ export function validarDatosPaciente(data: Partial<FormularioPacienteData>): {
     }
   }
 
+  if (data.peso_inicial_kg !== undefined && (data.peso_inicial_kg <= 0 || isNaN(data.peso_inicial_kg))) {
+    errores.peso_inicial_kg = 'El peso inicial debe ser un número mayor a 0.';
+  }
+
+  if (data.talla_inicial_cm !== undefined && (data.talla_inicial_cm <= 0 || isNaN(data.talla_inicial_cm))) {
+    errores.talla_inicial_cm = 'La talla inicial debe ser un número mayor a 0.';
+  }
+
   return {
     esValido: Object.keys(errores).length === 0,
     errores,

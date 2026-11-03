@@ -1,4 +1,5 @@
-import { Flame, Info, Printer, Sparkles, CheckCircle2 } from 'lucide-react';
+import { Flame, Info, Printer, Sparkles, CheckCircle2, UserX, ArrowRight, Save } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useEnergy } from './useEnergy';
 import { Card, CardHeader, CardTitle } from '../../shared/components/Card';
 import { Campo } from '../../shared/components/Campo';
@@ -32,7 +33,16 @@ const NAF_ETIQUETAS: Record<CategoriaNAF, string> = {
 };
 
 export function EnergyView() {
-  const { estado, actualizarCampo, resultado, guardadoExitoso } = useEnergy();
+  const {
+    estado,
+    actualizarCampo,
+    resultado,
+    guardando,
+    guardadoExitoso,
+    guardarConsultaParaPaciente,
+    pacienteActivo,
+    limpiarPacienteActivo,
+  } = useEnergy();
 
   const handlePrint = () => {
     window.print();
@@ -57,10 +67,75 @@ export function EnergyView() {
         </div>
       </div>
 
+      {/* Banner de Paciente Activo (Precarga Automática) */}
+      {pacienteActivo ? (
+        <div className="p-3.5 sm:p-4 rounded-card bg-primary-subtle/50 border border-primary/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs animate-in fade-in duration-150">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-[14px] flex-shrink-0 shadow-xs">
+              {pacienteActivo.nombre.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[11px] font-semibold uppercase tracking-wider text-primary">
+                  Paciente Activo
+                </span>
+                <span className="text-[14px] font-bold text-text-primary">
+                  {pacienteActivo.nombre} {pacienteActivo.apellidos ?? ''}
+                </span>
+              </div>
+              <p className="text-[12px] text-text-secondary mt-0.5">
+                Datos precargados automáticos: {estado.peso} kg • {estado.talla} cm • {estado.edad} años •{' '}
+                {estado.sexo === 'femenino' ? 'Mujer' : 'Hombre'}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 flex-wrap no-print">
+            {resultado && pacienteActivo.id && (
+              <Button
+                variant="primary"
+                size="sm"
+                disabled={guardando}
+                onClick={() =>
+                  pacienteActivo.id &&
+                  guardarConsultaParaPaciente(
+                    pacienteActivo.id,
+                    `GET: ${Math.round(resultado.get_kcal)} kcal/d (${estado.formula})`
+                  )
+                }
+                icono={<Save className="w-3.5 h-3.5" />}
+              >
+                {guardando ? 'Guardando...' : 'Guardar en Expediente'}
+              </Button>
+            )}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={limpiarPacienteActivo}
+              className="text-text-tertiary hover:text-text-primary"
+              icono={<UserX className="w-3.5 h-3.5" />}
+            >
+              Desvincular
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <div className="p-3 rounded-card bg-background-elevated border border-border/80 flex items-center justify-between gap-3 text-[13px] no-print">
+          <span className="text-text-secondary">
+            ¿Deseas precargar y guardar los datos de un paciente?
+          </span>
+          <Link to="/pacientes">
+            <Button variant="outline" size="sm" icono={<ArrowRight className="w-3.5 h-3.5" />}>
+              Seleccionar del Directorio
+            </Button>
+          </Link>
+        </div>
+      )}
+
       {guardadoExitoso && (
         <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px]">
           <CheckCircle2 className="w-5 h-5 flex-shrink-0" />
-          <span>Valoración energética guardada exitosamente en el expediente local.</span>
+          <span>Valoración energética guardada exitosamente en el expediente del paciente.</span>
         </div>
       )}
 

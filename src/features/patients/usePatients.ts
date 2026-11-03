@@ -21,6 +21,7 @@ import {
   filtrarYOrdenarPacientes,
   validarDatosPaciente,
 } from './formulas';
+import { useActivePatientStore } from '../../shared/stores/useActivePatientStore';
 
 export function usePatients() {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
@@ -36,6 +37,9 @@ export function usePatients() {
   const [pacienteAEditar, setPacienteAEditar] = useState<Paciente | null>(null);
   const [mensajeExito, setMensajeExito] = useState<string | null>(null);
   const [errorGlobal, setErrorGlobal] = useState<string | null>(null);
+
+  const { setPacienteActivo, pacienteActivo: globalPacienteActivo, limpiarPacienteActivo } =
+    useActivePatientStore();
 
   const notificarExito = (msg: string) => {
     setMensajeExito(msg);
@@ -62,7 +66,7 @@ export function usePatients() {
     recargarPacientes();
   }, [recargarPacientes]);
 
-  // Cargar consultas del paciente seleccionado
+  // Cargar consultas del paciente seleccionado y sincronizar con store global
   useEffect(() => {
     if (!pacienteSeleccionadoId) {
       setConsultas([]);
@@ -74,7 +78,13 @@ export function usePatients() {
 
     obtenerConsultasDePaciente(pacienteSeleccionadoId)
       .then((res) => {
-        if (isMounted) setConsultas(res);
+        if (isMounted) {
+          setConsultas(res);
+          const p = pacientes.find((item) => item.id === pacienteSeleccionadoId);
+          if (p) {
+            setPacienteActivo(p, res[0]);
+          }
+        }
       })
       .catch((err) => {
         console.error(err);
@@ -87,7 +97,7 @@ export function usePatients() {
     return () => {
       isMounted = false;
     };
-  }, [pacienteSeleccionadoId]);
+  }, [pacienteSeleccionadoId, pacientes, setPacienteActivo]);
 
   // Pacientes filtrados y ordenados
   const pacientesFiltrados = useMemo(() => {
@@ -122,6 +132,14 @@ export function usePatients() {
 
   const seleccionarPaciente = (id: number | null) => {
     setPacienteSeleccionadoId(id);
+    if (id) {
+      const p = pacientes.find((item) => item.id === id);
+      if (p) {
+        obtenerConsultasDePaciente(id).then((hist) => {
+          setPacienteActivo(p, hist[0]);
+        });
+      }
+    }
   };
 
   const abrirModalCrear = () => {
@@ -146,13 +164,37 @@ export function usePatients() {
     }
 
     try {
+      const { peso_inicial_kg, talla_inicial_cm, ...datosPaciente } = data;
+
       if (pacienteAEditar?.id) {
-        await dbActualizarPaciente(pacienteAEditar.id, data);
+        await dbActualizarPaciente(pacienteAEditar.id, datosPaciente);
         notificarExito('Paciente actualizado correctamente.');
       } else {
-        const nuevo = await dbCrearPaciente(data);
+        const nuevo = await dbCrearPaciente(datosPaciente);
         if (nuevo.id) {
           setPacienteSeleccionadoId(nuevo.id);
+
+          // Si se proporcionó peso y talla inicial, registrar la primera consulta de inmediato
+          if (peso_inicial_kg && talla_inicial_cm) {
+            const tallaM = talla_inicial_cm / 100;
+            const imc = Math.round((peso_inicial_kg / (tallaM * tallaM)) * 10) / 10;
+            const hoy = new Date().toISOString().split('T')[0] ?? '';
+
+            const consultaInicial = await agregarConsultaAPaciente({
+              paciente_id: nuevo.id,
+              fecha: hoy,
+              peso_kg: peso_inicial_kg,
+              talla_cm: talla_inicial_cm,
+              imc,
+              clasificacion_imc: clasificarImcAdulto(imc).clasificacion,
+              motivo: 'Registro inicial del paciente',
+              notas: 'Somatometría inicial registrada durante el alta en el directorio.',
+            });
+
+            setPacienteActivo(nuevo, consultaInicial);
+          } else {
+            setPacienteActivo(nuevo, undefined);
+          }
         }
         notificarExito('Paciente registrado en el expediente local.');
       }
@@ -169,6 +211,9 @@ export function usePatients() {
   const eliminarPaciente = async (id: number) => {
     try {
       await dbEliminarPaciente(id);
+      if (globalPacienteActivo?.id === id) {
+        limpiarPacienteActivo();
+      }
       notificarExito('Paciente y consultas asociadas eliminados.');
       setPacienteSeleccionadoId(null);
       await recargarPacientes();
@@ -190,7 +235,7 @@ export function usePatients() {
       const imc = Math.round((datos.peso_kg / (tallaM * tallaM)) * 10) / 10;
       const hoy = new Date().toISOString().split('T')[0] ?? '';
 
-      await agregarConsultaAPaciente({
+      const nueva = await agregarConsultaAPaciente({
         paciente_id: pacienteSeleccionadoId,
         fecha: hoy,
         peso_kg: datos.peso_kg,
@@ -203,6 +248,10 @@ export function usePatients() {
 
       const actualizadas = await obtenerConsultasDePaciente(pacienteSeleccionadoId);
       setConsultas(actualizadas);
+      const p = pacientes.find((item) => item.id === pacienteSeleccionadoId);
+      if (p) {
+        setPacienteActivo(p, nueva);
+      }
       notificarExito('Consulta de evolución registrada exitosamente.');
       return true;
     } catch (err) {
@@ -218,6 +267,10 @@ export function usePatients() {
       await dbEliminarConsulta(consultaId);
       const actualizadas = await obtenerConsultasDePaciente(pacienteSeleccionadoId);
       setConsultas(actualizadas);
+      const p = pacientes.find((item) => item.id === pacienteSeleccionadoId);
+      if (p) {
+        setPacienteActivo(p, actualizadas[0]);
+      }
       notificarExito('Consulta eliminada del historial.');
     } catch (err) {
       console.error(err);
@@ -250,5 +303,7 @@ export function usePatients() {
     mensajeExito,
     errorGlobal,
     recargarPacientes,
+    globalPacienteActivo,
+    limpiarPacienteActivo,
   };
 }

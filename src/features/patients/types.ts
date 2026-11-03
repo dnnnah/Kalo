@@ -32,6 +32,8 @@ export interface FormularioPacienteData {
   telefono?: string;
   email?: string;
   notas_clinicas?: string;
+  peso_inicial_kg?: number;
+  talla_inicial_cm?: number;
 }
 
 export type CriterioOrdenPacientes = 'reciente' | 'nombre' | 'antiguo';
