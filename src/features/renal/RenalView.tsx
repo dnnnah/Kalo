@@ -7,6 +7,7 @@ import { Campo } from '../../shared/components/Campo';
 import { Button } from '../../shared/components/Button';
 import { Badge } from '../../shared/components/Badge';
 import { ResultadoChip } from '../../shared/components/ResultadoChip';
+import { BarraPacienteActivo } from '../../shared/components/BarraPacienteActivo';
 import { formatearDecimal } from '../../shared/utils/formatters';
 
 export function RenalView() {
@@ -44,6 +45,16 @@ export function RenalView() {
           </Button>
         </div>
       </div>
+
+      {/* Barra de Vinculación Opcional */}
+      <BarraPacienteActivo
+        nombreModulo="Nutrición Renal"
+        onPrecargarDatos={(d) => {
+          if (d.peso) actualizarCampo('peso', String(d.peso));
+          if (d.edad) actualizarCampo('edad', String(d.edad));
+          if (d.sexo) actualizarCampo('sexo', d.sexo);
+        }}
+      />
 
       {guardadoExitoso && (
         <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px]">

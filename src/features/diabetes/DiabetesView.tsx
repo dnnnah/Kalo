@@ -4,6 +4,7 @@ import { PanelCargaGlucemica } from './components/PanelCargaGlucemica';
 import { PanelRatioInsulina } from './components/PanelRatioInsulina';
 import { PanelSindromeMetabolico } from './components/PanelSindromeMetabolico';
 import { PanelFindrisc } from './components/PanelFindrisc';
+import { BarraPacienteActivo } from '../../shared/components/BarraPacienteActivo';
 import { Card } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
 import { Badge } from '../../shared/components/Badge';
@@ -42,6 +43,20 @@ export function DiabetesView() {
           </Button>
         </div>
       </div>
+
+      {/* Barra de Vinculación Opcional */}
+      <BarraPacienteActivo
+        nombreModulo="Diabetes &amp; Síndrome Metabólico"
+        onPrecargarDatos={(d) => {
+          if (d.edad) actualizarCampo('edadFindrisc', String(d.edad));
+          if (d.sexo) {
+            actualizarCampo('sexoFindrisc', d.sexo);
+            actualizarCampo('sexoSM', d.sexo);
+          }
+          if (d.peso) actualizarCampo('pesoFindrisc', String(d.peso));
+          if (d.talla) actualizarCampo('tallaFindrisc', String(d.talla));
+        }}
+      />
 
       {guardadoExitoso && (
         <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px]">

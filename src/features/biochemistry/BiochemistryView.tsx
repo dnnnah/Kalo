@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle } from '../../shared/components/Card';
 import { Campo } from '../../shared/components/Campo';
 import { Button } from '../../shared/components/Button';
 import { ResultadoChip } from '../../shared/components/ResultadoChip';
+import { BarraPacienteActivo } from '../../shared/components/BarraPacienteActivo';
 import { formatearDecimal } from '../../shared/utils/formatters';
 
 export function BiochemistryView() {
@@ -39,6 +40,14 @@ export function BiochemistryView() {
           </Button>
         </div>
       </div>
+
+      {/* Barra de Vinculación Opcional */}
+      <BarraPacienteActivo
+        nombreModulo="Laboratorios y Bioquímica"
+        onPrecargarDatos={(d) => {
+          if (d.sexo) actualizarCampo('sexo', d.sexo);
+        }}
+      />
 
       {guardadoExitoso && (
         <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px]">
