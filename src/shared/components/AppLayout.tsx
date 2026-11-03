@@ -17,6 +17,7 @@ import {
   Zap,
   Baby,
   PieChart,
+  ClipboardCheck,
 } from 'lucide-react';
 
 interface NavItem {
@@ -29,7 +30,8 @@ interface NavItem {
 const ITEMS_PRINCIPALES: NavItem[] = [
   { to: '/', label: 'Inicio', icon: <Home className="w-5 h-5" /> },
   { to: '/calculadora', label: 'GET / TMB', icon: <Flame className="w-5 h-5" /> },
-  { to: '/macronutrientes', label: 'Macronutrientes', icon: <PieChart className="w-5 h-5" /> },
+  { to: '/macronutrientes', label: 'Macros', icon: <PieChart className="w-5 h-5" /> },
+  { to: '/adecuacion', label: 'Adecuación', icon: <ClipboardCheck className="w-5 h-5" /> },
   { to: '/pacientes', label: 'Pacientes', icon: <Users className="w-5 h-5" /> },
   { to: '/referencias', label: 'Referencias', icon: <BookOpen className="w-5 h-5" /> },
 ];
@@ -74,7 +76,9 @@ export function AppLayout() {
   const tituloActual =
     ITEMS_PRINCIPALES.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
       ?.label ??
-    (location.pathname.startsWith('/antropometria')
+    (location.pathname.startsWith('/adecuacion')
+      ? 'Adecuación Nutricional'
+      : location.pathname.startsWith('/antropometria')
       ? 'Antropometría'
       : location.pathname.startsWith('/bioquimica')
       ? 'Laboratorios'
