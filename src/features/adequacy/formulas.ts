@@ -266,10 +266,14 @@ export function evaluarConjuntoNutrientes(
 
   for (const config of NUTRIENTES_CATALOGO) {
     const val = valores[config.id];
-    // Se evalúa únicamente si existe al menos valor prescrito > 0
-    if (val && val.prescrito !== undefined && val.prescrito > 0) {
-      const c = val.consumido ?? 0;
-      detalles.push(evaluarNutrienteIndividual(config, val.prescrito, c));
+    // Se evalúa únicamente si existe prescrito > 0 Y consumido está registrado
+    if (
+      val &&
+      val.prescrito !== undefined &&
+      val.prescrito > 0 &&
+      val.consumido !== undefined
+    ) {
+      detalles.push(evaluarNutrienteIndividual(config, val.prescrito, val.consumido));
     }
   }
 

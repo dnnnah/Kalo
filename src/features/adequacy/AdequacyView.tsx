@@ -14,8 +14,8 @@ import { AdequacyScorecard } from './components/AdequacyScorecard';
 
 const OPCIONES_FILTRO: Array<{ value: 'todos' | GrupoNutriente; label: string }> = [
   { value: 'todos', label: 'Todos' },
-  { value: 'macro', label: 'Macronutrientes' },
-  { value: 'micro', label: 'Micronutrientes' },
+  { value: 'macro', label: 'Macros' },
+  { value: 'micro', label: 'Micros' },
 ];
 
 export function AdequacyView() {
@@ -91,7 +91,7 @@ export function AdequacyView() {
 
       {/* Controles de Vista y Filtrado */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 no-print">
-        <div className="w-full sm:w-80">
+        <div className="w-full sm:w-72">
           <SegmentedControl
             options={OPCIONES_FILTRO}
             value={filtroGrupo}
@@ -99,15 +99,15 @@ export function AdequacyView() {
           />
         </div>
 
-        <div className="flex items-center gap-2 self-end sm:self-auto">
+        <div className="flex items-center gap-2 self-end sm:self-auto flex-wrap">
           <Button
-            variant="ghost"
+            variant="outline"
             size="sm"
             onClick={limpiarFormulario}
-            className="text-[12px] text-text-tertiary hover:text-semaforo-rojo"
+            className="text-[12px] text-text-secondary hover:text-semaforo-rojo min-h-[38px]"
             icono={<RotateCcw className="w-3.5 h-3.5" />}
           >
-            Limpiar Valores
+            Limpiar
           </Button>
 
           <Button
@@ -115,7 +115,7 @@ export function AdequacyView() {
             size="sm"
             disabled={guardando || resumen.total_evaluados === 0}
             onClick={guardarEnExpediente}
-            className="text-[12px] font-semibold"
+            className="text-[12px] font-semibold min-h-[38px]"
             icono={<Save className="w-3.5 h-3.5" />}
           >
             {guardando ? 'Guardando...' : 'Guardar en Expediente'}

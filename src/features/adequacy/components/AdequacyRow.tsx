@@ -28,7 +28,10 @@ export function AdequacyRow({
 }: AdequacyRowProps) {
   const [expandido, setExpandido] = useState(false);
 
-  const tieneEvaluacion = resultado !== undefined && resultado.prescrito > 0;
+  // Solo se considera evaluado si el usuario ha introducido un consumo explícito
+  const tieneConsumoRegistrado = consumido !== undefined;
+  const tieneEvaluacion = resultado !== undefined && resultado.prescrito > 0 && tieneConsumoRegistrado;
+
   const pct = tieneEvaluacion ? resultado.porcentaje : 0;
   const semaforo = tieneEvaluacion ? resultado.semaforo : 'neutral';
   const diferencia = tieneEvaluacion ? resultado.diferencia : 0;
@@ -51,13 +54,13 @@ export function AdequacyRow({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0">
           <span
-            className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
-              semaforo === 'verde'
-                ? 'bg-semaforo-verde'
-                : semaforo === 'ambar'
-                ? 'bg-semaforo-ambar'
-                : semaforo === 'rojo'
-                ? 'bg-semaforo-rojo'
+            className={`w-2.5 h-2.5 rounded-full flex-shrink-0 transition-colors ${
+              tieneEvaluacion
+                ? semaforo === 'verde'
+                  ? 'bg-semaforo-verde'
+                  : semaforo === 'ambar'
+                  ? 'bg-semaforo-ambar'
+                  : 'bg-semaforo-rojo'
                 : 'bg-text-tertiary/40'
             }`}
           />
@@ -75,11 +78,13 @@ export function AdequacyRow({
                 </span>
               )}
             </div>
-            {tieneEvaluacion && (
-              <p className="text-[11px] text-text-secondary mt-0.5 font-mono">
-                Diferencia: {diferencia >= 0 ? `+${diferencia}` : diferencia} {config.unidad}
-              </p>
-            )}
+            <p className="text-[11px] text-text-secondary mt-0.5 font-mono">
+              {tieneEvaluacion ? (
+                <>Diferencia: {diferencia >= 0 ? `+${diferencia}` : diferencia} {config.unidad}</>
+              ) : (
+                <span className="text-text-tertiary font-sans">Sin consumo registrado</span>
+              )}
+            </p>
           </div>
         </div>
 
@@ -120,7 +125,7 @@ export function AdequacyRow({
                 min={0}
                 step="any"
                 value={consumido ?? ''}
-                placeholder="0"
+                placeholder="Ej. 0"
                 onChange={(e) => {
                   const val = e.target.value === '' ? undefined : Number(e.target.value);
                   onConsumidoChange(val);
@@ -132,16 +137,18 @@ export function AdequacyRow({
           </div>
 
           {/* Badge Porcentual */}
-          <div className="flex flex-col items-end min-w-[70px]">
+          <div className="flex flex-col items-end min-w-[76px]">
             <span className="text-[10px] uppercase font-bold text-text-tertiary tracking-wider mb-0.5">
               Adecuación
             </span>
             {tieneEvaluacion ? (
-              <Badge semaforo={semaforo} className="text-[12px] font-mono font-bold px-2.5 py-1 whitespace-nowrap">
+              <Badge semaforo={semaforo} className="text-[12px] font-mono font-bold px-2 py-0.5 whitespace-nowrap">
                 {formatearDecimal(pct, 1)}%
               </Badge>
             ) : (
-              <span className="text-[12px] text-text-tertiary font-mono pt-1">—</span>
+              <span className="text-[11px] text-text-tertiary font-medium px-2 py-0.5 rounded-pill bg-background-elevated border border-border/60">
+                Pendiente
+              </span>
             )}
           </div>
         </div>
