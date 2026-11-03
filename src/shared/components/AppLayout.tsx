@@ -14,6 +14,7 @@ import {
   HeartPulse,
   Droplets,
   FlaskConical,
+  Zap,
 } from 'lucide-react';
 
 interface NavItem {
@@ -34,6 +35,7 @@ const MODULOS_PROXIMOS: NavItem[] = [
   { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
   { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
   { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
+  { to: '/diabetes', label: 'Diabetes & SM', icon: <Zap className="w-4 h-4" /> },
   { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" /> },
   { to: '/renal', label: 'Nutrición Renal', icon: <ShieldAlert className="w-4 h-4" /> },
 ];
@@ -74,6 +76,8 @@ export function AppLayout() {
       ? 'Laboratorios'
       : location.pathname.startsWith('/cardiovascular')
       ? 'Cardiovascular'
+      : location.pathname.startsWith('/diabetes')
+      ? 'Diabetes & SM'
       : location.pathname.startsWith('/hidratacion')
       ? 'Hidratación'
       : location.pathname.startsWith('/renal')
