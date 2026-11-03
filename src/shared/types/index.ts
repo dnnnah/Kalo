@@ -26,6 +26,31 @@ export interface PrescripcionMacronutrientes {
   actualizado_en: string; // ISO 8601
 }
 
+export type TipoSemaforo = 'verde' | 'ambar' | 'rojo';
+
+export interface ItemAdecuacionGuardado {
+  nutriente_id: string;
+  nombre: string;
+  unidad: string;
+  prescrito: number;
+  consumido: number;
+  porcentaje: number;
+  semaforo: TipoSemaforo;
+  diferencia: number;
+}
+
+export interface EvaluacionAdecuacion {
+  fecha: string;
+  porcentaje_optimo: number;
+  total_nutrientes: number;
+  nutrientes_optimos: number;
+  nutrientes_deficit: number;
+  nutrientes_exceso: number;
+  items: ItemAdecuacionGuardado[];
+  notas?: string;
+  actualizado_en: string; // ISO 8601
+}
+
 export interface Paciente {
   id?: number;
   nombre: string;
@@ -36,6 +61,7 @@ export interface Paciente {
   email?: string;
   notas_clinicas?: string;
   ultima_prescripcion_macros?: PrescripcionMacronutrientes;
+  ultima_adecuacion?: EvaluacionAdecuacion;
   creado_en: string; // ISO 8601
   actualizado_en: string; // ISO 8601
 }
@@ -55,12 +81,11 @@ export interface ConsultaMedica {
   peso_ajustado_kg?: number;
   diagnosticos?: string[];
   prescripcion_macros?: PrescripcionMacronutrientes;
+  evaluacion_adecuacion?: EvaluacionAdecuacion;
   notas?: string;
   creado_en: string;
   actualizado_en: string;
 }
-
-export type TipoSemaforo = 'verde' | 'ambar' | 'rojo';
 
 export interface EvaluacionClinica {
   valor: number;
