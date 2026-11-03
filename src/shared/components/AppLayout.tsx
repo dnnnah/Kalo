@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, Outlet, useLocation, ScrollRestoration } from 'react-router-dom';
 import {
   Flame,
   Home,
@@ -33,7 +33,7 @@ const MODULOS_PROXIMOS: NavItem[] = [
   { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
   { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
   { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
-  { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" />, badge: 'Próx.' },
+  { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" /> },
 ];
 
 export function AppLayout() {
@@ -42,6 +42,25 @@ export function AppLayout() {
 
   const cerrarDrawer = () => setDrawerAbierto(false);
   const abrirDrawer = () => setDrawerAbierto(true);
+
+  // Restablecer el scroll al inicio en cada cambio de ruta o navegación de regreso
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    const mainEl = document.querySelector('main');
+    if (mainEl) {
+      mainEl.scrollTop = 0;
+    }
+
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }, 10);
+
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   // Determinar título de la pantalla activa para el header móvil
   const tituloActual =
@@ -59,6 +78,7 @@ export function AppLayout() {
 
   return (
     <div className="min-h-screen bg-background text-text-primary antialiased flex flex-col md:flex-row">
+      <ScrollRestoration getKey={() => 'top'} />
       {/* ─── SIDEBAR DESKTOP (≥ 768px) ─── */}
       <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-background-surface z-20 shadow-sm">
         {/* Cabecera con logo */}
