@@ -10,6 +10,7 @@ import type {
   ConsultaMedica,
   PrescripcionMacronutrientes,
   EvaluacionAdecuacion,
+  PlanDieteticoSMAE,
 } from '../types';
 
 export class KaloDB extends Dexie {
@@ -165,6 +166,34 @@ export async function guardarEvaluacionAdecuacion(
     if (primeraConsulta && primeraConsulta.id) {
       await db.consultas.update(primeraConsulta.id, {
         evaluacion_adecuacion: evaluacion,
+        actualizado_en: ahoraIso(),
+      });
+    }
+  });
+}
+
+export async function guardarPlanDieteticoSMAE(
+  pacienteId: number,
+  plan: PlanDieteticoSMAE
+): Promise<void> {
+  await db.transaction('rw', db.pacientes, db.consultas, async () => {
+    // 1. Actualizar último plan dietético directamente en el paciente
+    await db.pacientes.update(pacienteId, {
+      ultimo_plan_smae: plan,
+      actualizado_en: ahoraIso(),
+    });
+
+    // 2. Si tiene consultas, asociarla a la más reciente
+    const consultas = await db.consultas
+      .where('paciente_id')
+      .equals(pacienteId)
+      .reverse()
+      .sortBy('fecha');
+
+    const primeraConsulta = consultas[0];
+    if (primeraConsulta && primeraConsulta.id) {
+      await db.consultas.update(primeraConsulta.id, {
+        plan_dietetico_smae: plan,
         actualizado_en: ahoraIso(),
       });
     }
