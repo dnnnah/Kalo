@@ -12,12 +12,14 @@ import {
   Activity,
   HeartPulse,
   Droplets,
+  FlaskConical,
 } from 'lucide-react';
 
 interface NavItem {
   to: string;
   label: string;
   icon: React.ReactNode;
+  badge?: string;
 }
 
 const ITEMS_PRINCIPALES: NavItem[] = [
@@ -29,8 +31,9 @@ const ITEMS_PRINCIPALES: NavItem[] = [
 
 const MODULOS_PROXIMOS: NavItem[] = [
   { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
-  { to: '/calculadora', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
-  { to: '/calculadora', label: 'Hidratación', icon: <Droplets className="w-4 h-4" /> },
+  { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
+  { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" />, badge: 'Próx.' },
+  { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" />, badge: 'Próx.' },
 ];
 
 export function AppLayout() {
@@ -44,7 +47,15 @@ export function AppLayout() {
   const tituloActual =
     ITEMS_PRINCIPALES.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
       ?.label ??
-    (location.pathname.startsWith('/antropometria') ? 'Antropometría' : 'Kalo');
+    (location.pathname.startsWith('/antropometria')
+      ? 'Antropometría'
+      : location.pathname.startsWith('/bioquimica')
+      ? 'Laboratorios'
+      : location.pathname.startsWith('/cardiovascular')
+      ? 'Cardiovascular'
+      : location.pathname.startsWith('/hidratacion')
+      ? 'Hidratación'
+      : 'Kalo');
 
   return (
     <div className="min-h-screen bg-background text-text-primary antialiased flex flex-col md:flex-row">
@@ -102,10 +113,25 @@ export function AppLayout() {
                 <NavLink
                   key={idx}
                   to={item.to}
-                  className="flex items-center gap-3 px-3.5 py-2.5 rounded-card text-[13px] text-text-secondary hover:bg-background hover:text-text-primary transition-colors min-h-[40px]"
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3.5 py-2.5 rounded-card text-[13px] transition-colors min-h-[40px] ${
+                      isActive
+                        ? 'bg-primary text-white font-semibold shadow-sm'
+                        : 'text-text-secondary hover:bg-background hover:text-text-primary'
+                    }`
+                  }
                 >
-                  <span className="opacity-70">{item.icon}</span>
-                  <span>{item.label}</span>
+                  <div className="flex items-center gap-3">
+                    <span className="opacity-80">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge ? (
+                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-pill bg-background-elevated border border-border/80 text-text-tertiary">
+                      {item.badge}
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-4 h-4 opacity-50" />
+                  )}
                 </NavLink>
               ))}
             </div>
@@ -230,7 +256,13 @@ export function AppLayout() {
                     <span className="opacity-80">{item.icon}</span>
                     <span>{item.label}</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 opacity-50" />
+                  {item.badge ? (
+                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-pill bg-background-elevated border border-border/80 text-text-tertiary">
+                      {item.badge}
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-4 h-4 opacity-50" />
+                  )}
                 </NavLink>
               ))}
             </div>

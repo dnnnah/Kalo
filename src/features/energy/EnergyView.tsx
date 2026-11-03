@@ -291,20 +291,17 @@ export function EnergyView() {
                   etiqueta="Tasa Metabólica (TMB)"
                   valor={formatearDecimal(resultado.tmb_kcal, 0)}
                   unidad="kcal"
-                  fuente={resultado.fuente_bibliografica}
                 />
                 <ResultadoChip
                   etiqueta="Efecto Térmico (ETA)"
                   valor={formatearDecimal(resultado.eta_kcal, 0)}
                   unidad="kcal"
-                  fuente="Tappy L. 10% GET"
                 />
                 <ResultadoChip
                   etiqueta="Factor de Actividad"
                   valor={resultado.naf_valor}
                   textoEstado={NAF_ETIQUETAS[resultado.naf_categoria]}
                   semaforo="verde"
-                  fuente="OMS 1985 / IOM"
                 />
                 <ResultadoChip
                   etiqueta="Peso Utilizado"

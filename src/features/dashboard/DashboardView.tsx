@@ -7,6 +7,7 @@ import {
   ArrowRight,
   BookOpen,
   Sparkles,
+  FlaskConical,
 } from 'lucide-react';
 import { Card, CardTitle } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
@@ -28,14 +29,21 @@ export function DashboardView() {
       color: 'bg-purple-500/10 text-purple-600',
     },
     {
-      to: '/calculadora',
+      to: '/bioquimica',
+      titulo: 'Laboratorios y Bioquímica',
+      descripcion: 'HOMA-IR, QUICKI y semáforo de analitos laboratoriales (ADA, NOM, Harrison).',
+      icono: <FlaskConical className="w-5 h-5 text-emerald-500" />,
+      color: 'bg-emerald-500/10 text-emerald-600',
+    },
+    {
+      to: '/cardiovascular',
       titulo: 'Riesgo Cardiovascular & TyG',
       descripcion: 'Framingham 10 años, Índices de Castelli, No-HDL y tamizaje metabólico.',
       icono: <HeartPulse className="w-5 h-5 text-rose-500" />,
       color: 'bg-rose-500/10 text-rose-600',
     },
     {
-      to: '/calculadora',
+      to: '/hidratacion',
       titulo: 'Hidratación & Sudoración',
       descripcion: 'Tasa de sudoración deportiva ACSM y reposición hídrica ajustada.',
       icono: <Droplets className="w-5 h-5 text-teal-500" />,
@@ -83,7 +91,7 @@ export function DashboardView() {
           <span className="text-[12px] text-text-tertiary">Fase 1 MVP</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {modulos.map((m, idx) => (
             <Link key={idx} to={m.to} className="block group">
               <Card className="h-full hover:border-primary/50 transition-all hover:shadow-elevated">
