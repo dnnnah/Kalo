@@ -125,40 +125,38 @@ export function MacronutrientsView() {
 
         {/* Ajuste de Proporciones */}
         <Card className="lg:col-span-2 space-y-5">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>
-                {estado.modo === 'porcentaje'
-                  ? 'Ajuste de Porcentajes Calóricos (%)'
-                  : 'Ajuste por Gramos de Proteína por Kilogramo'}
-              </CardTitle>
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-2">
+            <CardTitle>
+              {estado.modo === 'porcentaje'
+                ? 'Ajuste de Porcentajes Calóricos (%)'
+                : 'Ajuste por Gramos de Proteína por Kilogramo'}
+            </CardTitle>
 
-              {estado.modo === 'porcentaje' && (
-                <div className="flex items-center gap-2">
-                  <span
-                    className={`text-[12px] font-bold px-2.5 py-1 rounded-pill ${
-                      resultado.es_valido_100
-                        ? 'bg-semaforo-verde-bg text-semaforo-verde-text border border-semaforo-verde-border'
-                        : 'bg-semaforo-ambar-bg text-semaforo-ambar-text border border-semaforo-ambar-border'
-                    }`}
+            {estado.modo === 'porcentaje' && (
+              <div className="flex items-center gap-2 flex-shrink-0">
+                <span
+                  className={`text-[12px] font-bold px-2.5 py-1 rounded-pill whitespace-nowrap ${
+                    resultado.es_valido_100
+                      ? 'bg-semaforo-verde-bg text-semaforo-verde-text border border-semaforo-verde-border'
+                      : 'bg-semaforo-ambar-bg text-semaforo-ambar-text border border-semaforo-ambar-border'
+                  }`}
+                >
+                  Suma: {formatearDecimal(resultado.suma_porcentajes, 1)}%
+                </span>
+
+                {!resultado.es_valido_100 && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={ajustarA100}
+                    className="text-[11px] py-1 h-7 flex-shrink-0"
+                    icono={<Wand2 className="w-3 h-3" />}
                   >
-                    Suma: {formatearDecimal(resultado.suma_porcentajes, 1)}%
-                  </span>
-
-                  {!resultado.es_valido_100 && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={ajustarA100}
-                      className="text-[11px] py-1 h-7"
-                      icono={<Wand2 className="w-3 h-3" />}
-                    >
-                      Ajustar al 100%
-                    </Button>
-                  )}
-                </div>
-              )}
-            </div>
+                    Ajustar al 100%
+                  </Button>
+                )}
+              </div>
+            )}
           </CardHeader>
 
           {estado.modo === 'porcentaje' ? (
@@ -458,7 +456,7 @@ export function MacronutrientsView() {
         />
 
         <MacroCard
-          nombre="Lípidos Totales"
+          nombre="Lípidos"
           colorBorder="border-t-amber-500"
           colorTitulo="text-amber-500"
           macro={resultado.lipidos}

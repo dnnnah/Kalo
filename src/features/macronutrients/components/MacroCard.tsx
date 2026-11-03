@@ -28,13 +28,16 @@ export function MacroCard({
   colorGramsKg = 'text-text-secondary',
 }: MacroCardProps) {
   return (
-    <Card className={`border-t-4 ${colorBorder}`}>
+    <Card className={`border-t-4 ${colorBorder} p-3.5 sm:p-4`}>
       <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <span className={`text-[12px] font-bold uppercase tracking-wider ${colorTitulo}`}>
+        <div className="flex items-center justify-between gap-2.5">
+          <span className={`text-[12px] font-bold uppercase tracking-wider truncate min-w-0 ${colorTitulo}`}>
             {nombre}
           </span>
-          <Badge semaforo={amdr.en_rango ? 'verde' : 'ambar'}>
+          <Badge
+            semaforo={amdr.en_rango ? 'verde' : 'ambar'}
+            className="text-[10px] px-2 py-0.5 whitespace-nowrap flex-shrink-0 font-semibold"
+          >
             {amdr.en_rango ? 'AMDR Óptimo' : 'Fuera AMDR'}
           </Badge>
         </div>
