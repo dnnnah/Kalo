@@ -1,0 +1,84 @@
+import { ShieldCheck, Pill } from 'lucide-react';
+import type { ResultadoIDRAjustada } from '../types';
+import { Card, CardHeader, CardTitle } from '../../../shared/components/Card';
+import { ResultadoChip } from '../../../shared/components/ResultadoChip';
+
+interface PanelMicronutrientesProps {
+  esLactancia: boolean;
+  resultadoIDR: ResultadoIDRAjustada | null;
+}
+
+export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronutrientesProps) {
+  if (!resultadoIDR) return null;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-primary">
+          <Pill className="w-4 h-4" />
+          3. Micronutrientes Críticos e Ingestas Recomendadas (IDR)
+        </CardTitle>
+      </CardHeader>
+      <div className="space-y-4">
+        <p className="text-[12px] text-text-secondary leading-relaxed">
+          Valores de referencia ajustados para {esLactancia ? 'lactancia materna' : 'etapa de gestación'} según
+          guías del Institute of Medicine (IOM) y EFSA (DHA).
+        </p>
+
+        {/* Cuadrícula amplia de 2 columnas donde cada métrica respira con holgura sin desbordarse */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <ResultadoChip
+            etiqueta="Hierro"
+            valor={resultadoIDR.hierro_mg}
+            unidad="mg/día"
+          />
+          <ResultadoChip
+            etiqueta="Ácido Fólico"
+            valor={resultadoIDR.folato_mcg_dfe}
+            unidad="mcg DFE"
+          />
+          <ResultadoChip
+            etiqueta="Calcio"
+            valor={resultadoIDR.calcio_mg}
+            unidad="mg/día"
+          />
+          <ResultadoChip
+            etiqueta="Vitamina D"
+            valor={resultadoIDR.vitamina_d_mcg}
+            unidad="mcg (600 UI)"
+          />
+          <ResultadoChip
+            etiqueta="Yodo"
+            valor={resultadoIDR.yodo_mcg}
+            unidad="mcg/día"
+          />
+          <ResultadoChip
+            etiqueta="Omega-3 DHA"
+            valor={resultadoIDR.omega3_dha_mg}
+            unidad="mg/día"
+          />
+          <ResultadoChip
+            etiqueta="Zinc"
+            valor={resultadoIDR.zinc_mg}
+            unidad="mg/día"
+          />
+          <ResultadoChip
+            etiqueta="Proteína Extra"
+            valor={`+${resultadoIDR.proteina_adicional_g}`}
+            unidad="g/día"
+            semaforo="verde"
+            textoEstado="Sobre base"
+          />
+        </div>
+
+        <div className="flex items-start gap-2.5 p-3 rounded-card bg-background-elevated border border-border/80 text-[11px] text-text-secondary leading-relaxed">
+          <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
+          <span>
+            La suplementación profiláctica con 400–600 mcg de ácido fólico y 27 mg de hierro elemental está indicada
+            desde el periodo preconcepcional para prevención de defectos del tubo neural y anemia gestacional.
+          </span>
+        </div>
+      </div>
+    </Card>
+  );
+}

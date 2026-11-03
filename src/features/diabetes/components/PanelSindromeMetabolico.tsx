@@ -30,19 +30,19 @@ export function PanelSindromeMetabolico({ datos, actualizarCampo, resultadoSM }:
           Diagnóstico positivo con ≥ 3 criterios. Incluye verificación de corte IDF latinoamericano.
         </p>
 
-        {/* Selector de Sexo Biológico */}
+        {/* Selector de Sexo Biológico: Apple HIG Segmented Control */}
         <div>
           <label className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary block mb-1.5">
             Sexo Biológico
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 p-1 rounded-input bg-background-elevated border border-border">
             <button
               type="button"
               onClick={() => cambiarSexo('masculino')}
-              className={`py-2 px-3 rounded-button text-[13px] font-medium transition-all ${
+              className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all ${
                 datos.sexoSM === 'masculino'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               Masculino
@@ -50,10 +50,10 @@ export function PanelSindromeMetabolico({ datos, actualizarCampo, resultadoSM }:
             <button
               type="button"
               onClick={() => cambiarSexo('femenino')}
-              className={`py-2 px-3 rounded-button text-[13px] font-medium transition-all ${
+              className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all ${
                 datos.sexoSM === 'femenino'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               Femenino
@@ -119,7 +119,7 @@ export function PanelSindromeMetabolico({ datos, actualizarCampo, resultadoSM }:
             <ResultadoChip
               etiqueta="Diagnóstico ATP-III (AHA/NHLBI)"
               valor={`${resultadoSM.criterios_positivos} / ${resultadoSM.criterios_evaluados}`}
-              unidad="criterios positivos"
+              unidad="criterios"
               semaforo={resultadoSM.semaforo}
               textoEstado={
                 resultadoSM.tiene_sindrome_metabolico === true

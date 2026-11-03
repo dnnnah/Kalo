@@ -90,24 +90,26 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
             <button
               type="button"
               onClick={() => actualizarCampo('sexoFindrisc', 'masculino' as SexoBiologico)}
-              className={`py-2 px-3 rounded-button text-[13px] font-medium transition-all ${
+              className={`py-2 px-2 rounded-button text-center transition-all ${
                 datos.sexoFindrisc === 'masculino'
-                  ? 'bg-primary text-white shadow-sm'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
                   : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
               }`}
             >
-              Masculino (&lt;94 / 94–102 / &gt;102)
+              <span className="block text-[13px] leading-tight">Masculino</span>
+              <span className="block text-[10px] opacity-80 mt-0.5">&lt;94 / 94–102 / &gt;102 cm</span>
             </button>
             <button
               type="button"
               onClick={() => actualizarCampo('sexoFindrisc', 'femenino' as SexoBiologico)}
-              className={`py-2 px-3 rounded-button text-[13px] font-medium transition-all ${
+              className={`py-2 px-2 rounded-button text-center transition-all ${
                 datos.sexoFindrisc === 'femenino'
-                  ? 'bg-primary text-white shadow-sm'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
                   : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
               }`}
             >
-              Femenino (&lt;80 / 80–88 / &gt;88)
+              <span className="block text-[13px] leading-tight">Femenino</span>
+              <span className="block text-[10px] opacity-80 mt-0.5">&lt;80 / 80–88 / &gt;88 cm</span>
             </button>
           </div>
         </div>
@@ -119,14 +121,14 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
             <span className="text-[12px] text-text-primary font-medium">
               ¿Realiza al menos 30 min de actividad física diaria?
             </span>
-            <div className="grid grid-cols-2 gap-2 w-full sm:w-44">
+            <div className="grid grid-cols-2 p-1 rounded-input bg-background border border-border w-full sm:w-44">
               <button
                 type="button"
                 onClick={() => actualizarCampo('actividadFisica', true)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   datos.actividadFisica
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 Sí (0 pts)
@@ -134,10 +136,10 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
               <button
                 type="button"
                 onClick={() => actualizarCampo('actividadFisica', false)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   !datos.actividadFisica
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 No (+2 pts)
@@ -150,14 +152,14 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
             <span className="text-[12px] text-text-primary font-medium">
               ¿Come verduras, hortalizas o frutas a diario?
             </span>
-            <div className="grid grid-cols-2 gap-2 w-full sm:w-44">
+            <div className="grid grid-cols-2 p-1 rounded-input bg-background border border-border w-full sm:w-44">
               <button
                 type="button"
                 onClick={() => actualizarCampo('consumeFrutasVerduras', true)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   datos.consumeFrutasVerduras
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 Sí (0 pts)
@@ -165,10 +167,10 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
               <button
                 type="button"
                 onClick={() => actualizarCampo('consumeFrutasVerduras', false)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   !datos.consumeFrutasVerduras
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 No (+1 pt)
@@ -181,14 +183,14 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
             <span className="text-[12px] text-text-primary font-medium">
               ¿Toma medicación para la presión arterial regularmente?
             </span>
-            <div className="grid grid-cols-2 gap-2 w-full sm:w-44">
+            <div className="grid grid-cols-2 p-1 rounded-input bg-background border border-border w-full sm:w-44">
               <button
                 type="button"
                 onClick={() => actualizarCampo('tomaAntihipertensivos', false)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   !datos.tomaAntihipertensivos
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 No (0 pts)
@@ -196,10 +198,10 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
               <button
                 type="button"
                 onClick={() => actualizarCampo('tomaAntihipertensivos', true)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   datos.tomaAntihipertensivos
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 Sí (+2 pts)
@@ -212,14 +214,14 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
             <span className="text-[12px] text-text-primary font-medium">
               ¿Le han encontrado glucosa alta alguna vez (ej. en examen médico)?
             </span>
-            <div className="grid grid-cols-2 gap-2 w-full sm:w-44">
+            <div className="grid grid-cols-2 p-1 rounded-input bg-background border border-border w-full sm:w-44">
               <button
                 type="button"
                 onClick={() => actualizarCampo('antecedenteGlucosaAlta', false)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   !datos.antecedenteGlucosaAlta
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 No (0 pts)
@@ -227,10 +229,10 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
               <button
                 type="button"
                 onClick={() => actualizarCampo('antecedenteGlucosaAlta', true)}
-                className={`py-1.5 px-3 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[34px] rounded-[8px] text-[12px] font-semibold transition-all ${
                   datos.antecedenteGlucosaAlta
                     ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
                 Sí (+5 pts)
@@ -243,39 +245,42 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
             <span className="text-[12px] text-text-primary font-medium block mb-2">
               ¿Tiene familiares diagnosticados con diabetes (tipo 1 o 2)?
             </span>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 p-1 rounded-input bg-background border border-border gap-1">
               <button
                 type="button"
                 onClick={() => actualizarCampo('antecedenteFamiliar', 'no' as AntecedenteFamiliarDiabetes)}
-                className={`py-2 px-3 rounded-button text-[12px] font-medium transition-all text-left ${
+                className={`min-h-[44px] py-1.5 px-3 rounded-[8px] text-left transition-all ${
                   datos.antecedenteFamiliar === 'no'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                No (0 pts)
+                <span className="block text-[12px] font-semibold">No</span>
+                <span className="block text-[10px] opacity-80">0 puntos</span>
               </button>
               <button
                 type="button"
                 onClick={() => actualizarCampo('antecedenteFamiliar', 'segundo_grado' as AntecedenteFamiliarDiabetes)}
-                className={`py-2 px-3 rounded-button text-[12px] font-medium transition-all text-left ${
+                className={`min-h-[44px] py-1.5 px-3 rounded-[8px] text-left transition-all ${
                   datos.antecedenteFamiliar === 'segundo_grado'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                2º grado: abuelos, tíos (+3 pts)
+                <span className="block text-[12px] font-semibold">2º Grado (+3 pts)</span>
+                <span className="block text-[10px] opacity-80">Abuelos, tíos, primos</span>
               </button>
               <button
                 type="button"
                 onClick={() => actualizarCampo('antecedenteFamiliar', 'primer_grado' as AntecedenteFamiliarDiabetes)}
-                className={`py-2 px-3 rounded-button text-[12px] font-medium transition-all text-left ${
+                className={`min-h-[44px] py-1.5 px-3 rounded-[8px] text-left transition-all ${
                   datos.antecedenteFamiliar === 'primer_grado'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                1er grado: padres, hermanos (+5 pts)
+                <span className="block text-[12px] font-semibold">1er Grado (+5 pts)</span>
+                <span className="block text-[10px] opacity-80">Padres, hermanos, hijos</span>
               </button>
             </div>
           </div>
@@ -293,8 +298,15 @@ export function PanelFindrisc({ datos, actualizarCampo, resultadoFindrisc }: Pan
                 textoEstado={resultadoFindrisc.riesgo_texto.toUpperCase()}
               />
               <ResultadoChip
-                etiqueta="Probabilidad de DM2 a 10 Años"
-                valor={resultadoFindrisc.probabilidad_10_anios}
+                etiqueta="Probabilidad a 10 Años"
+                valor={resultadoFindrisc.probabilidad_10_anios.split(' ')[0] ?? '—'}
+                unidad={
+                  resultadoFindrisc.probabilidad_10_anios.includes('(')
+                    ? resultadoFindrisc.probabilidad_10_anios.substring(
+                        resultadoFindrisc.probabilidad_10_anios.indexOf('(')
+                      )
+                    : ''
+                }
                 semaforo={resultadoFindrisc.semaforo}
                 textoEstado={resultadoFindrisc.nivel_riesgo.replace('_', ' ').toUpperCase()}
               />

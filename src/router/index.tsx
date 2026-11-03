@@ -8,6 +8,7 @@ import { CardiovascularView } from '../features/cardiovascular/CardiovascularVie
 import { HydrationView } from '../features/hydration/HydrationView';
 import { RenalView } from '../features/renal/RenalView';
 import { DiabetesView } from '../features/diabetes/DiabetesView';
+import { PregnancyView } from '../features/pregnancy/PregnancyView';
 
 export const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
       {
         path: 'diabetes',
         element: <DiabetesView />,
+      },
+      {
+        path: 'embarazo',
+        element: <PregnancyView />,
       },
       {
         path: 'hidratacion',
