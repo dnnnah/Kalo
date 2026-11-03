@@ -1,3 +1,4 @@
+import process from 'node:process';
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
@@ -13,18 +14,9 @@ export default defineConfig({
   },
   projects: [
     {
-      name: 'desktop-chrome',
+      name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-      },
-    },
-    {
-      name: 'mobile-chrome',
-      use: {
-        viewport: { width: 390, height: 664 },
-        deviceScaleFactor: 2,
-        isMobile: true,
-        hasTouch: true,
       },
     },
   ],

@@ -9,6 +9,7 @@ import { HydrationView } from '../features/hydration/HydrationView';
 import { RenalView } from '../features/renal/RenalView';
 import { DiabetesView } from '../features/diabetes/DiabetesView';
 import { PregnancyView } from '../features/pregnancy/PregnancyView';
+import { ReferencesView } from '../features/references/ReferencesView';
 
 export const router = createBrowserRouter([
   {
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'referencias',
-        element: <Navigate to="/calculadora" replace />,
+        element: <ReferencesView />,
       },
       {
         path: '*',
