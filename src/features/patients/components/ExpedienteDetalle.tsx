@@ -14,6 +14,7 @@ import {
   Link as LinkIcon,
   UserX,
   ArrowRight,
+  PieChart,
 } from 'lucide-react';
 import type { Paciente, ConsultaMedica } from '../../../shared/types';
 import type { PacienteConMetricas } from '../types';
@@ -305,6 +306,96 @@ export function ExpedienteDetalle({
           </Button>
         </Link>
       </Card>
+
+      {/* ─── Prescripción Dietética de Macronutrientes ─── */}
+      {(() => {
+        const prescripcion =
+          paciente.ultima_prescripcion_macros || consultas[0]?.prescripcion_macros;
+
+        return (
+          <Card className="p-3.5 sm:p-4 bg-background-surface border-border space-y-3 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-card bg-primary-subtle text-primary flex-shrink-0">
+                  <PieChart className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[13px] sm:text-[14px] font-bold text-text-primary">
+                      Prescripción de Macronutrientes
+                    </span>
+                    {prescripcion?.plantilla_nombre && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-pill bg-background-elevated text-text-secondary border border-border">
+                        {prescripcion.plantilla_nombre}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] sm:text-[12px] text-text-secondary">
+                    {prescripcion
+                      ? `Meta: ${prescripcion.get_objetivo_kcal} kcal/día (referencia ${prescripcion.peso_referencia_kg} kg)`
+                      : 'Aún no se ha asignado una meta de macronutrientes para este paciente.'}
+                  </p>
+                </div>
+              </div>
+
+              <Link to="/macronutrientes" className="w-full sm:w-auto">
+                <Button
+                  variant={prescripcion ? 'outline' : 'primary'}
+                  size="sm"
+                  onClick={() => vincular(paciente, consultas[0])}
+                  icono={<ArrowRight className="w-4 h-4" />}
+                  className="w-full sm:w-auto justify-center min-h-[38px] text-[12px] font-semibold"
+                >
+                  {prescripcion ? 'Ajustar Macros' : 'Prescribir Macros'}
+                </Button>
+              </Link>
+            </div>
+
+            {prescripcion && (
+              <div className="pt-2 border-t border-border/70 space-y-2">
+                <div className="w-full h-3.5 rounded-pill overflow-hidden flex bg-background-elevated">
+                  <div
+                    style={{ width: `${prescripcion.hc_pct}%` }}
+                    className="bg-primary"
+                    title={`HC: ${prescripcion.hc_pct}%`}
+                  />
+                  <div
+                    style={{ width: `${prescripcion.pt_pct}%` }}
+                    className="bg-emerald-500"
+                    title={`PT: ${prescripcion.pt_pct}%`}
+                  />
+                  <div
+                    style={{ width: `${prescripcion.lp_pct}%` }}
+                    className="bg-amber-500"
+                    title={`LP: ${prescripcion.lp_pct}%`}
+                  />
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 text-[12px]">
+                  <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                    <div className="text-[10px] uppercase font-bold text-primary">Carbohidratos</div>
+                    <div className="font-mono font-bold text-text-primary text-[13px]">
+                      {prescripcion.hc_g} g <span className="text-[10px] font-normal text-text-tertiary">({prescripcion.hc_pct}%)</span>
+                    </div>
+                  </div>
+                  <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                    <div className="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400">Proteínas</div>
+                    <div className="font-mono font-bold text-text-primary text-[13px]">
+                      {prescripcion.pt_g} g <span className="text-[10px] font-normal text-text-tertiary">({prescripcion.pt_g_kg} g/kg)</span>
+                    </div>
+                  </div>
+                  <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                    <div className="text-[10px] uppercase font-bold text-amber-500">Lípidos</div>
+                    <div className="font-mono font-bold text-text-primary text-[13px]">
+                      {prescripcion.lp_g} g <span className="text-[10px] font-normal text-text-tertiary">({prescripcion.lp_pct}%)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Card>
+        );
+      })()}
 
       {/* ─── Historial Cronológico de Consultas ─── */}
       <div>

@@ -5,6 +5,27 @@
 
 export type SexoBiologico = 'masculino' | 'femenino';
 
+export interface PrescripcionMacronutrientes {
+  get_objetivo_kcal: number;
+  peso_referencia_kg: number;
+  hc_pct: number;
+  hc_g: number;
+  hc_kcal: number;
+  pt_pct: number;
+  pt_g: number;
+  pt_kcal: number;
+  pt_g_kg: number;
+  lp_pct: number;
+  lp_g: number;
+  lp_kcal: number;
+  fibra_g: number;
+  lipidos_saturados_max_g: number;
+  plantilla_id?: string;
+  plantilla_nombre?: string;
+  notas?: string;
+  actualizado_en: string; // ISO 8601
+}
+
 export interface Paciente {
   id?: number;
   nombre: string;
@@ -14,6 +35,7 @@ export interface Paciente {
   telefono?: string;
   email?: string;
   notas_clinicas?: string;
+  ultima_prescripcion_macros?: PrescripcionMacronutrientes;
   creado_en: string; // ISO 8601
   actualizado_en: string; // ISO 8601
 }
@@ -32,6 +54,7 @@ export interface ConsultaMedica {
   get_kcal?: number;
   peso_ajustado_kg?: number;
   diagnosticos?: string[];
+  prescripcion_macros?: PrescripcionMacronutrientes;
   notas?: string;
   creado_en: string;
   actualizado_en: string;
