@@ -11,6 +11,7 @@ import { DiabetesView } from '../features/diabetes/DiabetesView';
 import { PregnancyView } from '../features/pregnancy/PregnancyView';
 import { ReferencesView } from '../features/references/ReferencesView';
 import { PatientsView } from '../features/patients/PatientsView';
+import { MacronutrientsView } from '../features/macronutrients/MacronutrientsView';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: 'calculadora',
         element: <EnergyView />,
+      },
+      {
+        path: 'macronutrientes',
+        element: <MacronutrientsView />,
       },
       {
         path: 'antropometria',

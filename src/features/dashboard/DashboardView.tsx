@@ -9,6 +9,7 @@ import {
   Sparkles,
   FlaskConical,
   Users,
+  PieChart,
 } from 'lucide-react';
 import { Card, CardTitle } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
@@ -21,6 +22,13 @@ export function DashboardView() {
       descripcion: 'Valencia INNSZ, Mifflin-St Jeor, Harris-Benedict, Schofield y Katch-McArdle.',
       icono: <Flame className="w-5 h-5 text-amber-500" />,
       color: 'bg-amber-500/10 text-amber-600',
+    },
+    {
+      to: '/macronutrientes',
+      titulo: 'Distribución de Macronutrientes',
+      descripcion: 'Reparto calórico por porcentaje o g/kg (AMDR, OMS, ACSM) y metas de fibra.',
+      icono: <PieChart className="w-5 h-5 text-indigo-500" />,
+      color: 'bg-indigo-500/10 text-indigo-600',
     },
     {
       to: '/pacientes',

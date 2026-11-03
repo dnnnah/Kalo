@@ -16,6 +16,7 @@ import {
   FlaskConical,
   Zap,
   Baby,
+  PieChart,
 } from 'lucide-react';
 
 interface NavItem {
@@ -28,6 +29,7 @@ interface NavItem {
 const ITEMS_PRINCIPALES: NavItem[] = [
   { to: '/', label: 'Inicio', icon: <Home className="w-5 h-5" /> },
   { to: '/calculadora', label: 'GET / TMB', icon: <Flame className="w-5 h-5" /> },
+  { to: '/macronutrientes', label: 'Macronutrientes', icon: <PieChart className="w-5 h-5" /> },
   { to: '/pacientes', label: 'Pacientes', icon: <Users className="w-5 h-5" /> },
   { to: '/referencias', label: 'Referencias', icon: <BookOpen className="w-5 h-5" /> },
 ];
