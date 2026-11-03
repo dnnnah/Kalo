@@ -21,11 +21,11 @@ export function DashboardView() {
       color: 'bg-amber-500/10 text-amber-600',
     },
     {
-      to: '/calculadora',
-      titulo: 'Antropometría y Composición',
-      descripcion: 'IMC, ICC, ICE, Pliegues cutáneos JP3/Faulkner y Área Muscular del Brazo.',
-      icono: <Activity className="w-5 h-5 text-purple-500" />,
-      color: 'bg-purple-500/10 text-purple-600',
+      to: '/bioquimica',
+      titulo: 'Laboratorios y Bioquímica',
+      descripcion: 'HOMA-IR, QUICKI y semáforo de analitos laboratoriales (ADA, NOM, Harrison).',
+      icono: <Activity className="w-5 h-5 text-emerald-500" />,
+      color: 'bg-emerald-500/10 text-emerald-600',
     },
     {
       to: '/calculadora',
