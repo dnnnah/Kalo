@@ -1,4 +1,3 @@
-import React from 'react';
 import { BookOpen } from 'lucide-react';
 import { Badge } from './Badge';
 import type { TipoSemaforo } from '../types';

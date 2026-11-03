@@ -6,7 +6,6 @@
 import type {
   CategoriaNAF,
   FactorEstres,
-  FormulaTMB,
   ParametrosGET,
   ParametrosTMBBase,
   ParametrosTMBConMasaMagra,

@@ -4,7 +4,6 @@ import { Card, CardHeader, CardTitle } from '../../shared/components/Card';
 import { Campo } from '../../shared/components/Campo';
 import { Button } from '../../shared/components/Button';
 import { ResultadoChip } from '../../shared/components/ResultadoChip';
-import { Badge } from '../../shared/components/Badge';
 import { formatearKcal, formatearDecimal } from '../../shared/utils/formatters';
 import type { FormulaTMB, CategoriaNAF, FactorEstres } from './types';
 
