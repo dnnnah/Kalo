@@ -4,6 +4,7 @@ import { PanelAdicionCalorica } from './components/PanelAdicionCalorica';
 import { PanelGananciaPeso } from './components/PanelGananciaPeso';
 import { PanelMicronutrientes } from './components/PanelMicronutrientes';
 import { PanelManejoNVE } from './components/PanelManejoNVE';
+import { BarraPacienteActivo } from '../../shared/components/BarraPacienteActivo';
 import { Card } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
 import { Badge } from '../../shared/components/Badge';
@@ -42,6 +43,15 @@ export function PregnancyView() {
           </Button>
         </div>
       </div>
+
+      {/* Barra de Vinculación Opcional */}
+      <BarraPacienteActivo
+        nombreModulo="Gestación y Materno-Fetal"
+        onPrecargarDatos={(d) => {
+          if (d.peso) actualizarCampo('pesoPregestacional', String(d.peso));
+          if (d.talla) actualizarCampo('talla', String(d.talla));
+        }}
+      />
 
       {guardadoExitoso && (
         <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px]">

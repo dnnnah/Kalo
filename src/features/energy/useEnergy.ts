@@ -1,13 +1,17 @@
 /**
  * @file src/features/energy/useEnergy.ts
  * @description Hook reactivo para el módulo de cálculo energético (GET / TMB).
+ * Conectado opcionalmente con el store global de paciente activo.
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { SexoBiologico } from '../../shared/types';
 import type { CategoriaNAF, FactorEstres, FormulaTMB, ResultadoGET } from './types';
 import { calcularGET } from './formulas';
 import { db, ahoraIso } from '../../shared/db/kalo.db';
+import { useActivePatientStore } from '../../shared/stores/useActivePatientStore';
+import { calcularEdadExacta } from '../patients/formulas';
+import type { DatosPrecargaPaciente } from '../../shared/components/BarraPacienteActivo';
 
 export interface UseEnergyState {
   peso: string;
@@ -22,6 +26,8 @@ export interface UseEnergyState {
 }
 
 export function useEnergy() {
+  const { pacienteActivo, ultimaConsulta, estaVinculado, desvincular } = useActivePatientStore();
+
   const [estado, setEstado] = useState<UseEnergyState>({
     peso: '70',
     talla: '170',
@@ -37,8 +43,32 @@ export function useEnergy() {
   const [guardando, setGuardando] = useState(false);
   const [guardadoExitoso, setGuardadoExitoso] = useState(false);
 
+  // Sincronización SOLO cuando el usuario activó la vinculación explícitamente
+  useEffect(() => {
+    if (estaVinculado && pacienteActivo) {
+      const edadCalc = calcularEdadExacta(pacienteActivo.fecha_nacimiento);
+      setEstado((prev) => ({
+        ...prev,
+        sexo: pacienteActivo.sexo,
+        edad: edadCalc.anios > 0 ? String(edadCalc.anios) : prev.edad,
+        peso: ultimaConsulta?.peso_kg ? String(ultimaConsulta.peso_kg) : prev.peso,
+        talla: ultimaConsulta?.talla_cm ? String(ultimaConsulta.talla_cm) : prev.talla,
+      }));
+    }
+  }, [estaVinculado, pacienteActivo, ultimaConsulta]);
+
   const actualizarCampo = <K extends keyof UseEnergyState>(campo: K, valor: UseEnergyState[K]) => {
     setEstado((prev) => ({ ...prev, [campo]: valor }));
+  };
+
+  const precargarDatos = (datos: DatosPrecargaPaciente) => {
+    setEstado((prev) => ({
+      ...prev,
+      peso: datos.peso !== undefined ? String(datos.peso) : prev.peso,
+      talla: datos.talla !== undefined ? String(datos.talla) : prev.talla,
+      edad: datos.edad !== undefined ? String(datos.edad) : prev.edad,
+      sexo: datos.sexo !== undefined ? datos.sexo : prev.sexo,
+    }));
   };
 
   const resultado: ResultadoGET | null = useMemo(() => {
@@ -102,12 +132,26 @@ export function useEnergy() {
     }
   };
 
+  const guardarEnExpediente = async () => {
+    if (pacienteActivo?.id && resultado) {
+      await guardarConsultaParaPaciente(
+        pacienteActivo.id,
+        `GET: ${Math.round(resultado.get_kcal)} kcal/d (${estado.formula})`
+      );
+    }
+  };
+
   return {
     estado,
     actualizarCampo,
+    precargarDatos,
     resultado,
     guardando,
     guardadoExitoso,
     guardarConsultaParaPaciente,
+    guardarEnExpediente,
+    pacienteActivo,
+    estaVinculado,
+    desvincular,
   };
 }

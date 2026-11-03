@@ -8,6 +8,7 @@ import {
   BookOpen,
   Sparkles,
   FlaskConical,
+  Users,
 } from 'lucide-react';
 import { Card, CardTitle } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
@@ -20,6 +21,13 @@ export function DashboardView() {
       descripcion: 'Valencia INNSZ, Mifflin-St Jeor, Harris-Benedict, Schofield y Katch-McArdle.',
       icono: <Flame className="w-5 h-5 text-amber-500" />,
       color: 'bg-amber-500/10 text-amber-600',
+    },
+    {
+      to: '/pacientes',
+      titulo: 'Directorio & Expediente Clínico',
+      descripcion: 'Historial clínico, evolución antropométrica (peso, talla, IMC) y notas privadas.',
+      icono: <Users className="w-5 h-5 text-blue-500" />,
+      color: 'bg-blue-500/10 text-blue-600',
     },
     {
       to: '/antropometria',
@@ -76,6 +84,16 @@ export function DashboardView() {
                 icono={<ArrowRight className="w-4 h-4" />}
               >
                 Calculadora Rápida GET
+              </Button>
+            </Link>
+            <Link to="/pacientes">
+              <Button
+                variant="outline"
+                size="md"
+                className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-semibold"
+                icono={<Users className="w-4 h-4" />}
+              >
+                Directorio de Pacientes
               </Button>
             </Link>
           </div>

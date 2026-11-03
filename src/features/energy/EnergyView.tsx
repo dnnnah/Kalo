@@ -4,6 +4,7 @@ import { Card, CardHeader, CardTitle } from '../../shared/components/Card';
 import { Campo } from '../../shared/components/Campo';
 import { Button } from '../../shared/components/Button';
 import { ResultadoChip } from '../../shared/components/ResultadoChip';
+import { BarraPacienteActivo } from '../../shared/components/BarraPacienteActivo';
 import { formatearKcal, formatearDecimal } from '../../shared/utils/formatters';
 import type { FormulaTMB, CategoriaNAF, FactorEstres } from './types';
 
@@ -32,7 +33,15 @@ const NAF_ETIQUETAS: Record<CategoriaNAF, string> = {
 };
 
 export function EnergyView() {
-  const { estado, actualizarCampo, resultado, guardadoExitoso } = useEnergy();
+  const {
+    estado,
+    actualizarCampo,
+    precargarDatos,
+    resultado,
+    guardando,
+    guardadoExitoso,
+    guardarEnExpediente,
+  } = useEnergy();
 
   const handlePrint = () => {
     window.print();
@@ -56,6 +65,15 @@ export function EnergyView() {
           </Button>
         </div>
       </div>
+
+      {/* Barra de Vinculación de Paciente (Opcional / Modo Libre) */}
+      <BarraPacienteActivo
+        nombreModulo="la Calculadora Energética"
+        onPrecargarDatos={precargarDatos}
+        onGuardarEnExpediente={guardarEnExpediente}
+        guardando={guardando}
+        guardadoExitoso={guardadoExitoso}
+      />
 
       {guardadoExitoso && (
         <div className="p-3 rounded-card bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex items-center gap-2 text-[14px]">
