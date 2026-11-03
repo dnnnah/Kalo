@@ -68,37 +68,37 @@ export function DashboardView() {
   ];
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
+    <div className="space-y-6 max-w-5xl mx-auto w-full overflow-hidden">
       {/* Hero Card */}
-      <div className="rounded-panel bg-gradient-to-br from-primary to-primary-active p-6 sm:p-8 text-white shadow-float relative overflow-hidden">
+      <div className="rounded-panel bg-gradient-to-br from-primary to-primary-active p-5 sm:p-8 text-white shadow-float relative overflow-hidden">
         <div className="max-w-xl space-y-3 relative z-10">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-white/20 text-white text-[12px] font-semibold backdrop-blur-sm">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Kalo — Software Clínico de Valoración Nutricional</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-white/20 text-white text-[11px] sm:text-[12px] font-semibold backdrop-blur-sm max-w-full">
+            <Sparkles className="w-3.5 h-3.5 flex-shrink-0" />
+            <span className="truncate">Kalo — Software Clínico de Valoración Nutricional</span>
           </div>
-          <h1 className="text-[26px] sm:text-[34px] font-bold tracking-tight leading-tight">
+          <h1 className="text-[22px] sm:text-[34px] font-bold tracking-tight leading-tight">
             Valoración clínica nutricional sin barreras ni suscripciones.
           </h1>
-          <p className="text-[14px] sm:text-[15px] text-white/85 leading-relaxed">
+          <p className="text-[13px] sm:text-[15px] text-white/85 leading-relaxed">
             Suite completa de diagnóstico basada en el modelo ABCD. Rápida, privada, sin internet
             obligatorio y con citas bibliográficas en cada cálculo.
           </p>
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <Link to="/calculadora">
+          <div className="pt-2 flex flex-col sm:flex-row sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
+            <Link to="/calculadora" className="w-full sm:w-auto">
               <Button
                 variant="secondary"
                 size="md"
-                className="bg-white text-primary hover:bg-white/90 active:bg-white/80 font-semibold"
+                className="w-full sm:w-auto justify-center bg-white text-primary hover:bg-white/90 active:bg-white/80 font-semibold min-h-[44px]"
                 icono={<ArrowRight className="w-4 h-4" />}
               >
                 Calculadora Rápida GET
               </Button>
             </Link>
-            <Link to="/pacientes">
+            <Link to="/pacientes" className="w-full sm:w-auto">
               <Button
                 variant="outline"
                 size="md"
-                className="bg-white/10 hover:bg-white/20 text-white border-white/30 font-semibold"
+                className="w-full sm:w-auto justify-center bg-white/10 hover:bg-white/20 text-white border-white/30 font-semibold min-h-[44px]"
                 icono={<Users className="w-4 h-4" />}
               >
                 Directorio de Pacientes
@@ -109,27 +109,27 @@ export function DashboardView() {
       </div>
 
       {/* Grid de Módulos Clínicos */}
-      <div>
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="text-[18px] font-semibold text-text-primary tracking-tight">
+      <div className="space-y-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+          <h2 className="text-[17px] sm:text-[18px] font-semibold text-text-primary tracking-tight">
             Módulos Clínicos de Diagnóstico
           </h2>
           <span className="text-[12px] text-text-tertiary">Herramientas Diagnósticas</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
           {modulos.map((m, idx) => (
-            <Link key={idx} to={m.to} className="block group">
-              <Card className="h-full hover:border-primary/50 transition-all hover:shadow-elevated">
-                <div className="flex items-start gap-3">
+            <Link key={idx} to={m.to} className="block group min-w-0">
+              <Card className="h-full hover:border-primary/50 transition-all hover:shadow-elevated p-4">
+                <div className="flex items-start gap-3 min-w-0">
                   <div className={`p-2.5 rounded-card flex-shrink-0 ${m.color}`}>
                     {m.icono}
                   </div>
-                  <div className="space-y-1">
-                    <CardTitle className="group-hover:text-primary transition-colors text-[16px]">
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <CardTitle className="group-hover:text-primary transition-colors text-[15px] sm:text-[16px] break-words">
                       {m.titulo}
                     </CardTitle>
-                    <p className="text-[13px] text-text-secondary leading-snug">
+                    <p className="text-[12px] sm:text-[13px] text-text-secondary leading-snug break-words">
                       {m.descripcion}
                     </p>
                   </div>
@@ -141,16 +141,16 @@ export function DashboardView() {
       </div>
 
       {/* Nota de Principio Clínico */}
-      <Card className="bg-background-elevated border-border/80">
-        <div className="flex items-center gap-3">
-          <div className="p-2 rounded-input bg-primary-subtle text-primary-subtle-fg flex-shrink-0">
+      <Card className="bg-background-elevated border-border/80 p-4 sm:p-5">
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="p-2 rounded-input bg-primary-subtle text-primary-subtle-fg flex-shrink-0 mt-0.5 sm:mt-0">
             <BookOpen className="w-5 h-5" />
           </div>
-          <div>
+          <div className="min-w-0 flex-1">
             <div className="text-[14px] font-semibold text-text-primary">
               Principio Kalo: «Calculadora Rápida Primero»
             </div>
-            <p className="text-[12px] text-text-secondary leading-relaxed">
+            <p className="text-[12px] text-text-secondary leading-relaxed mt-0.5">
               Puedes utilizar cualquier cálculo de inmediato sin necesidad de crear o seleccionar un
               paciente antes de la consulta. La persistencia en tu expediente local es opcional y
               está a un solo clic.
