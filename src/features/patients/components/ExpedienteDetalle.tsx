@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  User,
   Calendar,
   Phone,
   Mail,
@@ -16,7 +15,7 @@ import {
 } from 'lucide-react';
 import type { Paciente, ConsultaMedica } from '../../../shared/types';
 import type { PacienteConMetricas } from '../types';
-import { Card, CardHeader, CardTitle } from '../../../shared/components/Card';
+import { Card } from '../../../shared/components/Card';
 import { Button } from '../../../shared/components/Button';
 import { formatearNombreCompleto, obtenerIniciales } from '../formulas';
 

@@ -10,6 +10,7 @@ import { RenalView } from '../features/renal/RenalView';
 import { DiabetesView } from '../features/diabetes/DiabetesView';
 import { PregnancyView } from '../features/pregnancy/PregnancyView';
 import { ReferencesView } from '../features/references/ReferencesView';
+import { PatientsView } from '../features/patients/PatientsView';
 
 export const router = createBrowserRouter([
   {
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'pacientes',
-        element: <Navigate to="/calculadora" replace />,
+        element: <PatientsView />,
       },
       {
         path: 'referencias',
