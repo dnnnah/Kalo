@@ -144,7 +144,7 @@ export function ExpedienteDetalle({
                 icono={<Plus className="w-4 h-4" />}
                 className="w-full justify-center min-h-[42px] text-[13px]"
               >
-                + Consulta
+                Consulta
               </Button>
               <Button
                 variant="secondary"
