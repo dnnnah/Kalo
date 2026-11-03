@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-bg: #F2F2F7;
+  --color-surface: #FFFFFF;
+  --color-surface-subtle: #F9F9F9;
+  --color-border: #E5E5EA;
+  --color-border-subtle: #F2F2F7;
+  --color-text-primary: #1C1C1E;
+  --color-text-secondary: #48484A;
+  --color-text-tertiary: #636366;
+  --color-text-disabled: #AEAEB2;
+
+  --color-primary: #007AFF;
+  --color-primary-hover: #0062CC;
+  --color-primary-active: #004A99;
+  --color-primary-subtle: #EBF3FF;
+  --color-primary-subtle-fg: #004A99;
+
+  --semaforo-verde: #34C759;
+  --semaforo-verde-bg: #EDFBF1;
+  --semaforo-verde-text: #1D7833;
+  --semaforo-verde-border: #A9EBB9;
+
+  --semaforo-ambar: #FF9500;
+  --semaforo-ambar-bg: #FFF8EB;
+  --semaforo-ambar-text: #995900;
+  --semaforo-ambar-border: #FFDB8A;
+
+  --semaforo-rojo: #FF3B30;
+  --semaforo-rojo-bg: #FFF0EF;
+  --semaforo-rojo-text: #99231C;
+  --semaforo-rojo-border: #FFBCBA;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #000000;
+    --color-surface: #1C1C1E;
+    --color-surface-subtle: #2C2C2E;
+    --color-border: #38383A;
+    --color-border-subtle: #2C2C2E;
+    --color-text-primary: #FFFFFF;
+    --color-text-secondary: #EBEBF5CC;
+    --color-text-tertiary: #EBEBF57A;
+    --color-text-disabled: #EBEBF53D;
+
+    --color-primary-subtle: rgba(0, 122, 255, 0.15);
+    --color-primary-subtle-fg: #7DAEFF;
+
+    --semaforo-verde-bg: rgba(52, 199, 89, 0.12);
+    --semaforo-verde-text: #6DDA87;
+    --semaforo-verde-border: rgba(52, 199, 89, 0.25);
+
+    --semaforo-ambar-bg: rgba(255, 149, 0, 0.12);
+    --semaforo-ambar-text: #FFC246;
+    --semaforo-ambar-border: rgba(255, 149, 0, 0.25);
+
+    --semaforo-rojo-bg: rgba(255, 59, 48, 0.12);
+    --semaforo-rojo-text: #FF8D8A;
+    --semaforo-rojo-border: rgba(255, 59, 48, 0.25);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "IBM Plex Sans", sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Números clínicos tabulares */
+.tnum,
+.clinical-value {
+  font-feature-settings: "tnum" 1;
+  font-variant-numeric: tabular-nums;
+  font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
+}
+
+/* Touch targets accesibles Apple HIG */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Ocultar elementos interactivos en impresión médica */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+}
