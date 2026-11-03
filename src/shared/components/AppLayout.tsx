@@ -28,7 +28,7 @@ const ITEMS_PRINCIPALES: NavItem[] = [
 ];
 
 const MODULOS_PROXIMOS: NavItem[] = [
-  { to: '/calculadora', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
+  { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
   { to: '/calculadora', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
   { to: '/calculadora', label: 'Hidratación', icon: <Droplets className="w-4 h-4" /> },
 ];

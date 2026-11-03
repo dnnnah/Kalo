@@ -21,7 +21,7 @@ export function DashboardView() {
       color: 'bg-amber-500/10 text-amber-600',
     },
     {
-      to: '/calculadora',
+      to: '/antropometria',
       titulo: 'Antropometría y Composición',
       descripcion: 'IMC, ICC, ICE, Pliegues cutáneos JP3/Faulkner y Área Muscular del Brazo.',
       icono: <Activity className="w-5 h-5 text-purple-500" />,
