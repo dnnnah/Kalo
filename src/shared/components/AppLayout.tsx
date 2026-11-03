@@ -32,7 +32,7 @@ const ITEMS_PRINCIPALES: NavItem[] = [
 const MODULOS_PROXIMOS: NavItem[] = [
   { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
   { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
-  { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" />, badge: 'Próx.' },
+  { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
   { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" />, badge: 'Próx.' },
 ];
 
