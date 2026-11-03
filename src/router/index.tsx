@@ -6,6 +6,7 @@ import { AnthropometryView } from '../features/anthropometry/AnthropometryView';
 import { BiochemistryView } from '../features/biochemistry/BiochemistryView';
 import { CardiovascularView } from '../features/cardiovascular/CardiovascularView';
 import { HydrationView } from '../features/hydration/HydrationView';
+import { RenalView } from '../features/renal/RenalView';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ export const router = createBrowserRouter([
       {
         path: 'hidratacion',
         element: <HydrationView />,
+      },
+      {
+        path: 'renal',
+        element: <RenalView />,
       },
       {
         path: 'pacientes',
