@@ -18,6 +18,7 @@ import {
   Baby,
   PieChart,
   ClipboardCheck,
+  UtensilsCrossed,
 } from 'lucide-react';
 
 interface NavItem {
@@ -37,6 +38,7 @@ const ITEMS_PRINCIPALES: NavItem[] = [
 ];
 
 const MODULOS_PROXIMOS: NavItem[] = [
+  { to: '/planeador', label: 'Planeador SMAE', icon: <UtensilsCrossed className="w-4 h-4" /> },
   { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
   { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
   { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
@@ -76,7 +78,9 @@ export function AppLayout() {
   const tituloActual =
     ITEMS_PRINCIPALES.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
       ?.label ??
-    (location.pathname.startsWith('/adecuacion')
+    (location.pathname.startsWith('/planeador')
+      ? 'Planeador SMAE'
+      : location.pathname.startsWith('/adecuacion')
       ? 'Adecuación Nutricional'
       : location.pathname.startsWith('/antropometria')
       ? 'Antropometría'
