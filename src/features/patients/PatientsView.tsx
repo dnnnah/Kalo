@@ -62,7 +62,7 @@ export function PatientsView() {
             </span>
           </div>
           <p className="text-[13px] sm:text-[14px] text-text-secondary mt-0.5">
-            Expediente clínico nutricional, evolución antropométrica e historial privado en IndexedDB.
+            Expediente clínico nutricional, evolución antropométrica e historial médico privado.
           </p>
         </div>
       </div>

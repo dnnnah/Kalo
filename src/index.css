@@ -91,13 +91,63 @@ body {
   min-width: 44px;
 }
 
-/* Ocultar elementos interactivos en impresión médica */
+/* Ocultar elementos interactivos y optimizar reporte clínico en impresión médica */
 @media print {
-  .no-print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .no-print,
+  header,
+  aside,
+  nav,
+  .no-print * {
     display: none !important;
   }
+
   body {
     background: #FFFFFF !important;
     color: #000000 !important;
+  }
+
+  /* Ajustar contenedor para ocupar todo el ancho de la hoja */
+  .md\:ml-64 {
+    margin-left: 0 !important;
+  }
+
+  main {
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Asegurar que los botones seleccionados e indicadores de color se impriman con fondo y contraste exactos */
+  .bg-primary,
+  button.bg-primary,
+  [class*="bg-primary text-white"],
+  [class*="bg-primary font-semibold"] {
+    background-color: #007AFF !important;
+    color: #FFFFFF !important;
+    border: 1.5px solid #0056B3 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Fondo sutil activo para badges y semáforos en impresión */
+  .bg-primary-subtle,
+  [class*="bg-primary-subtle"] {
+    background-color: #EBF3FF !important;
+    color: #004A99 !important;
+    border: 1px solid #007AFF !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Bordes de tarjetas y contenedores nítidos */
+  .rounded-panel,
+  .rounded-card {
+    box-shadow: none !important;
+    border: 1px solid #D1D1D6 !important;
   }
 }

@@ -91,15 +91,15 @@ export function AppLayout() {
   return (
     <div className="min-h-screen bg-background text-text-primary antialiased flex flex-col md:flex-row">
       <ScrollRestoration getKey={() => 'top'} />
-      {/* ─── SIDEBAR DESKTOP (≥ 768px) ─── */}
-      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-background-surface z-20 shadow-sm">
+      {/* ─── SIDEBAR DESKTOP (≥ 768px) (Oculto en impresión) ─── */}
+      <aside className="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0 border-r border-border bg-background-surface z-20 shadow-sm no-print">
         {/* Cabecera con logo */}
         <div className="px-6 py-6 border-b border-border/70 flex items-center justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="text-[22px] font-bold tracking-tight text-primary">Kalo</span>
               <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
-                FOSS
+                CLÍNICO
               </span>
             </div>
             <p className="text-[12px] text-text-tertiary">Diagnóstico Clínico Nutricional</p>
@@ -138,7 +138,7 @@ export function AppLayout() {
 
           <div>
             <div className="px-3 mb-2.5 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">
-              Módulos Clínicos (Fase 1)
+              Módulos Clínicos
             </div>
             <div className="space-y-1">
               {MODULOS_PROXIMOS.map((item, idx) => (
@@ -173,12 +173,12 @@ export function AppLayout() {
         {/* Footer del sidebar */}
         <div className="p-5 border-t border-border/70 text-[12px] text-text-tertiary flex items-center gap-2.5 bg-background-elevated/40">
           <ShieldCheck className="w-4 h-4 text-semaforo-verde flex-shrink-0" />
-          <span className="leading-tight">100% Offline-First y Privado</span>
+          <span className="leading-tight">Privacidad total y datos locales</span>
         </div>
       </aside>
 
-      {/* ─── HEADER MOBILE (< 768px) ─── */}
-      <header className="md:hidden sticky top-0 z-30 bg-background-surface/95 backdrop-blur-xl border-b border-border/80 px-4 py-3.5 flex items-center justify-between shadow-xs">
+      {/* ─── HEADER MOBILE (< 768px) (Oculto en impresión para evitar menú hamburguesa y offline) ─── */}
+      <header className="md:hidden sticky top-0 z-30 bg-background-surface/95 backdrop-blur-xl border-b border-border/80 px-4 py-3.5 flex items-center justify-between shadow-xs no-print">
         <div className="flex items-center gap-3">
           <button
             type="button"
@@ -197,7 +197,7 @@ export function AppLayout() {
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text text-[11px] font-semibold">
             <span className="w-2 h-2 rounded-full bg-semaforo-verde animate-pulse" />
-            <span>Offline</span>
+            <span>Privado</span>
           </span>
         </div>
       </header>
@@ -205,14 +205,14 @@ export function AppLayout() {
       {/* ─── DRAWER MOBILE (< 768px) ─── */}
       {drawerAbierto && (
         <div
-          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs md:hidden transition-opacity"
+          className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs md:hidden transition-opacity no-print"
           onClick={cerrarDrawer}
           aria-hidden="true"
         />
       )}
 
       <aside
-        className={`fixed top-0 left-0 bottom-0 z-50 w-72 bg-background-surface border-r border-border flex flex-col md:hidden transition-transform duration-200 ease-out shadow-float ${
+        className={`fixed top-0 left-0 bottom-0 z-50 w-72 bg-background-surface border-r border-border flex flex-col md:hidden transition-transform duration-200 ease-out shadow-float no-print ${
           drawerAbierto ? 'translate-x-0' : '-translate-x-full'
         }`}
         aria-label="Menú lateral de Kalo"
@@ -221,7 +221,7 @@ export function AppLayout() {
           <div className="flex items-center gap-2">
             <span className="text-[20px] font-bold tracking-tight text-primary">Kalo</span>
             <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
-              FOSS
+              CLÍNICO
             </span>
           </div>
           <button
@@ -265,10 +265,10 @@ export function AppLayout() {
             </div>
           </div>
 
-          {/* Sección 2: Módulos Clínicos (Fase 1) */}
+          {/* Sección 2: Módulos Clínicos */}
           <div>
             <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">
-              Módulos Clínicos (Fase 1)
+              Módulos Clínicos
             </div>
             <div className="space-y-1">
               {MODULOS_PROXIMOS.map((item, idx) => (
