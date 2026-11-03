@@ -23,6 +23,14 @@ const OPCIONES_NAF: Array<{ id: CategoriaNAF; label: string; factor: string }> =
   { id: 'muy_intenso', label: 'Muy Intenso', factor: '1.90' },
 ];
 
+const NAF_ETIQUETAS: Record<CategoriaNAF, string> = {
+  sedentario: 'Sedentario',
+  ligero: 'Ligero',
+  moderado: 'Moderado',
+  intenso: 'Intenso',
+  muy_intenso: 'Muy Intenso',
+};
+
 export function EnergyView() {
   const { estado, actualizarCampo, resultado, guardadoExitoso } = useEnergy();
 
@@ -294,7 +302,7 @@ export function EnergyView() {
                 <ResultadoChip
                   etiqueta="Factor de Actividad"
                   valor={resultado.naf_valor}
-                  textoEstado={resultado.naf_categoria}
+                  textoEstado={NAF_ETIQUETAS[resultado.naf_categoria]}
                   semaforo="verde"
                   fuente="OMS 1985 / IOM"
                 />

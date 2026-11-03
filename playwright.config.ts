@@ -6,25 +6,34 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'list',
+  reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: 'http://127.0.0.1:5173',
     trace: 'on-first-retry',
   },
   projects: [
     {
-      name: 'chromium-desktop',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'desktop-chrome',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
     {
-      name: 'mobile-iphone',
-      use: { ...devices['iPhone 14'] },
+      name: 'mobile-chrome',
+      use: {
+        viewport: { width: 390, height: 664 },
+        deviceScaleFactor: 2,
+        isMobile: true,
+        hasTouch: true,
+      },
     },
   ],
   webServer: {
-    command: 'npm run dev -- --host 127.0.0.1 --port 5173',
+    command: process.env.CI
+      ? 'npm run preview -- --host 0.0.0.0 --port 5173'
+      : 'npm run dev -- --host 127.0.0.1 --port 5173',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
-    timeout: 30000,
+    timeout: 60000,
   },
 });
