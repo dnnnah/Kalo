@@ -204,10 +204,8 @@ export function AppLayout() {
 
       {/* ─── CONTENIDO PRINCIPAL CON ESPACIADO RESPONSIVE ─── */}
       <div className="flex-1 md:ml-64 flex flex-col min-w-0">
-        <main className="flex-1 px-4 sm:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 pb-36 sm:pb-36 md:pb-12 max-w-6xl w-full mx-auto">
+        <main className="flex-1 px-4 sm:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 pb-20 sm:pb-20 md:pb-12 max-w-6xl w-full mx-auto">
           <Outlet />
-          {/* Espaciador físico para garantizar que en móvil la barra inferior fija nunca tape el contenido */}
-          <div className="h-12 md:hidden pointer-events-none" aria-hidden="true" />
         </main>
       </div>
 
