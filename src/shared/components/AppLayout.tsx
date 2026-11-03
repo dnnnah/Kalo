@@ -6,6 +6,7 @@ import {
   Users,
   BookOpen,
   ShieldCheck,
+  ShieldAlert,
   Menu,
   X,
   ChevronRight,
@@ -34,6 +35,7 @@ const MODULOS_PROXIMOS: NavItem[] = [
   { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
   { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
   { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" /> },
+  { to: '/renal', label: 'Nutrición Renal', icon: <ShieldAlert className="w-4 h-4" /> },
 ];
 
 export function AppLayout() {
@@ -74,6 +76,8 @@ export function AppLayout() {
       ? 'Cardiovascular'
       : location.pathname.startsWith('/hidratacion')
       ? 'Hidratación'
+      : location.pathname.startsWith('/renal')
+      ? 'Nutrición Renal'
       : 'Kalo');
 
   return (
