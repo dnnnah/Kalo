@@ -1,6 +1,7 @@
 /**
  * @file src/features/meal-planner/useMealPlanner.ts
- * @description Hook de gestión de estado para las 3 capas del Planeador de Dietas (SMAE).
+ * @description Hook de gestión de estado para el Planeador de Dietas (SMAE 5ª Edición).
+ * Soporta modo híbrido: Matriz SMAE interactiva y Tablero visual de menús por tiempos.
  */
 
 import { useState, useMemo, useCallback } from 'react';
@@ -12,11 +13,13 @@ import {
   calcularAdecuacionPlan,
   buscarAlimentos,
 } from './formulas';
+import { TIEMPOS_COMIDA_INFO } from './constants';
 import { useActivePatientStore } from '../../shared/stores/useActivePatientStore';
 import { guardarPlanDieteticoSMAE } from '../../shared/db/kalo.db';
 import type {
   GrupoSMAE,
   TiempoComida,
+  ModoVistaPlanner,
   PresupuestoSMAE,
   DistribucionTiemposSMAE,
   AlimentoSeleccionadoPlan,
@@ -25,15 +28,14 @@ import type {
 import type { PlanDieteticoSMAE, AlimentoSeleccionadoMenu } from '../../shared/types';
 import type { DatosPrecargaPaciente } from '../../shared/components/BarraPacienteActivo';
 
-export type CapaActiva = 'presupuesto' | 'tiempos' | 'menu';
-
 export function useMealPlanner() {
   const { pacienteActivo, ultimaConsulta, vincular } = useActivePatientStore();
 
   const macrosPrescritos =
     pacienteActivo?.ultima_prescripcion_macros || ultimaConsulta?.prescripcion_macros;
 
-  const [capaActiva, setCapaActiva] = useState<CapaActiva>('presupuesto');
+  // Modo de visualización: Matriz SMAE (Cálculo rápido) o Menú por tiempos (Visual)
+  const [modoVista, setModoVista] = useState<ModoVistaPlanner>('matriz');
 
   const [getObjetivoKcal, setGetObjetivoKcal] = useState<number>(() => {
     return macrosPrescritos?.get_objetivo_kcal && macrosPrescritos.get_objetivo_kcal > 0
@@ -41,9 +43,20 @@ export function useMealPlanner() {
       : 2000;
   });
 
+  // Distribución inicial balanceada (~1,850 kcal)
+  const [distribucion, setDistribucion] = useState<DistribucionTiemposSMAE>(() => {
+    const dist = inicializarDistribucion();
+    dist.desayuno = { cereales_sin_grasa: 2, aoa_bajo: 1, verduras: 1, aceites_sin_proteina: 1 };
+    dist.colacion_1 = { frutas: 1, aceites_con_proteina: 1 };
+    dist.comida = { cereales_sin_grasa: 2, leguminosas: 1, aoa_moderado: 2, verduras: 2, aceites_sin_proteina: 2 };
+    dist.colacion_2 = { frutas: 1, leche_descremada: 1 };
+    dist.cena = { cereales_sin_grasa: 2, aoa_bajo: 2, verduras: 1, frutas: 1, aceites_sin_proteina: 1 };
+    return dist;
+  });
+
+  // El presupuesto diario sincronizado directamente a partir de la suma de tiempos
   const [presupuesto, setPresupuesto] = useState<PresupuestoSMAE>(() => {
     const base = inicializarPresupuesto();
-    // Ejemplo clínico balanceado base (~1,800-2,000 kcal)
     base.verduras = 4;
     base.frutas = 3;
     base.cereales_sin_grasa = 6;
@@ -56,25 +69,20 @@ export function useMealPlanner() {
     return base;
   });
 
-  const [distribucion, setDistribucion] = useState<DistribucionTiemposSMAE>(() => {
-    const dist = inicializarDistribucion();
-    dist.desayuno = { cereales_sin_grasa: 2, aoa_bajo: 1, verduras: 1, aceites_sin_proteina: 1 };
-    dist.colacion_1 = { frutas: 1, aceites_con_proteina: 1 };
-    dist.comida = { cereales_sin_grasa: 2, leguminosas: 1, aoa_moderado: 2, verduras: 2, aceites_sin_proteina: 2 };
-    dist.colacion_2 = { frutas: 1, leche_descremada: 1 };
-    dist.cena = { cereales_sin_grasa: 2, aoa_bajo: 2, verduras: 1, frutas: 1, aceites_sin_proteina: 1 };
-    return dist;
-  });
-
+  // Alimentos seleccionados en el menú detallado
   const [alimentosSeleccionados, setAlimentosSeleccionados] = useState<AlimentoSeleccionadoPlan[]>([]);
-  const [tiempoSeleccionadoMenu, setTiempoSeleccionadoMenu] = useState<TiempoComida>('desayuno');
+
+  // Drawer / modal lateral para agregar alimentos
+  const [drawerAbierto, setDrawerAbierto] = useState(false);
+  const [tiempoActivoDrawer, setTiempoActivoDrawer] = useState<TiempoComida>('desayuno');
   const [busquedaAlimento, setBusquedaAlimento] = useState('');
   const [filtroGrupoCatalogo, setFiltroGrupoCatalogo] = useState<GrupoSMAE | 'todos'>('todos');
 
+  // Estado de persistencia
   const [guardando, setGuardando] = useState(false);
   const [guardadoExitoso, setGuardadoExitoso] = useState(false);
 
-  // Cálculos derivados
+  // Cálculos derivados reactivos
   const macrosTotales = useMemo(() => {
     return calcularMacrosPresupuesto(presupuesto);
   }, [presupuesto]);
@@ -88,45 +96,100 @@ export function useMealPlanner() {
   }, [macrosTotales, getObjetivoKcal, macrosPrescritos]);
 
   const alimentosFiltrados = useMemo(() => {
-    return buscarAlimentos(busquedaAlimento, filtroGrupoCatalogo).slice(0, 30);
+    return buscarAlimentos(busquedaAlimento, filtroGrupoCatalogo).slice(0, 40);
   }, [busquedaAlimento, filtroGrupoCatalogo]);
 
-  // Modificadores de Presupuesto (Capa 1)
-  const actualizarEquivalente = useCallback((grupo: GrupoSMAE, cantidad: number) => {
-    const val = Math.max(0, cantidad);
-    setPresupuesto((prev) => ({ ...prev, [grupo]: val }));
+  // Edición reactiva e instantánea en la Matriz SMAE
+  const actualizarCeldaMatriz = useCallback(
+    (tiempo: TiempoComida, grupo: GrupoSMAE, cantidad: number) => {
+      const val = Math.max(0, cantidad);
+      setDistribucion((prevDist) => {
+        const nuevaDist = {
+          ...prevDist,
+          [tiempo]: {
+            ...prevDist[tiempo],
+            [grupo]: val > 0 ? val : undefined,
+          },
+        };
+
+        // Auto-sincronizar presupuesto total del grupo sumando los 5 tiempos de comida
+        let suma = 0;
+        for (const t of TIEMPOS_COMIDA_INFO) {
+          suma += nuevaDist[t.id]?.[grupo] ?? 0;
+        }
+
+        setPresupuesto((prevPres) => ({
+          ...prevPres,
+          [grupo]: Number(suma.toFixed(1)),
+        }));
+
+        return nuevaDist;
+      });
+      setGuardadoExitoso(false);
+    },
+    []
+  );
+
+  // Aplicación rápida de plantillas clínicas estándar
+  const aplicarPlantilla = useCallback((tipo: '1800' | '2000' | 'limpiar') => {
+    if (tipo === 'limpiar') {
+      setDistribucion(inicializarDistribucion());
+      setPresupuesto(inicializarPresupuesto());
+      setAlimentosSeleccionados([]);
+      setGuardadoExitoso(false);
+      return;
+    }
+
+    const nuevaDist = inicializarDistribucion();
+    const nuevoPres = inicializarPresupuesto();
+
+    if (tipo === '1800') {
+      nuevaDist.desayuno = { cereales_sin_grasa: 2, aoa_bajo: 1, verduras: 1, aceites_sin_proteina: 1 };
+      nuevaDist.colacion_1 = { frutas: 1, aceites_con_proteina: 1 };
+      nuevaDist.comida = { cereales_sin_grasa: 2, leguminosas: 1, aoa_moderado: 2, verduras: 2, aceites_sin_proteina: 2 };
+      nuevaDist.colacion_2 = { frutas: 1, leche_descremada: 1 };
+      nuevaDist.cena = { cereales_sin_grasa: 2, aoa_bajo: 2, verduras: 1, frutas: 1, aceites_sin_proteina: 1 };
+    } else {
+      // 2000 kcal
+      nuevaDist.desayuno = { cereales_sin_grasa: 3, aoa_bajo: 2, verduras: 1, frutas: 1, aceites_sin_proteina: 1 };
+      nuevaDist.colacion_1 = { frutas: 1, aceites_con_proteina: 1, leche_descremada: 1 };
+      nuevaDist.comida = { cereales_sin_grasa: 3, leguminosas: 1, aoa_moderado: 2, verduras: 2, aceites_sin_proteina: 2 };
+      nuevaDist.colacion_2 = { frutas: 1, cereales_sin_grasa: 1 };
+      nuevaDist.cena = { cereales_sin_grasa: 2, aoa_bajo: 2, verduras: 1, aceites_sin_proteina: 1 };
+    }
+
+    // Calcular totales de fila en el presupuesto
+    for (const tiempo of TIEMPOS_COMIDA_INFO) {
+      const grupos = nuevaDist[tiempo.id];
+      for (const [g, cant] of Object.entries(grupos)) {
+        if (cant) {
+          nuevoPres[g as GrupoSMAE] = (nuevoPres[g as GrupoSMAE] ?? 0) + cant;
+        }
+      }
+    }
+
+    setDistribucion(nuevaDist);
+    setPresupuesto(nuevoPres);
     setGuardadoExitoso(false);
   }, []);
 
-  const incrementarGrupo = useCallback((grupo: GrupoSMAE) => {
-    setPresupuesto((prev) => ({ ...prev, [grupo]: (prev[grupo] ?? 0) + 1 }));
-    setGuardadoExitoso(false);
+  // Control de Drawer para agregar alimentos
+  const abrirDrawer = useCallback((tiempo: TiempoComida) => {
+    setTiempoActivoDrawer(tiempo);
+    setDrawerAbierto(true);
   }, []);
 
-  const decrementarGrupo = useCallback((grupo: GrupoSMAE) => {
-    setPresupuesto((prev) => ({ ...prev, [grupo]: Math.max(0, (prev[grupo] ?? 0) - 1) }));
-    setGuardadoExitoso(false);
+  const cerrarDrawer = useCallback(() => {
+    setDrawerAbierto(false);
   }, []);
 
-  // Modificadores de Distribución por Tiempos (Capa 2)
-  const asignarDistribucionTiempo = useCallback((tiempo: TiempoComida, grupo: GrupoSMAE, cantidad: number) => {
-    const val = Math.max(0, cantidad);
-    setDistribucion((prev) => ({
-      ...prev,
-      [tiempo]: {
-        ...prev[tiempo],
-        [grupo]: val > 0 ? val : undefined,
-      },
-    }));
-    setGuardadoExitoso(false);
-  }, []);
-
-  // Modificadores de Alimentos del Menú (Capa 3)
+  // Agregar alimento seleccionado al tiempo de comida
   const agregarAlimentoAMenu = useCallback(
-    (alimento: AlimentoNormalizado, fraccion: number = 1.0) => {
+    (alimento: AlimentoNormalizado, fraccion: number = 1.0, tiempo?: TiempoComida) => {
+      const tiempoDestino = tiempo ?? tiempoActivoDrawer;
       const nuevaSeleccion: AlimentoSeleccionadoPlan = {
         id_seleccion: `sel_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
-        tiempo: tiempoSeleccionadoMenu,
+        tiempo: tiempoDestino,
         id_alimento: alimento.id,
         nombre: alimento.nombre,
         grupo_smae: alimento.grupo_smae,
@@ -142,7 +205,7 @@ export function useMealPlanner() {
       setAlimentosSeleccionados((prev) => [...prev, nuevaSeleccion]);
       setGuardadoExitoso(false);
     },
-    [tiempoSeleccionadoMenu]
+    [tiempoActivoDrawer]
   );
 
   const eliminarAlimentoDeMenu = useCallback((idSeleccion: string) => {
@@ -154,13 +217,6 @@ export function useMealPlanner() {
     if (datos.get_kcal && datos.get_kcal > 0) {
       setGetObjetivoKcal(datos.get_kcal);
     }
-  }, []);
-
-  const limpiarPlan = useCallback(() => {
-    setPresupuesto(inicializarPresupuesto());
-    setDistribucion(inicializarDistribucion());
-    setAlimentosSeleccionados([]);
-    setGuardadoExitoso(false);
   }, []);
 
   const guardarEnExpediente = async () => {
@@ -228,16 +284,18 @@ export function useMealPlanner() {
   };
 
   return {
-    capaActiva,
-    setCapaActiva,
+    modoVista,
+    setModoVista,
     getObjetivoKcal,
     setGetObjetivoKcal,
     macrosPrescritos,
     presupuesto,
     distribucion,
     alimentosSeleccionados,
-    tiempoSeleccionadoMenu,
-    setTiempoSeleccionadoMenu,
+    drawerAbierto,
+    tiempoActivoDrawer,
+    abrirDrawer,
+    cerrarDrawer,
     busquedaAlimento,
     setBusquedaAlimento,
     filtroGrupoCatalogo,
@@ -246,14 +304,11 @@ export function useMealPlanner() {
     macrosTotales,
     saldos,
     adecuacion,
-    actualizarEquivalente,
-    incrementarGrupo,
-    decrementarGrupo,
-    asignarDistribucionTiempo,
+    actualizarCeldaMatriz,
+    aplicarPlantilla,
     agregarAlimentoAMenu,
     eliminarAlimentoDeMenu,
     precargarDatosPaciente,
-    limpiarPlan,
     guardarEnExpediente,
     guardando,
     guardadoExitoso,

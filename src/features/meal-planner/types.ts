@@ -32,6 +32,8 @@ export type TiempoComida =
   | 'colacion_2'
   | 'cena';
 
+export type ModoVistaPlanner = 'matriz' | 'menu';
+
 /**
  * Entidad normalizada de alimento para consulta rápida y persistencia directa
  * en base de datos relacional o Dexie (sin anidamientos excesivos).
