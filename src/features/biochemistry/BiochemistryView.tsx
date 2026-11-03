@@ -1,4 +1,4 @@
-import { Printer, FlaskConical, CheckCircle2 } from 'lucide-react';
+import { Printer, FlaskConical, CheckCircle2, Sparkles } from 'lucide-react';
 import { useBiochemistry } from './useBiochemistry';
 import { TarjetaHOMA } from './components/TarjetaHOMA';
 import { Card, CardHeader, CardTitle } from '../../shared/components/Card';
@@ -243,12 +243,22 @@ export function BiochemistryView() {
                     unidad={item.unidad}
                     semaforo={item.semaforo}
                     textoEstado={item.interpretacion}
-                    fuente={item.fuente}
                   />
                 ))}
               </div>
             </div>
           )}
+
+          {/* Rigor Clínico y Bibliográfico (@source) */}
+          <div className="p-3.5 rounded-card bg-background-surface border border-border/70 space-y-1">
+            <div className="flex items-center gap-1.5 text-[12px] font-semibold text-text-primary">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span>Rigor Clínico (@source)</span>
+            </div>
+            <p className="text-[11px] text-text-tertiary leading-relaxed font-mono">
+              ADA 2024 · NOM-015-SSA2 · NOM-037-SSA2 · ATP-III · Matthews 1985 (HOMA) · Katz 2000 (QUICKI) · KDIGO.
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,3 @@
-import { BookOpen } from 'lucide-react';
 import { Badge } from './Badge';
 import type { TipoSemaforo } from '../types';
 
@@ -8,7 +7,6 @@ export interface ResultadoChipProps {
   unidad?: string;
   semaforo?: TipoSemaforo;
   textoEstado?: string;
-  fuente?: string;
 }
 
 export function ResultadoChip({
@@ -17,43 +15,36 @@ export function ResultadoChip({
   unidad,
   semaforo,
   textoEstado,
-  fuente,
 }: ResultadoChipProps) {
   return (
-    <div className="flex flex-col justify-between p-3 sm:p-3.5 rounded-card bg-background-elevated border border-border/80 min-h-[102px] overflow-hidden">
-      <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-1.5">
-        <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary leading-tight break-words">
+    <div className="flex flex-col justify-between p-3 sm:p-3.5 rounded-card bg-background-elevated border border-border/80 min-h-[82px] overflow-hidden transition-colors hover:border-border">
+      <div className="flex items-start justify-between gap-1.5 min-w-0">
+        <span
+          className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary leading-tight truncate"
+          title={etiqueta}
+        >
           {etiqueta}
         </span>
         {semaforo && textoEstado ? (
           <Badge
             semaforo={semaforo}
-            className="self-start text-[10px] px-1.5 py-0.5 whitespace-nowrap flex-shrink-0 leading-tight"
+            className="text-[10px] px-1.5 py-0.5 whitespace-nowrap flex-shrink-0 leading-none"
           >
             {textoEstado}
           </Badge>
         ) : null}
       </div>
 
-      <div className="my-1.5 flex items-baseline gap-1">
-        <span className="text-[22px] sm:text-[26px] font-bold text-text-primary font-mono tnum leading-tight">
+      <div className="mt-2 flex items-baseline gap-1">
+        <span className="text-[22px] sm:text-[24px] font-bold text-text-primary font-mono tnum leading-tight">
           {valor}
         </span>
         {unidad && (
-          <span className="text-[12px] sm:text-[13px] font-medium text-text-tertiary">
+          <span className="text-[12px] font-medium text-text-tertiary">
             {unidad}
           </span>
         )}
       </div>
-
-      {fuente ? (
-        <div className="flex items-center gap-1 text-[10px] sm:text-[11px] text-text-tertiary truncate">
-          <BookOpen className="w-3 h-3 flex-shrink-0" />
-          <span className="truncate">{fuente}</span>
-        </div>
-      ) : (
-        <div className="h-3" />
-      )}
     </div>
   );
 }

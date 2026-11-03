@@ -222,7 +222,6 @@ export function AnthropometryView() {
                 valor={formatearDecimal(resultadoICC.icc, 2)}
                 textoEstado={resultadoICC.riesgo === 'sin_riesgo' ? 'Sin Riesgo' : 'Riesgo Alto'}
                 semaforo={resultadoICC.semaforo}
-                fuente="OMS 2008"
               />
             )}
             {resultadoICE && (
@@ -231,7 +230,6 @@ export function AnthropometryView() {
                 valor={formatearDecimal(resultadoICE.ice, 2)}
                 textoEstado={resultadoICE.riesgo === 'sin_riesgo' ? 'Óptimo' : 'Riesgo CV'}
                 semaforo={resultadoICE.semaforo}
-                fuente="Ashwell 2012"
               />
             )}
             {resultadoAMB && (
@@ -242,13 +240,11 @@ export function AnthropometryView() {
                   unidad="cm²"
                   textoEstado={resultadoAMB.clasificacion === 'adecuada' ? 'Adecuada' : 'Depleción'}
                   semaforo={resultadoAMB.semaforo}
-                  fuente="Frisancho 1981"
                 />
                 <ResultadoChip
                   etiqueta="Circunferencia Muscular"
                   valor={formatearDecimal(resultadoAMB.cmb_cm, 1)}
                   unidad="cm"
-                  fuente="CMB Frisancho"
                 />
               </>
             )}

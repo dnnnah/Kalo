@@ -1,4 +1,4 @@
-import { Activity, ShieldAlert, Sparkles } from 'lucide-react';
+import { Activity, ShieldAlert } from 'lucide-react';
 import type { ResultadoHOMA, ResultadoQUICKI } from '../types';
 import { Card } from '../../../shared/components/Card';
 import { Badge } from '../../../shared/components/Badge';
@@ -83,17 +83,6 @@ export function TarjetaHOMA({ resultadoHOMA, resultadoQUICKI }: TarjetaHOMAProps
           </p>
         </div>
       )}
-
-      {/* Cita @source */}
-      <div className="p-3.5 rounded-card bg-background-surface border border-border/70 space-y-1">
-        <div className="flex items-center gap-1.5 text-[12px] font-semibold text-text-primary">
-          <Sparkles className="w-3.5 h-3.5 text-primary" />
-          <span>Rigor Bibliográfico (@source)</span>
-        </div>
-        <p className="text-[11px] text-text-tertiary leading-relaxed font-mono">
-          Matthews DR et al. Diabetologia 1985 · Katz A et al. J Clin Endocrinol Metab 2000.
-        </p>
-      </div>
     </div>
   );
 }

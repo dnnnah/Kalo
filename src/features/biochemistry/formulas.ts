@@ -110,16 +110,16 @@ export function evaluarAnalito(
   switch (clave) {
     case 'glucosa_ayuno': {
       let semaforo: TipoSemaforo = 'verde';
-      let interpretacion = 'Glucosa en ayuno normal';
+      let interpretacion = 'Normal';
       if (valor < 70) {
         semaforo = 'ambar';
         interpretacion = 'Hipoglucemia';
       } else if (valor >= 126) {
         semaforo = 'rojo';
-        interpretacion = 'Criterio ADA de Diabetes Mellitus';
+        interpretacion = 'Diabetes';
       } else if (valor >= 100) {
         semaforo = 'ambar';
-        interpretacion = 'Glucosa alterada en ayuno (Prediabetes)';
+        interpretacion = 'Prediabetes';
       }
       return {
         clave,
@@ -134,13 +134,13 @@ export function evaluarAnalito(
 
     case 'hba1c': {
       let semaforo: TipoSemaforo = 'verde';
-      let interpretacion = 'HbA1c normal';
+      let interpretacion = 'Normal';
       if (valor >= 6.5) {
         semaforo = 'rojo';
-        interpretacion = 'Rango diagnóstico de Diabetes Mellitus';
+        interpretacion = 'Diabetes';
       } else if (valor >= 5.7) {
         semaforo = 'ambar';
-        interpretacion = 'Prediabetes (Riesgo incrementado)';
+        interpretacion = 'Prediabetes';
       }
       return {
         clave,
@@ -155,13 +155,13 @@ export function evaluarAnalito(
 
     case 'insulina_basal': {
       let semaforo: TipoSemaforo = 'verde';
-      let interpretacion = 'Insulina basal óptima';
+      let interpretacion = 'Óptima';
       if (valor > 25) {
         semaforo = 'rojo';
-        interpretacion = 'Hiperinsulinemia significativa';
+        interpretacion = 'Hiperinsulinemia';
       } else if (valor > 12) {
         semaforo = 'ambar';
-        interpretacion = 'Insulina elevada / compensatoria';
+        interpretacion = 'Elevada';
       }
       return {
         clave,
@@ -179,10 +179,10 @@ export function evaluarAnalito(
       let interpretacion = 'Deseable';
       if (valor >= 240) {
         semaforo = 'rojo';
-        interpretacion = 'Hipercolesterolemia alta';
+        interpretacion = 'Alto';
       } else if (valor >= 200) {
         semaforo = 'ambar';
-        interpretacion = 'Límite elevado';
+        interpretacion = 'Limítrofe';
       }
       return {
         clave,
@@ -198,7 +198,7 @@ export function evaluarAnalito(
     case 'colesterol_hdl': {
       const puntoOptimo = sexo === 'masculino' ? 40 : 50;
       const semaforo: TipoSemaforo = valor < puntoOptimo ? 'rojo' : 'verde';
-      const interpretacion = valor < puntoOptimo ? 'HDL bajo (Riesgo CV elevado)' : 'HDL protector';
+      const interpretacion = valor < puntoOptimo ? 'Bajo' : 'Protector';
       return {
         clave,
         nombre: 'Colesterol HDL',
@@ -215,13 +215,13 @@ export function evaluarAnalito(
       let interpretacion = 'Óptimo';
       if (valor >= 160) {
         semaforo = 'rojo';
-        interpretacion = 'LDL alto / aterogénico';
+        interpretacion = 'Alto';
       } else if (valor >= 130) {
         semaforo = 'ambar';
-        interpretacion = 'Limítrofe alto';
+        interpretacion = 'Limítrofe';
       } else if (valor >= 100) {
         semaforo = 'verde';
-        interpretacion = 'Cercano al óptimo';
+        interpretacion = 'Aceptable';
       }
       return {
         clave,
@@ -239,10 +239,10 @@ export function evaluarAnalito(
       let interpretacion = 'Normal';
       if (valor >= 200) {
         semaforo = 'rojo';
-        interpretacion = 'Hipertrigliceridemia alta';
+        interpretacion = 'Alto';
       } else if (valor >= 150) {
         semaforo = 'ambar';
-        interpretacion = 'Limítrofe alto';
+        interpretacion = 'Limítrofe';
       }
       return {
         clave,
@@ -273,7 +273,7 @@ export function evaluarAnalito(
     case 'creatinina': {
       const maxNormal = sexo === 'masculino' ? 1.3 : 1.1;
       const semaforo: TipoSemaforo = valor > maxNormal ? 'rojo' : 'verde';
-      const interpretacion = valor > maxNormal ? 'Creatinina elevada' : 'Función normal';
+      const interpretacion = valor > maxNormal ? 'Elevada' : 'Normal';
       return {
         clave,
         nombre: 'Creatinina Sérica',
@@ -287,7 +287,7 @@ export function evaluarAnalito(
 
     case 'urea': {
       const semaforo: TipoSemaforo = valor > 45 ? 'rojo' : valor < 15 ? 'ambar' : 'verde';
-      const interpretacion = valor > 45 ? 'Urea elevada' : 'Normal';
+      const interpretacion = valor > 45 ? 'Elevada' : valor < 15 ? 'Baja' : 'Normal';
       return {
         clave,
         nombre: 'Urea Sérica',
