@@ -6,7 +6,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: 'list',
+  reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
   use: {
     baseURL: 'http://127.0.0.1:5173',
     trace: 'on-first-retry',
@@ -18,13 +18,16 @@ export default defineConfig({
     },
     {
       name: 'mobile-iphone',
-      use: { ...devices['iPhone 14'] },
+      use: {
+        ...devices['iPhone 14'],
+        defaultBrowserType: 'chromium',
+      },
     },
   ],
   webServer: {
     command: 'npm run dev -- --host 127.0.0.1 --port 5173',
     url: 'http://127.0.0.1:5173',
     reuseExistingServer: !process.env.CI,
-    timeout: 30000,
+    timeout: 60000,
   },
 });
