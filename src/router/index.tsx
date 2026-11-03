@@ -7,6 +7,7 @@ import { BiochemistryView } from '../features/biochemistry/BiochemistryView';
 import { CardiovascularView } from '../features/cardiovascular/CardiovascularView';
 import { HydrationView } from '../features/hydration/HydrationView';
 import { RenalView } from '../features/renal/RenalView';
+import { DiabetesView } from '../features/diabetes/DiabetesView';
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
       {
         path: 'cardiovascular',
         element: <CardiovascularView />,
+      },
+      {
+        path: 'diabetes',
+        element: <DiabetesView />,
       },
       {
         path: 'hidratacion',
