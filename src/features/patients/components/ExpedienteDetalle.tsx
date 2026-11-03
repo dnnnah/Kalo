@@ -16,6 +16,7 @@ import {
   ArrowRight,
   PieChart,
   ClipboardCheck,
+  UtensilsCrossed,
 } from 'lucide-react';
 import type { Paciente, ConsultaMedica } from '../../../shared/types';
 import type { PacienteConMetricas } from '../types';
@@ -471,6 +472,74 @@ export function ExpedienteDetalle({
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+          </Card>
+        );
+      })()}
+
+      {/* ─── Plan Dietético SMAE Activo ─── */}
+      {(() => {
+        const plan =
+          paciente.ultimo_plan_smae || consultas[0]?.plan_dietetico_smae;
+
+        return (
+          <Card className="p-3.5 sm:p-4 bg-background-surface border-border space-y-3 shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-card bg-orange-500/10 text-orange-600 dark:text-orange-400 flex-shrink-0">
+                  <UtensilsCrossed className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[13px] sm:text-[14px] font-bold text-text-primary">
+                      Plan Dietético (SMAE)
+                    </span>
+                    {plan && (
+                      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-pill bg-background-elevated text-text-secondary border border-border">
+                        {plan.fecha}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-[11px] sm:text-[12px] text-text-secondary">
+                    {plan
+                      ? `Aporte: ${plan.macros_totales.energia_kcal} kcal (${plan.adecuacion_pct.energia}% del objetivo ${plan.get_objetivo_kcal} kcal)`
+                      : 'Aún no se ha diseñado un plan de equivalentes SMAE para este paciente.'}
+                  </p>
+                </div>
+              </div>
+
+              <Link to="/planeador" className="w-full sm:w-auto">
+                <Button
+                  variant={plan ? 'outline' : 'primary'}
+                  size="sm"
+                  onClick={() => vincular(paciente, consultas[0])}
+                  icono={<ArrowRight className="w-4 h-4" />}
+                  className="w-full sm:w-auto justify-center min-h-[38px] text-[12px] font-semibold"
+                >
+                  {plan ? 'Revisar Plan' : 'Diseñar Plan'}
+                </Button>
+              </Link>
+            </div>
+
+            {plan && (
+              <div className="pt-2 border-t border-border/70 text-[12px] grid grid-cols-4 gap-2 text-center font-mono">
+                <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                  <span className="text-[10px] text-text-tertiary block font-sans uppercase">Kcal</span>
+                  <span className="font-bold text-text-primary">{plan.macros_totales.energia_kcal}</span>
+                </div>
+                <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                  <span className="text-[10px] text-primary block font-sans uppercase">HC</span>
+                  <span className="font-bold text-primary">{plan.macros_totales.hidratos_g}g</span>
+                </div>
+                <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                  <span className="text-[10px] text-emerald-600 block font-sans uppercase">PT</span>
+                  <span className="font-bold text-emerald-600">{plan.macros_totales.proteina_g}g</span>
+                </div>
+                <div className="p-2 rounded bg-background-elevated/60 border border-border/50">
+                  <span className="text-[10px] text-amber-500 block font-sans uppercase">LP</span>
+                  <span className="font-bold text-amber-500">{plan.macros_totales.lipidos_g}g</span>
                 </div>
               </div>
             )}

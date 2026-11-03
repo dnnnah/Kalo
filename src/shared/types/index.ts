@@ -51,6 +51,45 @@ export interface EvaluacionAdecuacion {
   actualizado_en: string; // ISO 8601
 }
 
+export interface AlimentoSeleccionadoMenu {
+  id_seleccion: string;
+  tiempo: string;
+  id_alimento: string;
+  nombre: string;
+  grupo_smae: string;
+  fraccion_equivalente: number;
+  cantidad_g: number;
+  medida_casera: string;
+  energia_kcal: number;
+  proteina_g: number;
+  lipidos_g: number;
+  hidratos_g: number;
+}
+
+export interface PlanDieteticoSMAE {
+  id?: string;
+  fecha: string;
+  get_objetivo_kcal: number;
+  presupuesto: Record<string, number>;
+  distribucion_tiempos: Record<string, Record<string, number>>;
+  alimentos_seleccionados: AlimentoSeleccionadoMenu[];
+  macros_totales: {
+    energia_kcal: number;
+    proteina_g: number;
+    lipidos_g: number;
+    hidratos_g: number;
+    fibra_g: number;
+  };
+  adecuacion_pct: {
+    energia: number;
+    proteina: number;
+    lipidos: number;
+    hidratos: number;
+  };
+  notas?: string;
+  actualizado_en: string;
+}
+
 export interface Paciente {
   id?: number;
   nombre: string;
@@ -62,6 +101,7 @@ export interface Paciente {
   notas_clinicas?: string;
   ultima_prescripcion_macros?: PrescripcionMacronutrientes;
   ultima_adecuacion?: EvaluacionAdecuacion;
+  ultimo_plan_smae?: PlanDieteticoSMAE;
   creado_en: string; // ISO 8601
   actualizado_en: string; // ISO 8601
 }
@@ -82,6 +122,7 @@ export interface ConsultaMedica {
   diagnosticos?: string[];
   prescripcion_macros?: PrescripcionMacronutrientes;
   evaluacion_adecuacion?: EvaluacionAdecuacion;
+  plan_dietetico_smae?: PlanDieteticoSMAE;
   notas?: string;
   creado_en: string;
   actualizado_en: string;

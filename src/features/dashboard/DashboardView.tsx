@@ -11,6 +11,7 @@ import {
   Users,
   PieChart,
   ClipboardCheck,
+  UtensilsCrossed,
 } from 'lucide-react';
 import { Card, CardTitle } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
@@ -37,6 +38,13 @@ export function DashboardView() {
       descripcion: 'Comparativa Prescrito vs. Consumido con semáforo porcentual (Gibson / Bourges).',
       icono: <ClipboardCheck className="w-5 h-5 text-emerald-500" />,
       color: 'bg-emerald-500/10 text-emerald-600',
+    },
+    {
+      to: '/planeador',
+      titulo: 'Planeador de Dietas (SMAE)',
+      descripcion: 'Presupuesto de equivalentes por grupo, distribución por tiempos y menú de alimentos.',
+      icono: <UtensilsCrossed className="w-5 h-5 text-orange-500" />,
+      color: 'bg-orange-500/10 text-orange-600',
     },
     {
       to: '/pacientes',

@@ -13,6 +13,7 @@ import { ReferencesView } from '../features/references/ReferencesView';
 import { PatientsView } from '../features/patients/PatientsView';
 import { MacronutrientsView } from '../features/macronutrients/MacronutrientsView';
 import { AdequacyView } from '../features/adequacy/AdequacyView';
+import { MealPlannerView } from '../features/meal-planner/MealPlannerView';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: 'adecuacion',
         element: <AdequacyView />,
+      },
+      {
+        path: 'planeador',
+        element: <MealPlannerView />,
       },
       {
         path: 'antropometria',
