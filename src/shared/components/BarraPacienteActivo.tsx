@@ -12,6 +12,7 @@ export interface DatosPrecargaPaciente {
   talla?: number;
   edad?: number;
   sexo?: SexoBiologico;
+  get_kcal?: number;
 }
 
 interface BarraPacienteActivoProps {
@@ -60,6 +61,7 @@ export function BarraPacienteActivo({
         talla: hist[0]?.talla_cm,
         edad: edadCalc.anios > 0 ? edadCalc.anios : undefined,
         sexo: p.sexo,
+        get_kcal: hist[0]?.get_kcal,
       });
     }
   };
@@ -72,6 +74,7 @@ export function BarraPacienteActivo({
       talla: ultimaConsulta?.talla_cm,
       edad: edadCalc.anios > 0 ? edadCalc.anios : undefined,
       sexo: pacienteActivo.sexo,
+      get_kcal: ultimaConsulta?.get_kcal,
     });
   };
 
