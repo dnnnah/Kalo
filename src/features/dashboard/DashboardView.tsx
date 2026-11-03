@@ -7,6 +7,7 @@ import {
   ArrowRight,
   BookOpen,
   Sparkles,
+  FlaskConical,
 } from 'lucide-react';
 import { Card, CardTitle } from '../../shared/components/Card';
 import { Button } from '../../shared/components/Button';
@@ -21,10 +22,17 @@ export function DashboardView() {
       color: 'bg-amber-500/10 text-amber-600',
     },
     {
+      to: '/antropometria',
+      titulo: 'Antropometría y Composición',
+      descripcion: 'IMC, ICC, ICE, Pliegues cutáneos JP3/Faulkner y Área Muscular del Brazo.',
+      icono: <Activity className="w-5 h-5 text-purple-500" />,
+      color: 'bg-purple-500/10 text-purple-600',
+    },
+    {
       to: '/bioquimica',
       titulo: 'Laboratorios y Bioquímica',
       descripcion: 'HOMA-IR, QUICKI y semáforo de analitos laboratoriales (ADA, NOM, Harrison).',
-      icono: <Activity className="w-5 h-5 text-emerald-500" />,
+      icono: <FlaskConical className="w-5 h-5 text-emerald-500" />,
       color: 'bg-emerald-500/10 text-emerald-600',
     },
     {
@@ -83,7 +91,7 @@ export function DashboardView() {
           <span className="text-[12px] text-text-tertiary">Fase 1 MVP</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {modulos.map((m, idx) => (
             <Link key={idx} to={m.to} className="block group">
               <Card className="h-full hover:border-primary/50 transition-all hover:shadow-elevated">

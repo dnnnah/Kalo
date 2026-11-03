@@ -30,6 +30,11 @@ test.describe('Flujo Clínico de la Calculadora Energética (Kalo)', () => {
     await expect(page.getByText('Gasto Energético Total (GET)')).toBeVisible();
     await expect(page.getByText('kcal/día')).toBeVisible();
 
+    // Seleccionar NAF "Muy Intenso" y verificar que la etiqueta se muestre legible sin guión bajo
+    await page.getByRole('button', { name: /Muy Intenso/i }).click();
+    await expect(page.getByText('Muy Intenso').first()).toBeVisible();
+    await expect(page.getByText('muy_intenso')).toHaveCount(0);
+
     // Cambiar la fórmula a Mifflin-St Jeor
     await page.getByText('Mifflin-St Jeor').click();
     await expect(page.getByText('Mifflin MD et al.')).toBeVisible();

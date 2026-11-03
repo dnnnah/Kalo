@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { AppLayout } from '../shared/components/AppLayout';
 import { DashboardView } from '../features/dashboard/DashboardView';
 import { EnergyView } from '../features/energy/EnergyView';
+import { AnthropometryView } from '../features/anthropometry/AnthropometryView';
 import { BiochemistryView } from '../features/biochemistry/BiochemistryView';
 
 export const router = createBrowserRouter([
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: 'calculadora',
         element: <EnergyView />,
+      },
+      {
+        path: 'antropometria',
+        element: <AnthropometryView />,
       },
       {
         path: 'bioquimica',
