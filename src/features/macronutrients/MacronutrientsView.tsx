@@ -92,45 +92,29 @@ export function MacronutrientsView() {
 
           <Campo
             label="Gasto Energético Objetivo (GET)"
+            unidad="kcal"
+            type="number"
+            min={500}
+            max={6000}
+            step="25"
+            value={estado.get_kcal || ''}
+            onChange={(e) => actualizarCampo('get_kcal', Number(e.target.value))}
             ayuda="Calorías totales prescritas para la distribución"
             error={estado.get_kcal <= 0 ? 'Ingresa un valor calórico mayor a 0' : undefined}
-          >
-            <div className="relative">
-              <input
-                type="number"
-                min={500}
-                max={6000}
-                step={25}
-                value={estado.get_kcal || ''}
-                onChange={(e) => actualizarCampo('get_kcal', Number(e.target.value))}
-                className="input-base pr-14 font-mono font-medium"
-              />
-              <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[12px] font-semibold text-text-tertiary">
-                kcal
-              </span>
-            </div>
-          </Campo>
+          />
 
           <Campo
             label="Peso Corporal de Referencia"
+            unidad="kg"
+            type="number"
+            min={20}
+            max={300}
+            step="0.5"
+            value={estado.peso_kg || ''}
+            onChange={(e) => actualizarCampo('peso_kg', Number(e.target.value))}
             ayuda="Para el cálculo de gramos por kilogramo (g/kg)"
             error={estado.peso_kg <= 0 ? 'Ingresa un peso válido' : undefined}
-          >
-            <div className="relative">
-              <input
-                type="number"
-                min={20}
-                max={300}
-                step={0.5}
-                value={estado.peso_kg || ''}
-                onChange={(e) => actualizarCampo('peso_kg', Number(e.target.value))}
-                className="input-base pr-12 font-mono font-medium"
-              />
-              <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[12px] font-semibold text-text-tertiary">
-                kg
-              </span>
-            </div>
-          </Campo>
+          />
 
           <div className="pt-2">
             <span className="text-[12px] font-semibold text-text-secondary block mb-1.5">

@@ -7,6 +7,7 @@ export interface CampoProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   unidad?: string;
   error?: string;
   ayuda?: string;
+  children?: never;
 }
 
 export const Campo = React.forwardRef<HTMLInputElement, CampoProps>(
