@@ -77,36 +77,38 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
           guías del Institute of Medicine (IOM) y EFSA (DHA).
         </p>
 
-        {/* Lista en cuadrícula de 2 columnas: texto completo sin truncar, valores y unidades nítidos */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        {/* Cuadrícula de 2 columnas con tarjetas verticales tipo Apple Health para garantizar ancho completo al texto y a las cifras */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {items.map((item) => (
             <div
               key={item.nombre}
-              className="flex items-center justify-between p-3.5 rounded-card bg-background-elevated border border-border/80 hover:border-border transition-colors gap-2.5"
+              className="p-3.5 rounded-card bg-background-elevated border border-border/80 hover:border-border transition-colors flex flex-col justify-between min-h-[92px]"
             >
-              <div className="min-w-0 flex-1">
-                <span className="text-[13px] font-semibold text-text-primary block leading-tight break-words">
-                  {item.nombre}
-                </span>
-                <span className="text-[11px] text-text-tertiary block leading-tight mt-0.5 break-words">
+              {/* Encabezado de la tarjeta: Nombre completo, propósito y badge opcional */}
+              <div>
+                <div className="flex items-center justify-between gap-1.5">
+                  <span className="text-[13px] font-semibold text-text-primary leading-snug">
+                    {item.nombre}
+                  </span>
+                  {item.badge && (
+                    <Badge semaforo="verde" className="text-[9px] px-1.5 py-0.5 whitespace-nowrap flex-shrink-0">
+                      {item.badge}
+                    </Badge>
+                  )}
+                </div>
+                <span className="text-[11px] text-text-tertiary block mt-0.5 leading-tight">
                   {item.proposito}
                 </span>
               </div>
 
-              <div className="text-right flex-shrink-0 flex items-center gap-2">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-[17px] sm:text-[19px] font-bold font-mono tnum text-text-primary leading-none">
-                    {item.valor}
-                  </span>
-                  <span className="text-[11px] sm:text-[12px] font-medium text-text-tertiary whitespace-nowrap">
-                    {item.unidad}
-                  </span>
-                </div>
-                {item.badge && (
-                  <Badge semaforo="verde" className="text-[9px] px-1.5 py-0.5 whitespace-nowrap">
-                    {item.badge}
-                  </Badge>
-                )}
+              {/* Pie de la tarjeta: Cifra numérica monoespaciada grande y unidad */}
+              <div className="mt-3 flex items-baseline gap-1">
+                <span className="text-[20px] sm:text-[22px] font-bold font-mono tnum text-text-primary leading-none">
+                  {item.valor}
+                </span>
+                <span className="text-[12px] font-medium text-text-tertiary">
+                  {item.unidad}
+                </span>
               </div>
             </div>
           ))}
