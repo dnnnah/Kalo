@@ -128,7 +128,7 @@ export function CardiovascularView() {
                       onClick={() => actualizarCampo('fumador', true)}
                       className={`min-h-[36px] rounded-[8px] text-[13px] font-semibold transition-all ${
                         datos.fumador
-                          ? 'bg-semaforo-rojo text-white shadow-sm'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'text-text-secondary hover:text-text-primary'
                       }`}
                     >
@@ -139,7 +139,7 @@ export function CardiovascularView() {
                       onClick={() => actualizarCampo('fumador', false)}
                       className={`min-h-[36px] rounded-[8px] text-[13px] font-semibold transition-all ${
                         !datos.fumador
-                          ? 'bg-background-surface text-text-primary shadow-xs'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'text-text-secondary hover:text-text-primary'
                       }`}
                     >
@@ -167,7 +167,7 @@ export function CardiovascularView() {
                       onClick={() => actualizarCampo('tratamientoHipertension', false)}
                       className={`min-h-[36px] rounded-[8px] text-[13px] font-semibold transition-all ${
                         !datos.tratamientoHipertension
-                          ? 'bg-background-surface text-text-primary shadow-xs'
+                          ? 'bg-primary text-white shadow-sm'
                           : 'text-text-secondary hover:text-text-primary'
                       }`}
                     >
