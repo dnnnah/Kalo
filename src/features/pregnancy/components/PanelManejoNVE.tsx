@@ -31,39 +31,42 @@ export function PanelManejoNVE({ datos, actualizarCampo, resultadoNauseas }: Pan
           <label className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary block mb-1.5">
             Intensidad de los Síntomas
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 p-1 rounded-input bg-background-elevated border border-border gap-1">
             <button
               type="button"
               onClick={() => actualizarCampo('intensidadNauseas', 'leve' as IntensidadNauseas)}
-              className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+              className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                 datos.intensidadNauseas === 'leve'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
-              Leve (esporádica)
+              <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">Leve</span>
+              <span className="block text-[10px] opacity-80 mt-0.5">Esporádica</span>
             </button>
             <button
               type="button"
               onClick={() => actualizarCampo('intensidadNauseas', 'moderada' as IntensidadNauseas)}
-              className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+              className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                 datos.intensidadNauseas === 'moderada'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
-              Moderada (frecuente)
+              <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">Moderada</span>
+              <span className="block text-[10px] opacity-80 mt-0.5">Frecuente</span>
             </button>
             <button
               type="button"
               onClick={() => actualizarCampo('intensidadNauseas', 'severa' as IntensidadNauseas)}
-              className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+              className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                 datos.intensidadNauseas === 'severa'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
-              Severa (intolerancia)
+              <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">Severa</span>
+              <span className="block text-[10px] opacity-80 mt-0.5">Intolerancia</span>
             </button>
           </div>
         </div>

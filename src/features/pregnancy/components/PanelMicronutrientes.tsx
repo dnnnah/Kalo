@@ -25,58 +25,53 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
           guías del Institute of Medicine (IOM) y EFSA (DHA).
         </p>
 
+        {/* Cuadrícula de 8 Micronutrientes simétrica (4x2 en desktop, 2x4 en móvil) */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <ResultadoChip
             etiqueta="Hierro"
             valor={resultadoIDR.hierro_mg}
             unidad="mg/día"
-            textoEstado={esLactancia ? 'Amenorrea' : 'Expansión masa'}
           />
           <ResultadoChip
-            etiqueta="Folato (DFE)"
+            etiqueta="Ácido Fólico"
             valor={resultadoIDR.folato_mcg_dfe}
-            unidad="mcg/día"
-            textoEstado="Tubo neural"
+            unidad="mcg DFE"
           />
           <ResultadoChip
             etiqueta="Calcio"
             valor={resultadoIDR.calcio_mg}
             unidad="mg/día"
-            textoEstado="Esqueleto fetal"
           />
           <ResultadoChip
             etiqueta="Vitamina D"
             valor={resultadoIDR.vitamina_d_mcg}
-            unidad="mcg/día"
-            textoEstado="600 UI/día"
+            unidad="mcg (600 UI)"
           />
           <ResultadoChip
             etiqueta="Yodo"
             valor={resultadoIDR.yodo_mcg}
             unidad="mcg/día"
-            textoEstado="Tiroides fetal"
           />
           <ResultadoChip
             etiqueta="Omega-3 DHA"
             valor={resultadoIDR.omega3_dha_mg}
             unidad="mg/día"
-            textoEstado="Desarrollo SNC"
+          />
+          <ResultadoChip
+            etiqueta="Zinc"
+            valor={resultadoIDR.zinc_mg}
+            unidad="mg/día"
           />
           <ResultadoChip
             etiqueta="Proteína Extra"
             valor={`+${resultadoIDR.proteina_adicional_g}`}
             unidad="g/día"
-            textoEstado="Sobre base"
             semaforo="verde"
-          />
-          <ResultadoChip
-            etiqueta="Estado Materno"
-            valor={esLactancia ? 'Lactancia' : 'Gestación'}
-            textoEstado="Ajustado"
+            textoEstado="Sobre base"
           />
         </div>
 
-        <div className="flex items-start gap-2 p-3 rounded-card bg-background-elevated border border-border/80 text-[11px] text-text-tertiary">
+        <div className="flex items-start gap-2.5 p-3 rounded-card bg-background-elevated border border-border/80 text-[11px] text-text-secondary leading-relaxed">
           <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" />
           <span>
             La suplementación profiláctica con 400–600 mcg de ácido fólico y 27 mg de hierro elemental está indicada

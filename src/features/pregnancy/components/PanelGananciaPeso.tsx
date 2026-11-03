@@ -2,6 +2,7 @@ import { Scale } from 'lucide-react';
 import type { DatosEmbarazo, ResultadoGananciaPeso } from '../types';
 import { Card, CardHeader, CardTitle } from '../../../shared/components/Card';
 import { Campo } from '../../../shared/components/Campo';
+import { Badge } from '../../../shared/components/Badge';
 import { ResultadoChip } from '../../../shared/components/ResultadoChip';
 
 interface PanelGananciaPesoProps {
@@ -99,13 +100,13 @@ export function PanelGananciaPeso({ datos, actualizarCampo, resultadoGanancia }:
                 etiqueta="Ganancia Total al Término"
                 valor={`${resultadoGanancia.ganancia_total_min_kg} – ${resultadoGanancia.ganancia_total_max_kg}`}
                 unidad="kg"
-                textoEstado={`Tasa: ~${resultadoGanancia.ganancia_por_semana_kg} kg/sem`}
+                textoEstado={`~${resultadoGanancia.ganancia_por_semana_kg} kg/sem`}
               />
             </div>
 
             {/* Comparativa con Peso Real */}
             {resultadoGanancia.ganancia_real_kg !== undefined && (
-              <div className="p-3.5 rounded-card bg-background-elevated border border-border/80 flex items-center justify-between">
+              <div className="p-3.5 rounded-card bg-background-elevated border border-border/80 flex items-center justify-between gap-3">
                 <div>
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary block">
                     Ganancia Real Actual
@@ -118,12 +119,17 @@ export function PanelGananciaPeso({ datos, actualizarCampo, resultadoGanancia }:
                   </span>
                 </div>
                 {resultadoGanancia.estado_ganancia && (
-                  <ResultadoChip
-                    etiqueta="Evaluación IOM"
-                    valor={resultadoGanancia.estado_ganancia.toUpperCase()}
-                    semaforo={resultadoGanancia.semaforo}
-                    textoEstado={resultadoGanancia.estado_ganancia}
-                  />
+                  <div className="text-right flex flex-col items-end flex-shrink-0">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-text-tertiary block mb-1">
+                      Criterio IOM 2009
+                    </span>
+                    <Badge
+                      semaforo={resultadoGanancia.semaforo}
+                      className="text-[11px] px-2.5 py-1 font-semibold uppercase"
+                    >
+                      {resultadoGanancia.estado_ganancia}
+                    </Badge>
+                  </div>
                 )}
               </div>
             )}

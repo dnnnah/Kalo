@@ -24,19 +24,19 @@ export function PanelAdicionCalorica({ datos, actualizarCampo, resultadoAdicion 
           Prescripción de energía basada en las recomendaciones del Institute of Medicine (IOM 2002/2005) para embarazo y lactancia.
         </p>
 
-        {/* Selector de Etapa: Embarazo vs Lactancia */}
+        {/* Selector de Etapa: Apple HIG Segmented Control */}
         <div>
           <label className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary block mb-1.5">
             Etapa Fisiológica
           </label>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 p-1 rounded-input bg-background-elevated border border-border">
             <button
               type="button"
               onClick={() => actualizarCampo('modoEtapa', 'embarazo' as ModoEtapa)}
-              className={`py-2 px-3 rounded-button text-[13px] font-medium transition-all flex items-center justify-center gap-2 ${
+              className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all flex items-center justify-center gap-2 ${
                 datos.modoEtapa === 'embarazo'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               <Baby className="w-4 h-4" />
@@ -45,10 +45,10 @@ export function PanelAdicionCalorica({ datos, actualizarCampo, resultadoAdicion 
             <button
               type="button"
               onClick={() => actualizarCampo('modoEtapa', 'lactancia' as ModoEtapa)}
-              className={`py-2 px-3 rounded-button text-[13px] font-medium transition-all flex items-center justify-center gap-2 ${
+              className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all flex items-center justify-center gap-2 ${
                 datos.modoEtapa === 'lactancia'
-                  ? 'bg-primary text-white shadow-sm'
-                  : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                  ? 'bg-primary text-white shadow-sm font-semibold'
+                  : 'text-text-secondary hover:text-text-primary'
               }`}
             >
               <Heart className="w-4 h-4" />
@@ -57,45 +57,48 @@ export function PanelAdicionCalorica({ datos, actualizarCampo, resultadoAdicion 
           </div>
         </div>
 
-        {/* Sub-selectores según Etapa */}
+        {/* Sub-selectores según Etapa: Apple HIG Segmented Control */}
         {datos.modoEtapa === 'embarazo' ? (
           <div>
             <label className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary block mb-1.5">
               Trimestre de Gestación (IOM 2002)
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 p-1 rounded-input bg-background-elevated border border-border gap-1">
               <button
                 type="button"
                 onClick={() => actualizarCampo('trimestre', 'primero' as Trimestre)}
-                className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                   datos.trimestre === 'primero'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                1er Trimestre (+0 kcal)
+                <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">1er Trimestre</span>
+                <span className="block text-[10px] opacity-80 mt-0.5">+0 kcal</span>
               </button>
               <button
                 type="button"
                 onClick={() => actualizarCampo('trimestre', 'segundo' as Trimestre)}
-                className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                   datos.trimestre === 'segundo'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                2do Trimestre (+340 kcal)
+                <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">2do Trimestre</span>
+                <span className="block text-[10px] opacity-80 mt-0.5">+340 kcal</span>
               </button>
               <button
                 type="button"
                 onClick={() => actualizarCampo('trimestre', 'tercero' as Trimestre)}
-                className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                   datos.trimestre === 'tercero'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                3er Trimestre (+450 kcal)
+                <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">3er Trimestre</span>
+                <span className="block text-[10px] opacity-80 mt-0.5">+450 kcal</span>
               </button>
             </div>
           </div>
@@ -104,39 +107,42 @@ export function PanelAdicionCalorica({ datos, actualizarCampo, resultadoAdicion 
             <label className="text-[11px] font-semibold uppercase tracking-wider text-text-secondary block mb-1.5">
               Tipo de Lactancia (IOM 2005)
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 p-1 rounded-input bg-background-elevated border border-border gap-1">
               <button
                 type="button"
                 onClick={() => actualizarCampo('estadoLactancia', 'exclusiva' as EstadoLactancia)}
-                className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                   datos.estadoLactancia === 'exclusiva'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                Exclusiva (+500 kcal)
+                <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">Exclusiva</span>
+                <span className="block text-[10px] opacity-80 mt-0.5">+500 kcal</span>
               </button>
               <button
                 type="button"
                 onClick={() => actualizarCampo('estadoLactancia', 'parcial' as EstadoLactancia)}
-                className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                   datos.estadoLactancia === 'parcial'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                Parcial (+330 kcal)
+                <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">Parcial</span>
+                <span className="block text-[10px] opacity-80 mt-0.5">+330 kcal</span>
               </button>
               <button
                 type="button"
                 onClick={() => actualizarCampo('estadoLactancia', 'no_lactando' as EstadoLactancia)}
-                className={`py-2 px-2 rounded-button text-[12px] font-medium transition-all ${
+                className={`min-h-[44px] py-1 px-1 rounded-[8px] text-center transition-all ${
                   datos.estadoLactancia === 'no_lactando'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'bg-background-elevated text-text-secondary hover:text-text-primary border border-border/80'
+                    ? 'bg-primary text-white shadow-sm font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
                 }`}
               >
-                Sin Lactancia (+0 kcal)
+                <span className="block text-[12px] sm:text-[13px] font-medium leading-tight">Sin Lactancia</span>
+                <span className="block text-[10px] opacity-80 mt-0.5">+0 kcal</span>
               </button>
             </div>
           </div>

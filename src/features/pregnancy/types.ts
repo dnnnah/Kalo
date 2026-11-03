@@ -75,6 +75,7 @@ export interface ResultadoIDRAjustada {
   readonly vitamina_d_mcg: number;
   readonly yodo_mcg: number;
   readonly omega3_dha_mg: number;
+  readonly zinc_mg: number;
   readonly proteina_adicional_g: number;
   readonly fuente_bibliografica: string;
 }

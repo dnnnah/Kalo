@@ -199,6 +199,9 @@ export function calcularIDRAjustada(params: ParametrosIDRAjustada): ResultadoIDR
   // DHA: 200 mg/día (EFSA 2014)
   const omega3_dha_mg = 200;
 
+  // Zinc: 11 mg/día embarazo, 12 mg/día lactancia (IOM 2001)
+  const zinc_mg = es_lactancia ? 12 : 11;
+
   // Proteína adicional
   let proteina_adicional_g: number;
   if (es_lactancia) {
@@ -216,6 +219,7 @@ export function calcularIDRAjustada(params: ParametrosIDRAjustada): ResultadoIDR
     vitamina_d_mcg,
     yodo_mcg,
     omega3_dha_mg,
+    zinc_mg,
     proteina_adicional_g,
     fuente_bibliografica:
       'IOM. DRI for Vitamins and Minerals. National Academies Press. 2001-2011. / EFSA Journal 2014;12(11):3840.',
