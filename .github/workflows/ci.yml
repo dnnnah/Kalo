@@ -1,0 +1,45 @@
+name: CI — Kalo Suite Clínica
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verificacion-y-tests:
+    name: Build, Pruebas Unitarias y E2E
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Instalar dependencias congeladas
+        run: npm ci
+
+      - name: Compilación y verificación estricta de TypeScript
+        run: npm run build
+
+      - name: Ejecutar pruebas unitarias de cálculo clínico (Vitest)
+        run: npm test
+
+      - name: Instalar navegador Chromium para Playwright
+        run: npx playwright install --with-deps chromium
+
+      - name: Ejecutar pruebas E2E (Playwright)
+        run: npm run test:e2e
+
+      - name: Subir reporte de Playwright en caso de fallo
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
