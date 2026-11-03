@@ -4,6 +4,7 @@ import type { Paciente, SexoBiologico } from '../../../shared/types';
 import type { FormularioPacienteData } from '../types';
 import { Button } from '../../../shared/components/Button';
 import { Campo } from '../../../shared/components/Campo';
+import { SegmentedControl } from '../../../shared/components/SegmentedControl';
 import { validarDatosPaciente } from '../formulas';
 
 interface ModalPacienteProps {
@@ -105,7 +106,7 @@ export function ModalPaciente({
               <h2 className="text-[17px] font-bold text-text-primary tracking-tight">
                 {paciente ? 'Editar Perfil del Paciente' : 'Nuevo Paciente'}
               </h2>
-              <p className="text-[12px] text-text-secondary">Expediente Clínico Local (Dexie.js)</p>
+              <p className="text-[12px] text-text-secondary">Expediente Clínico Digital</p>
             </div>
           </div>
           <button
@@ -137,38 +138,16 @@ export function ModalPaciente({
           </div>
 
           {/* Sexo biológico segmentado */}
-          <div className="flex flex-col gap-1">
-            <label className="text-[12px] sm:text-[13px] font-medium text-text-secondary">
-              Sexo Biológico *
-            </label>
-            <div className="grid grid-cols-2 p-1 rounded-input bg-background-elevated border border-border">
-              <button
-                type="button"
-                onClick={() => setSexo('femenino')}
-                className={`min-h-[40px] rounded-[8px] text-[14px] font-medium transition-all ${
-                  sexo === 'femenino'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-text-secondary hover:text-text-primary'
-                }`}
-              >
-                Femenino
-              </button>
-              <button
-                type="button"
-                onClick={() => setSexo('masculino')}
-                className={`min-h-[40px] rounded-[8px] text-[14px] font-medium transition-all ${
-                  sexo === 'masculino'
-                    ? 'bg-primary text-white shadow-sm'
-                    : 'text-text-secondary hover:text-text-primary'
-                }`}
-              >
-                Masculino
-              </button>
-            </div>
-            {errores.sexo && (
-              <p className="text-[11px] text-semaforo-rojo-text mt-0.5">{errores.sexo}</p>
-            )}
-          </div>
+          <SegmentedControl
+            label="Sexo Biológico *"
+            value={sexo}
+            onChange={(val) => setSexo(val as SexoBiologico)}
+            options={[
+              { value: 'femenino', label: 'Femenino' },
+              { value: 'masculino', label: 'Masculino' },
+            ]}
+            error={errores.sexo}
+          />
 
           <Campo
             label="Fecha de Nacimiento *"

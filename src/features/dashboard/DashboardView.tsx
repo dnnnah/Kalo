@@ -66,7 +66,7 @@ export function DashboardView() {
         <div className="max-w-xl space-y-3 relative z-10">
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill bg-white/20 text-white text-[12px] font-semibold backdrop-blur-sm">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Kalo v1.0 MVP — FOSS & Offline-First</span>
+            <span>Kalo — Software Clínico de Valoración Nutricional</span>
           </div>
           <h1 className="text-[26px] sm:text-[34px] font-bold tracking-tight leading-tight">
             Valoración clínica nutricional sin barreras ni suscripciones.
@@ -106,7 +106,7 @@ export function DashboardView() {
           <h2 className="text-[18px] font-semibold text-text-primary tracking-tight">
             Módulos Clínicos de Diagnóstico
           </h2>
-          <span className="text-[12px] text-text-tertiary">Fase 1 MVP</span>
+          <span className="text-[12px] text-text-tertiary">Herramientas Diagnósticas</span>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -144,7 +144,7 @@ export function DashboardView() {
             </div>
             <p className="text-[12px] text-text-secondary leading-relaxed">
               Puedes utilizar cualquier cálculo de inmediato sin necesidad de crear o seleccionar un
-              paciente antes de la consulta. La persistencia en tu base local IndexedDB es opcional y
+              paciente antes de la consulta. La persistencia en tu expediente local es opcional y
               está a un solo clic.
             </p>
           </div>
