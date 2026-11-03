@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Gradiente de fondo squircle Apple HIG -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#F2F2F7" />
+    </linearGradient>
+
+    <!-- Gradiente Azul iOS Kalo Stem -->
+    <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0080FF" />
+      <stop offset="100%" stop-color="#0055D4" />
+    </linearGradient>
+
+    <!-- Gradiente Verde Botánico (Hoja / Salud / Nutrición) -->
+    <linearGradient id="leafGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#28CD41" />
+      <stop offset="100%" stop-color="#34C759" />
+    </linearGradient>
+
+    <!-- Gradiente Llama Calórica (Energía / Kcal) -->
+    <linearGradient id="flameGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FF3B30" />
+      <stop offset="50%" stop-color="#FF9500" />
+      <stop offset="100%" stop-color="#FFCC00" />
+    </linearGradient>
+
+    <!-- Sombra suave Apple -->
+    <filter id="appleShadow" x="-10%" y="-10%" width="120%" height="125%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#007AFF" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <!-- Contenedor Squircle -->
+  <rect width="512" height="512" rx="116" fill="url(#bgGrad)" />
+  <rect width="504" height="504" x="4" y="4" rx="112" fill="none" stroke="#E5E5EA" stroke-width="2" />
+
+  <!-- Símbolo Kalo: Letra K estilizada con hoja botánica y llama energética -->
+  <g filter="url(#appleShadow)">
+    <!-- Tallo vertical de la letra K (Azul iOS) -->
+    <rect x="120" y="110" width="56" height="292" rx="28" fill="url(#blueGrad)" />
+
+    <!-- Brazo Superior: Hoja verde botánica (Nutrición clínica y Kalós) -->
+    <path d="M 160 250 C 210 230 260 170 340 120 C 370 190 320 280 230 290 Z" fill="url(#leafGrad)" />
+    <!-- Nervadura de la hoja -->
+    <path d="M 190 260 C 240 220 290 180 330 135" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-opacity="0.6" />
+
+    <!-- Brazo Inferior: Llama calórica (Kcal / Energía metabólica) -->
+    <path d="M 160 250 C 230 280 260 330 350 400 C 300 402 260 380 230 340 C 215 385 190 395 160 402 Z" fill="url(#blueGrad)" opacity="0.15" />
+    <path d="M 168 256 L 316 394 C 330 406 352 396 348 378 C 342 350 320 330 300 310 C 315 305 330 290 324 270 C 310 274 290 285 275 295 L 210 256 Z" fill="url(#flameGrad)" />
+
+    <!-- Núcleo de la llama interior -->
+    <path d="M 230 310 C 260 325 280 345 300 380 C 275 375 255 355 240 335 Z" fill="#FFE082" />
+  </g>
+</svg>
