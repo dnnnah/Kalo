@@ -4,9 +4,11 @@ import { Card, CardHeader, CardTitle } from '../../shared/components/Card';
 import { Campo } from '../../shared/components/Campo';
 import { Button } from '../../shared/components/Button';
 import { ResultadoChip } from '../../shared/components/ResultadoChip';
+import { SegmentedControl } from '../../shared/components/SegmentedControl';
 import { BarraPacienteActivo } from '../../shared/components/BarraPacienteActivo';
 import { formatearKcal, formatearDecimal } from '../../shared/utils/formatters';
 import type { FormulaTMB, CategoriaNAF, FactorEstres } from './types';
+import type { SexoBiologico } from '../../shared/types';
 
 const OPCIONES_FORMULA: Array<{ id: FormulaTMB; nombre: string; detalle: string }> = [
   { id: 'valencia', nombre: 'Valencia MX', detalle: 'Validada en población mexicana (INNSZ)' },
@@ -93,33 +95,15 @@ export function EnergyView() {
             </CardHeader>
             <div className="space-y-4">
               {/* Selector segmentado Sexo Biológico */}
-              <div className="flex flex-col gap-1">
-                <label className="text-[13px] font-medium text-text-secondary">Sexo Biológico</label>
-                <div className="grid grid-cols-2 p-1 rounded-input bg-background-elevated border border-border">
-                  <button
-                    type="button"
-                    onClick={() => actualizarCampo('sexo', 'masculino')}
-                    className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all ${
-                      estado.sexo === 'masculino'
-                        ? 'bg-primary text-white shadow-sm'
-                        : 'text-text-secondary hover:text-text-primary'
-                    }`}
-                  >
-                    Masculino
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => actualizarCampo('sexo', 'femenino')}
-                    className={`min-h-[38px] rounded-[8px] text-[14px] font-medium transition-all ${
-                      estado.sexo === 'femenino'
-                        ? 'bg-primary text-white shadow-sm'
-                        : 'text-text-secondary hover:text-text-primary'
-                    }`}
-                  >
-                    Femenino
-                  </button>
-                </div>
-              </div>
+              <SegmentedControl
+                label="Sexo Biológico"
+                value={estado.sexo}
+                onChange={(val) => actualizarCampo('sexo', val as SexoBiologico)}
+                options={[
+                  { value: 'masculino', label: 'Masculino' },
+                  { value: 'femenino', label: 'Femenino' },
+                ]}
+              />
 
               {/* Campos numéricos */}
               <div className="grid grid-cols-3 gap-3">
