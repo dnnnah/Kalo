@@ -27,3 +27,5 @@ dist-ssr/
 # Test & coverage
 coverage/
 *.tsbuildinfo
+test-results/
+playwright-report/
