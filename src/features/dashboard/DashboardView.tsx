@@ -36,14 +36,14 @@ export function DashboardView() {
       color: 'bg-emerald-500/10 text-emerald-600',
     },
     {
-      to: '/calculadora',
+      to: '/cardiovascular',
       titulo: 'Riesgo Cardiovascular & TyG',
       descripcion: 'Framingham 10 años, Índices de Castelli, No-HDL y tamizaje metabólico.',
       icono: <HeartPulse className="w-5 h-5 text-rose-500" />,
       color: 'bg-rose-500/10 text-rose-600',
     },
     {
-      to: '/calculadora',
+      to: '/hidratacion',
       titulo: 'Hidratación & Sudoración',
       descripcion: 'Tasa de sudoración deportiva ACSM y reposición hídrica ajustada.',
       icono: <Droplets className="w-5 h-5 text-teal-500" />,

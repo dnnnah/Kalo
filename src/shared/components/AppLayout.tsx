@@ -19,6 +19,7 @@ interface NavItem {
   to: string;
   label: string;
   icon: React.ReactNode;
+  badge?: string;
 }
 
 const ITEMS_PRINCIPALES: NavItem[] = [
@@ -31,8 +32,8 @@ const ITEMS_PRINCIPALES: NavItem[] = [
 const MODULOS_PROXIMOS: NavItem[] = [
   { to: '/antropometria', label: 'Antropometría', icon: <Activity className="w-4 h-4" /> },
   { to: '/bioquimica', label: 'Laboratorios (HOMA)', icon: <FlaskConical className="w-4 h-4" /> },
-  { to: '/calculadora', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" /> },
-  { to: '/calculadora', label: 'Hidratación', icon: <Droplets className="w-4 h-4" /> },
+  { to: '/cardiovascular', label: 'Cardiovascular', icon: <HeartPulse className="w-4 h-4" />, badge: 'Próx.' },
+  { to: '/hidratacion', label: 'Hidratación', icon: <Droplets className="w-4 h-4" />, badge: 'Próx.' },
 ];
 
 export function AppLayout() {
@@ -50,6 +51,10 @@ export function AppLayout() {
       ? 'Antropometría'
       : location.pathname.startsWith('/bioquimica')
       ? 'Laboratorios'
+      : location.pathname.startsWith('/cardiovascular')
+      ? 'Cardiovascular'
+      : location.pathname.startsWith('/hidratacion')
+      ? 'Hidratación'
       : 'Kalo');
 
   return (
@@ -120,7 +125,13 @@ export function AppLayout() {
                     <span className="opacity-80">{item.icon}</span>
                     <span>{item.label}</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 opacity-50" />
+                  {item.badge ? (
+                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-pill bg-background-elevated border border-border/80 text-text-tertiary">
+                      {item.badge}
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-4 h-4 opacity-50" />
+                  )}
                 </NavLink>
               ))}
             </div>
@@ -245,7 +256,13 @@ export function AppLayout() {
                     <span className="opacity-80">{item.icon}</span>
                     <span>{item.label}</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 opacity-50" />
+                  {item.badge ? (
+                    <span className="text-[10px] font-medium px-1.5 py-0.5 rounded-pill bg-background-elevated border border-border/80 text-text-tertiary">
+                      {item.badge}
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-4 h-4 opacity-50" />
+                  )}
                 </NavLink>
               ))}
             </div>

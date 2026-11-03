@@ -144,7 +144,7 @@ export function evaluarAnalito(
       }
       return {
         clave,
-        nombre: 'Hemoglobina Glucosilada (HbA1c)',
+        nombre: 'HbA1c (Glucosilada)',
         valor,
         unidad: '%',
         semaforo,
