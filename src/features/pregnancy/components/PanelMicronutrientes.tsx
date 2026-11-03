@@ -25,8 +25,8 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
           guías del Institute of Medicine (IOM) y EFSA (DHA).
         </p>
 
-        {/* Cuadrícula de 8 Micronutrientes simétrica (4x2 en desktop, 2x4 en móvil) */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {/* Cuadrícula amplia de 2 columnas donde cada métrica respira con holgura sin desbordarse */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <ResultadoChip
             etiqueta="Hierro"
             valor={resultadoIDR.hierro_mg}
