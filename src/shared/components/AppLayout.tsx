@@ -43,7 +43,8 @@ export function AppLayout() {
   // Determinar título de la pantalla activa para el header móvil
   const tituloActual =
     ITEMS_PRINCIPALES.find((i) => (i.to === '/' ? location.pathname === '/' : location.pathname.startsWith(i.to)))
-      ?.label ?? 'Kalo';
+      ?.label ??
+    (location.pathname.startsWith('/antropometria') ? 'Antropometría' : 'Kalo');
 
   return (
     <div className="min-h-screen bg-background text-text-primary antialiased flex flex-col md:flex-row">
@@ -175,25 +176,65 @@ export function AppLayout() {
           </button>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
-          {ITEMS_PRINCIPALES.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.to === '/'}
-              onClick={cerrarDrawer}
-              className={({ isActive }) =>
-                `flex items-center gap-3 px-3.5 py-3 rounded-card text-[15px] font-medium transition-colors min-h-[44px] ${
-                  isActive
-                    ? 'bg-primary text-white font-semibold shadow-sm'
-                    : 'text-text-secondary hover:bg-background hover:text-text-primary'
-                }`
-              }
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+        <nav className="flex-1 p-4 space-y-6 overflow-y-auto">
+          {/* Sección 1: Navegación Principal */}
+          <div>
+            <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">
+              Navegación Principal
+            </div>
+            <div className="space-y-1.5">
+              {ITEMS_PRINCIPALES.map((item) => (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.to === '/'}
+                  onClick={cerrarDrawer}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3.5 py-3 rounded-card text-[15px] font-medium transition-colors min-h-[44px] ${
+                      isActive
+                        ? 'bg-primary text-white font-semibold shadow-sm'
+                        : 'text-text-secondary hover:bg-background hover:text-text-primary'
+                    }`
+                  }
+                >
+                  <div className="flex items-center gap-3">
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-50" />
+                </NavLink>
+              ))}
+            </div>
+          </div>
+
+          {/* Sección 2: Módulos Clínicos (Fase 1) */}
+          <div>
+            <div className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-text-tertiary">
+              Módulos Clínicos (Fase 1)
+            </div>
+            <div className="space-y-1">
+              {MODULOS_PROXIMOS.map((item, idx) => (
+                <NavLink
+                  key={idx}
+                  to={item.to}
+                  onClick={cerrarDrawer}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between px-3.5 py-2.5 rounded-card text-[14px] transition-colors min-h-[44px] ${
+                      isActive
+                        ? 'bg-primary text-white font-semibold shadow-sm'
+                        : 'text-text-secondary hover:bg-background hover:text-text-primary'
+                    }`
+                  }
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="opacity-80">{item.icon}</span>
+                    <span>{item.label}</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 opacity-50" />
+                </NavLink>
+              ))}
+            </div>
+          </div>
         </nav>
 
         <div className="p-4 border-t border-border text-[12px] text-text-tertiary flex items-center gap-2">

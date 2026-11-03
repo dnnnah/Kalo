@@ -64,7 +64,7 @@ export function PanelPliegues({
                   ? 'Protocolo para varones: Pecho, Abdomen y Muslo Anterior.'
                   : 'Protocolo para mujeres: Tríceps, Suprailíaco y Muslo Anterior.'}
               </p>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {estado.sexo === 'masculino' ? (
                   <>
                     <Campo
@@ -130,7 +130,7 @@ export function PanelPliegues({
               <p className="text-[12px] text-text-tertiary">
                 Ecuación de 4 pliegues recomendada para atletas y deportistas de fondo.
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3">
                 <Campo
                   label="Tríceps"
                   unidad="mm"
