@@ -1,7 +1,7 @@
 import { ShieldCheck, Pill } from 'lucide-react';
 import type { ResultadoIDRAjustada } from '../types';
 import { Card, CardHeader, CardTitle } from '../../../shared/components/Card';
-import { ResultadoChip } from '../../../shared/components/ResultadoChip';
+import { Badge } from '../../../shared/components/Badge';
 
 interface PanelMicronutrientesProps {
   esLactancia: boolean;
@@ -10,6 +10,58 @@ interface PanelMicronutrientesProps {
 
 export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronutrientesProps) {
   if (!resultadoIDR) return null;
+
+  const items = [
+    {
+      nombre: 'Hierro Elemental',
+      valor: `${resultadoIDR.hierro_mg}`,
+      unidad: 'mg/día',
+      proposito: esLactancia ? 'Compensación de pérdidas' : 'Expansión masa eritrocitaria',
+    },
+    {
+      nombre: 'Ácido Fólico (Folato)',
+      valor: `${resultadoIDR.folato_mcg_dfe}`,
+      unidad: 'mcg DFE',
+      proposito: 'Cierre del tubo neural',
+    },
+    {
+      nombre: 'Calcio',
+      valor: `${resultadoIDR.calcio_mg}`,
+      unidad: 'mg/día',
+      proposito: 'Mineralización esquelética fetal',
+    },
+    {
+      nombre: 'Vitamina D',
+      valor: `${resultadoIDR.vitamina_d_mcg}`,
+      unidad: 'mcg (600 UI)',
+      proposito: 'Homeostasis cálcica',
+    },
+    {
+      nombre: 'Yodo',
+      valor: `${resultadoIDR.yodo_mcg}`,
+      unidad: 'mcg/día',
+      proposito: 'Síntesis tiroidea fetal',
+    },
+    {
+      nombre: 'Omega-3 DHA',
+      valor: `${resultadoIDR.omega3_dha_mg}`,
+      unidad: 'mg/día',
+      proposito: 'Desarrollo cerebral y retina',
+    },
+    {
+      nombre: 'Zinc',
+      valor: `${resultadoIDR.zinc_mg}`,
+      unidad: 'mg/día',
+      proposito: 'Cofactor enzimático fetal',
+    },
+    {
+      nombre: 'Proteína Adicional',
+      valor: `+${resultadoIDR.proteina_adicional_g}`,
+      unidad: 'g/día',
+      proposito: 'Síntesis tisular y fetal',
+      badge: 'Sobre base',
+    },
+  ];
 
   return (
     <Card>
@@ -25,50 +77,38 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
           guías del Institute of Medicine (IOM) y EFSA (DHA).
         </p>
 
-        {/* Cuadrícula amplia de 2 columnas donde cada métrica respira con holgura sin desbordarse */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <ResultadoChip
-            etiqueta="Hierro"
-            valor={resultadoIDR.hierro_mg}
-            unidad="mg/día"
-          />
-          <ResultadoChip
-            etiqueta="Ácido Fólico"
-            valor={resultadoIDR.folato_mcg_dfe}
-            unidad="mcg DFE"
-          />
-          <ResultadoChip
-            etiqueta="Calcio"
-            valor={resultadoIDR.calcio_mg}
-            unidad="mg/día"
-          />
-          <ResultadoChip
-            etiqueta="Vitamina D"
-            valor={resultadoIDR.vitamina_d_mcg}
-            unidad="mcg (600 UI)"
-          />
-          <ResultadoChip
-            etiqueta="Yodo"
-            valor={resultadoIDR.yodo_mcg}
-            unidad="mcg/día"
-          />
-          <ResultadoChip
-            etiqueta="Omega-3 DHA"
-            valor={resultadoIDR.omega3_dha_mg}
-            unidad="mg/día"
-          />
-          <ResultadoChip
-            etiqueta="Zinc"
-            valor={resultadoIDR.zinc_mg}
-            unidad="mg/día"
-          />
-          <ResultadoChip
-            etiqueta="Proteína Extra"
-            valor={`+${resultadoIDR.proteina_adicional_g}`}
-            unidad="g/día"
-            semaforo="verde"
-            textoEstado="Sobre base"
-          />
+        {/* Lista estructurada en 2 columnas amplias: diseño Apple HIG espacioso y sin desbordes */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {items.map((item) => (
+            <div
+              key={item.nombre}
+              className="flex items-center justify-between p-3.5 rounded-card bg-background-elevated border border-border/80 hover:border-border transition-colors gap-3"
+            >
+              <div className="min-w-0 flex-1">
+                <span className="text-[13px] font-semibold text-text-primary block truncate">
+                  {item.nombre}
+                </span>
+                <span className="text-[11px] text-text-tertiary block truncate mt-0.5">
+                  {item.proposito}
+                </span>
+              </div>
+              <div className="text-right flex-shrink-0 flex items-center gap-2">
+                <div className="flex items-baseline gap-1">
+                  <span className="text-[18px] sm:text-[20px] font-bold font-mono tnum text-text-primary leading-none">
+                    {item.valor}
+                  </span>
+                  <span className="text-[11px] sm:text-[12px] font-medium text-text-tertiary">
+                    {item.unidad}
+                  </span>
+                </div>
+                {item.badge && (
+                  <Badge semaforo="verde" className="text-[9px] px-1.5 py-0.5 whitespace-nowrap">
+                    {item.badge}
+                  </Badge>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className="flex items-start gap-2.5 p-3 rounded-card bg-background-elevated border border-border/80 text-[11px] text-text-secondary leading-relaxed">
