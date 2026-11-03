@@ -13,13 +13,13 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
 
   const items = [
     {
-      nombre: 'Hierro Elemental',
+      nombre: 'Hierro',
       valor: `${resultadoIDR.hierro_mg}`,
       unidad: 'mg/día',
-      proposito: esLactancia ? 'Compensación de pérdidas' : 'Expansión masa eritrocitaria',
+      proposito: esLactancia ? 'Pérdidas lácteas' : 'Expansión eritrocitaria',
     },
     {
-      nombre: 'Ácido Fólico (Folato)',
+      nombre: 'Ácido Fólico',
       valor: `${resultadoIDR.folato_mcg_dfe}`,
       unidad: 'mcg DFE',
       proposito: 'Cierre del tubo neural',
@@ -28,7 +28,7 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
       nombre: 'Calcio',
       valor: `${resultadoIDR.calcio_mg}`,
       unidad: 'mg/día',
-      proposito: 'Mineralización esquelética fetal',
+      proposito: 'Mineralización ósea',
     },
     {
       nombre: 'Vitamina D',
@@ -40,25 +40,25 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
       nombre: 'Yodo',
       valor: `${resultadoIDR.yodo_mcg}`,
       unidad: 'mcg/día',
-      proposito: 'Síntesis tiroidea fetal',
+      proposito: 'Tiroides fetal',
     },
     {
       nombre: 'Omega-3 DHA',
       valor: `${resultadoIDR.omega3_dha_mg}`,
       unidad: 'mg/día',
-      proposito: 'Desarrollo cerebral y retina',
+      proposito: 'Desarrollo cerebral',
     },
     {
       nombre: 'Zinc',
       valor: `${resultadoIDR.zinc_mg}`,
       unidad: 'mg/día',
-      proposito: 'Cofactor enzimático fetal',
+      proposito: 'Cofactor fetal',
     },
     {
-      nombre: 'Proteína Adicional',
+      nombre: 'Proteína Extra',
       valor: `+${resultadoIDR.proteina_adicional_g}`,
       unidad: 'g/día',
-      proposito: 'Síntesis tisular y fetal',
+      proposito: 'Síntesis tisular',
       badge: 'Sobre base',
     },
   ];
@@ -77,27 +77,28 @@ export function PanelMicronutrientes({ esLactancia, resultadoIDR }: PanelMicronu
           guías del Institute of Medicine (IOM) y EFSA (DHA).
         </p>
 
-        {/* Lista estructurada en 2 columnas amplias: diseño Apple HIG espacioso y sin desbordes */}
+        {/* Lista en cuadrícula de 2 columnas: texto completo sin truncar, valores y unidades nítidos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
           {items.map((item) => (
             <div
               key={item.nombre}
-              className="flex items-center justify-between p-3.5 rounded-card bg-background-elevated border border-border/80 hover:border-border transition-colors gap-3"
+              className="flex items-center justify-between p-3.5 rounded-card bg-background-elevated border border-border/80 hover:border-border transition-colors gap-2.5"
             >
               <div className="min-w-0 flex-1">
-                <span className="text-[13px] font-semibold text-text-primary block truncate">
+                <span className="text-[13px] font-semibold text-text-primary block leading-tight break-words">
                   {item.nombre}
                 </span>
-                <span className="text-[11px] text-text-tertiary block truncate mt-0.5">
+                <span className="text-[11px] text-text-tertiary block leading-tight mt-0.5 break-words">
                   {item.proposito}
                 </span>
               </div>
+
               <div className="text-right flex-shrink-0 flex items-center gap-2">
                 <div className="flex items-baseline gap-1">
-                  <span className="text-[18px] sm:text-[20px] font-bold font-mono tnum text-text-primary leading-none">
+                  <span className="text-[17px] sm:text-[19px] font-bold font-mono tnum text-text-primary leading-none">
                     {item.valor}
                   </span>
-                  <span className="text-[11px] sm:text-[12px] font-medium text-text-tertiary">
+                  <span className="text-[11px] sm:text-[12px] font-medium text-text-tertiary whitespace-nowrap">
                     {item.unidad}
                   </span>
                 </div>
