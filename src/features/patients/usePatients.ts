@@ -38,7 +38,7 @@ export function usePatients() {
   const [mensajeExito, setMensajeExito] = useState<string | null>(null);
   const [errorGlobal, setErrorGlobal] = useState<string | null>(null);
 
-  const { setPacienteActivo, pacienteActivo: globalPacienteActivo, limpiarPacienteActivo } =
+  const { vincular, desvincular, estaVinculado, pacienteActivo: globalPacienteActivo } =
     useActivePatientStore();
 
   const notificarExito = (msg: string) => {
@@ -66,7 +66,7 @@ export function usePatients() {
     recargarPacientes();
   }, [recargarPacientes]);
 
-  // Cargar consultas del paciente seleccionado y sincronizar con store global
+  // Cargar consultas del paciente seleccionado (SOLO para visualización del expediente)
   useEffect(() => {
     if (!pacienteSeleccionadoId) {
       setConsultas([]);
@@ -80,10 +80,6 @@ export function usePatients() {
       .then((res) => {
         if (isMounted) {
           setConsultas(res);
-          const p = pacientes.find((item) => item.id === pacienteSeleccionadoId);
-          if (p) {
-            setPacienteActivo(p, res[0]);
-          }
         }
       })
       .catch((err) => {
@@ -97,7 +93,7 @@ export function usePatients() {
     return () => {
       isMounted = false;
     };
-  }, [pacienteSeleccionadoId, pacientes, setPacienteActivo]);
+  }, [pacienteSeleccionadoId]);
 
   // Pacientes filtrados y ordenados
   const pacientesFiltrados = useMemo(() => {
@@ -132,14 +128,6 @@ export function usePatients() {
 
   const seleccionarPaciente = (id: number | null) => {
     setPacienteSeleccionadoId(id);
-    if (id) {
-      const p = pacientes.find((item) => item.id === id);
-      if (p) {
-        obtenerConsultasDePaciente(id).then((hist) => {
-          setPacienteActivo(p, hist[0]);
-        });
-      }
-    }
   };
 
   const abrirModalCrear = () => {
@@ -180,7 +168,7 @@ export function usePatients() {
             const imc = Math.round((peso_inicial_kg / (tallaM * tallaM)) * 10) / 10;
             const hoy = new Date().toISOString().split('T')[0] ?? '';
 
-            const consultaInicial = await agregarConsultaAPaciente({
+            await agregarConsultaAPaciente({
               paciente_id: nuevo.id,
               fecha: hoy,
               peso_kg: peso_inicial_kg,
@@ -190,10 +178,6 @@ export function usePatients() {
               motivo: 'Registro inicial del paciente',
               notas: 'Somatometría inicial registrada durante el alta en el directorio.',
             });
-
-            setPacienteActivo(nuevo, consultaInicial);
-          } else {
-            setPacienteActivo(nuevo, undefined);
           }
         }
         notificarExito('Paciente registrado en el expediente local.');
@@ -212,7 +196,7 @@ export function usePatients() {
     try {
       await dbEliminarPaciente(id);
       if (globalPacienteActivo?.id === id) {
-        limpiarPacienteActivo();
+        desvincular();
       }
       notificarExito('Paciente y consultas asociadas eliminados.');
       setPacienteSeleccionadoId(null);
@@ -249,8 +233,8 @@ export function usePatients() {
       const actualizadas = await obtenerConsultasDePaciente(pacienteSeleccionadoId);
       setConsultas(actualizadas);
       const p = pacientes.find((item) => item.id === pacienteSeleccionadoId);
-      if (p) {
-        setPacienteActivo(p, nueva);
+      if (p && estaVinculado && globalPacienteActivo?.id === p.id) {
+        vincular(p, nueva);
       }
       notificarExito('Consulta de evolución registrada exitosamente.');
       return true;
@@ -268,8 +252,8 @@ export function usePatients() {
       const actualizadas = await obtenerConsultasDePaciente(pacienteSeleccionadoId);
       setConsultas(actualizadas);
       const p = pacientes.find((item) => item.id === pacienteSeleccionadoId);
-      if (p) {
-        setPacienteActivo(p, actualizadas[0]);
+      if (p && estaVinculado && globalPacienteActivo?.id === p.id) {
+        vincular(p, actualizadas[0]);
       }
       notificarExito('Consulta eliminada del historial.');
     } catch (err) {
@@ -304,6 +288,8 @@ export function usePatients() {
     errorGlobal,
     recargarPacientes,
     globalPacienteActivo,
-    limpiarPacienteActivo,
+    estaVinculado,
+    vincular,
+    desvincular,
   };
 }

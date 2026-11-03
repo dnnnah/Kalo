@@ -11,6 +11,8 @@ import {
   Edit2,
   Trash2,
   Printer,
+  Link as LinkIcon,
+  UserX,
   ArrowRight,
 } from 'lucide-react';
 import type { Paciente, ConsultaMedica } from '../../../shared/types';
@@ -18,6 +20,7 @@ import type { PacienteConMetricas } from '../types';
 import { Card } from '../../../shared/components/Card';
 import { Button } from '../../../shared/components/Button';
 import { formatearNombreCompleto, obtenerIniciales } from '../formulas';
+import { useActivePatientStore } from '../../../shared/stores/useActivePatientStore';
 
 interface ExpedienteDetalleProps {
   paciente: PacienteConMetricas;
@@ -39,6 +42,11 @@ export function ExpedienteDetalle({
   onEliminarConsulta,
 }: ExpedienteDetalleProps) {
   const [confirmarEliminar, setConfirmarEliminar] = useState(false);
+
+  const { estaVinculado, pacienteActivo: globalPacienteActivo, vincular, desvincular } =
+    useActivePatientStore();
+
+  const estaVinculadoConEste = estaVinculado && globalPacienteActivo?.id === paciente.id;
 
   const nombreCompleto = formatearNombreCompleto(paciente.nombre, paciente.apellidos);
   const iniciales = obtenerIniciales(paciente.nombre, paciente.apellidos);
@@ -76,6 +84,11 @@ export function ExpedienteDetalle({
                 >
                   {paciente.sexo === 'femenino' ? 'Mujer' : 'Hombre'}
                 </span>
+                {estaVinculadoConEste && (
+                  <span className="text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded-pill bg-semaforo-verde-bg border border-semaforo-verde-border text-semaforo-verde-text flex-shrink-0">
+                    Vinculado ✓
+                  </span>
+                )}
               </div>
               <p className="text-[12px] sm:text-[13px] text-text-secondary mt-0.5 truncate">
                 {paciente.edad.etiqueta} • Nacimiento: {paciente.fecha_nacimiento}
@@ -83,54 +96,84 @@ export function ExpedienteDetalle({
             </div>
           </div>
 
-          {/* Acciones principales optimizadas para mobile (grid 2x2 en móvil, flex en desktop) */}
-          <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full sm:w-auto pt-2 sm:pt-0 border-t sm:border-t-0 border-border/60 no-print">
-            <Link to="/calculadora" className="col-span-2 sm:col-auto">
+          {/* Acciones principales con diseño limpio, accesible y sin amontonamiento */}
+          <div className="flex flex-col gap-2.5 w-full pt-3 border-t border-border/70 no-print">
+            {/* Fila 1: Botón de vinculación / inicio de consulta */}
+            <div className="w-full">
+              {estaVinculadoConEste ? (
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full">
+                  <Link to="/calculadora" className="flex-1">
+                    <Button
+                      variant="primary"
+                      size="md"
+                      className="w-full justify-center min-h-[44px] bg-primary text-white shadow-xs font-semibold"
+                      icono={<Flame className="w-4 h-4 text-amber-300" />}
+                    >
+                      Abrir Calculadora GET (Vinculado)
+                    </Button>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    size="md"
+                    onClick={desvincular}
+                    className="justify-center min-h-[44px] text-text-secondary hover:text-text-primary px-4"
+                    icono={<UserX className="w-4 h-4" />}
+                  >
+                    Desvincular
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={() => vincular(paciente, consultas[0])}
+                  className="w-full justify-center min-h-[44px] bg-primary text-white shadow-xs font-semibold"
+                  icono={<LinkIcon className="w-4 h-4" />}
+                >
+                  Vincular Paciente para Consulta
+                </Button>
+              )}
+            </div>
+
+            {/* Fila 2: Cuadrícula limpia de 2 columnas en mobile y 4 en desktop */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 w-full">
               <Button
-                variant="primary"
-                size="sm"
-                className="w-full justify-center min-h-[40px] bg-primary text-white shadow-xs"
-                icono={<Flame className="w-4 h-4 text-amber-300" />}
+                variant="outline"
+                size="md"
+                onClick={onNuevaConsulta}
+                icono={<Plus className="w-4 h-4" />}
+                className="w-full justify-center min-h-[42px] text-[13px]"
               >
-                Iniciar Valoración GET
+                + Consulta
               </Button>
-            </Link>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={onNuevaConsulta}
-              icono={<Plus className="w-4 h-4" />}
-              className="justify-center min-h-[40px]"
-            >
-              Consulta
-            </Button>
-            <Button
-              variant="secondary"
-              size="sm"
-              onClick={() => onEditar(paciente)}
-              icono={<Edit2 className="w-4 h-4" />}
-              className="justify-center min-h-[40px]"
-            >
-              Editar
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handlePrint}
-              icono={<Printer className="w-4 h-4" />}
-              className="justify-center min-h-[40px]"
-            >
-              Imprimir
-            </Button>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setConfirmarEliminar(true)}
-              className="justify-center min-h-[40px] text-semaforo-rojo hover:bg-semaforo-rojo-bg"
-              icono={<Trash2 className="w-4 h-4" />}
-            >
-              Eliminar
-            </Button>
+              <Button
+                variant="secondary"
+                size="md"
+                onClick={() => onEditar(paciente)}
+                icono={<Edit2 className="w-4 h-4" />}
+                className="w-full justify-center min-h-[42px] text-[13px]"
+              >
+                Editar
+              </Button>
+              <Button
+                variant="outline"
+                size="md"
+                onClick={handlePrint}
+                icono={<Printer className="w-4 h-4" />}
+                className="w-full justify-center min-h-[42px] text-[13px]"
+              >
+                Imprimir
+              </Button>
+              <Button
+                variant="ghost"
+                size="md"
+                onClick={() => setConfirmarEliminar(true)}
+                className="w-full justify-center min-h-[42px] text-[13px] text-semaforo-rojo hover:bg-semaforo-rojo-bg"
+                icono={<Trash2 className="w-4 h-4" />}
+              >
+                Eliminar
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -187,15 +230,15 @@ export function ExpedienteDetalle({
         )}
       </Card>
 
-      {/* ─── Grid de Métricas Clínicas Actuales ─── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3.5">
+      {/* ─── Grid de Métricas Clínicas Actuales (2 columnas en móvil, 4 en desktop) ─── */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3.5">
         {/* Peso */}
         <Card className="p-3 sm:p-4 bg-background-surface">
           <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">Último Peso</div>
-          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum truncate">
+          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum leading-tight truncate">
             {paciente.ultimoPeso ? `${paciente.ultimoPeso} kg` : '—'}
           </div>
-          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-0.5 truncate">
+          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-1 truncate">
             {paciente.ultimaConsulta ? paciente.ultimaConsulta.fecha : 'Sin registros'}
           </div>
         </Card>
@@ -203,21 +246,21 @@ export function ExpedienteDetalle({
         {/* Talla */}
         <Card className="p-3 sm:p-4 bg-background-surface">
           <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">Estatura</div>
-          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum truncate">
+          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum leading-tight truncate">
             {paciente.ultimaTalla ? `${paciente.ultimaTalla} cm` : '—'}
           </div>
-          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-0.5">Talla clínica</div>
+          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-1">Talla clínica</div>
         </Card>
 
         {/* IMC */}
         <Card className="p-3 sm:p-4 bg-background-surface">
           <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">IMC</div>
-          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum truncate">
+          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum leading-tight truncate">
             {paciente.ultimoImc ? `${paciente.ultimoImc}` : '—'}
           </div>
-          <div className="mt-0.5 truncate">
+          <div className="mt-1 truncate">
             {paciente.clasificacionImc ? (
-              <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
+              <span className="text-[10px] font-semibold px-2 py-0.5 rounded-pill bg-primary-subtle text-primary-subtle-fg">
                 {paciente.clasificacionImc}
               </span>
             ) : (
@@ -229,10 +272,10 @@ export function ExpedienteDetalle({
         {/* Total Consultas */}
         <Card className="p-3 sm:p-4 bg-background-surface">
           <div className="text-[11px] sm:text-[12px] font-medium text-text-secondary mb-0.5">Consultas</div>
-          <div className="text-[18px] sm:text-[22px] font-bold text-text-primary font-mono tnum">
+          <div className="text-[20px] sm:text-[24px] font-bold text-text-primary font-mono tnum leading-tight">
             {paciente.totalConsultas}
           </div>
-          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-0.5">Historial</div>
+          <div className="text-[10px] sm:text-[11px] text-text-tertiary mt-1">Historial</div>
         </Card>
       </div>
 

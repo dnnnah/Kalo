@@ -1,8 +1,8 @@
 /**
  * @file src/shared/stores/useActivePatientStore.ts
- * @description Store global de Zustand para el paciente activo en consulta.
- * Permite que los módulos clínicos (Calculadora GET, Antropometría, etc.) precarguen
- * automáticamente los datos antropométricos y demográficos del paciente seleccionado.
+ * @description Store global de Zustand para la vinculación opcional de pacientes con los módulos clínicos.
+ * Permite al profesional de la salud decidir explícitamente si desea vincular los datos
+ * de un paciente a las calculadoras o realizar cálculos libres e independientes.
  */
 
 import { create } from 'zustand';
@@ -12,31 +12,50 @@ import { db } from '../db/kalo.db';
 export interface ActivePatientState {
   pacienteActivo: Paciente | null;
   ultimaConsulta: ConsultaMedica | null;
+  estaVinculado: boolean;
   cargando: boolean;
-  setPacienteActivo: (paciente: Paciente, ultimaConsulta?: ConsultaMedica) => void;
-  seleccionarPorId: (id: number) => Promise<void>;
+
+  // Acciones explícitas de vinculación
+  vincular: (paciente: Paciente, ultimaConsulta?: ConsultaMedica) => void;
+  desvincular: () => void;
+  toggleVinculacion: () => void;
+  seleccionarYVincularPorId: (id: number) => Promise<void>;
   actualizarUltimaConsulta: (consulta: ConsultaMedica) => void;
-  limpiarPacienteActivo: () => void;
 }
 
-export const useActivePatientStore = create<ActivePatientState>((set) => ({
+export const useActivePatientStore = create<ActivePatientState>((set, get) => ({
   pacienteActivo: null,
   ultimaConsulta: null,
+  estaVinculado: false,
   cargando: false,
 
-  setPacienteActivo: (paciente, ultimaConsulta) => {
+  vincular: (paciente, ultimaConsulta) => {
     set({
       pacienteActivo: paciente,
       ultimaConsulta: ultimaConsulta ?? null,
+      estaVinculado: true,
     });
   },
 
-  seleccionarPorId: async (id: number) => {
+  desvincular: () => {
+    set({
+      estaVinculado: false,
+      pacienteActivo: null,
+      ultimaConsulta: null,
+    });
+  },
+
+  toggleVinculacion: () => {
+    const { estaVinculado } = get();
+    set({ estaVinculado: !estaVinculado });
+  },
+
+  seleccionarYVincularPorId: async (id: number) => {
     set({ cargando: true });
     try {
       const paciente = await db.pacientes.get(id);
       if (!paciente) {
-        set({ pacienteActivo: null, ultimaConsulta: null, cargando: false });
+        set({ pacienteActivo: null, ultimaConsulta: null, estaVinculado: false, cargando: false });
         return;
       }
 
@@ -49,19 +68,16 @@ export const useActivePatientStore = create<ActivePatientState>((set) => ({
       set({
         pacienteActivo: paciente,
         ultimaConsulta: consultas[0] ?? null,
+        estaVinculado: true,
         cargando: false,
       });
     } catch (err) {
-      console.error('[useActivePatientStore] Error al seleccionar paciente por id:', err);
+      console.error('[useActivePatientStore] Error al vincular paciente por id:', err);
       set({ cargando: false });
     }
   },
 
   actualizarUltimaConsulta: (consulta) => {
     set({ ultimaConsulta: consulta });
-  },
-
-  limpiarPacienteActivo: () => {
-    set({ pacienteActivo: null, ultimaConsulta: null });
   },
 }));
